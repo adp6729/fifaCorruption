@@ -9,11 +9,11 @@ const tooltip = d3.select(".main-tooltip")
 
 const widthBody = parseInt(body.style("width"))
 
-const width = parseInt(container.style("width"))
-const height = width / 1.5
+const width = parseInt(container.style("width")) - 30
+const height = width / 2.05
 
 const projection = d3.geoMercator() // projection used for the mercator projection
-    .center([10, 30])
+    .center([10, 25])
     .scale(width/6.5)
     .translate([width / 2, height / 2])
 
@@ -213,7 +213,7 @@ function createMap(africaArray) {
 
  d3.select('.infocard')
     .style('left', 20 + 'px')
-    .style('top', height/1.55 + 'px')
+    .style('top', height/1.75 + 'px')
     .style('width', width/5 + 'px')
  d3.select('.card .card-header')
     .text(attributeMap.get(selectionIndicator).name)
