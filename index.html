@@ -3,28 +3,86 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width">
-		<link rel="shortcut icon" type="image/png" href="img/africaFavicon2.png">
-		<title></title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<link rel="shortcut icon" type="image/png" href="img/soccer_favicon.png">
+		<title>FIFA Corruption & Success</title>
 
 		<!-- external stylesheet -->	
 		<link rel="stylesheet" href="css/style.css">
 
 	</head>
 
-	<body>
-		<!--put your initial page content here-->
-		<h1>Africa Topojson</h1>
-		
-		<div class="map-container">
-			<div class="map-tooltip">
+	<body class="text-center body">
+		<nav class="navbar navbar-expand-xl fixed-top navbar-dark bg-dark">
+			<a class="navbar-brand" href=".">
+				<img src="img/soccer_favicon.png" width="30" height="30" class="d-inline-block align-top" alt="">
+				FIFA Corruption & Success
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavDropdown">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+				<a class="nav-link" href=".">Reset <span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Corruption Perception Index
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+						<a class="dropdown-item" href="#" data-toggle="collapse" data-target="#navbarNavDropdown.show" onclick="rerender('CorruptionPerceptionIndex2015')">Corruption Perception Index</a>
+						<a class="dropdown-item" href="#" data-toggle="collapse" data-target="#navbarNavDropdown.show" onclick="rerender('CorruptionControl2015')">Corruption Control</a>
+						<a class="dropdown-item" href="#" data-toggle="collapse" data-target="#navbarNavDropdown.show" onclick="rerender('IbrahimIndex2015')">Ibrahim Index Rank</a>
+						<a class="dropdown-item" href="#" data-toggle="collapse" data-target="#navbarNavDropdown.show" onclick="rerender('EaseOfDoingBusinessRank2015')">Ease of Doing Business Rank</a>
+						<a class="dropdown-item" href="#" data-toggle="collapse" data-target="#navbarNavDropdown.show" onclick="rerender('NAIPerAdultDollars2017')">National Average Income Per Adult</a>
+						<a class="dropdown-item" href="#" data-toggle="collapse" data-target="#navbarNavDropdown.show" onclick="rerender('GDPPerAdultDollars2017')">Gross Domestic Product Per Adult</a>
+					</div>
+				</li>
+			</ul>
+			<span class="navbar-text">
+				UW GISWMP GEOG 575 Final Project
+			</span>
+			</div>
+		</nav>
+<!-- 		<div class="row buffer-section-top">
 
+		</div> -->
+		<div class="container-fluid">
+			<div class="row main-section">
+				<div class="map-container col-xl-12 col-xs-12">
+					<div class="card text-left text-white bg-dark mb-3 infocard" style="width: 17rem;">
+						<div class="card-header"></div>
+						<div class="card-body">
+						  <p class="card-text info"></p>
+						  <a href="#" target="_blank" class="btn btn-info sourceLink"></a>
+						</div>
+					  </div>
+				</div>
 			</div>
 		</div>
+		<div class="main-tooltip">
+		</div>
+<!-- 		<div class="row buffer-section-bottom">
+
+		</div> -->
+		
+		<!-- footer -->
+		<nav class="navbar fixed-bottom navbar-dark bg-dark" style="display: block">
+			<a class="navbar-text text-md-right" style="color: white">© 2018 Copyright:
+				<a href="https://www.linkedin.com/in/andrew-pittman-a1618922/" target="_blank">
+					<strong> Andrew Pittman</strong>
+				</a>
+			</a>
+		</nav>
 
 		<!-- external script links -->
-		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script> -->
 		<script type="text/javascript" src="lib/d3.js"></script>
 		<script type="text/javascript" src="lib/topojson.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+		<!-- <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script> -->
 		<script type="text/javascript" src="js/main.js"></script>
 		
 	</body>
