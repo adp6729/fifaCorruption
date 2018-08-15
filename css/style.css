@@ -1,10 +1,104 @@
-/* Stylesheet by Andrew Pittman, 2018 */
+/* Stylesheet by Andrew Pittman, Vlad Sliusar, and Zheng Li 2018 */
 
 .body {
-  background-color: darkgray;
+  background-color:#a2c4da;
   padding-top: 57px;
   padding-bottom: 57px;
 }
+
+li {
+  list-style: none;
+}
+
+.navbar{
+  background: rgba(0, 0, 0, .7);
+  opacity: 1;
+}
+
+#navbar-brand{
+  color:white;
+}
+
+#span-navbar-UW{
+  color:white;
+}
+
+#nav-link-reset{
+  color:white;
+  float:right;
+   border-right: solid 2px white;
+}
+
+#span-navbar-UW{
+  color:white;
+  padding-left:15px;
+}
+
+
+#navbarDropdownMenuLink{
+  color:#f7ca45;
+}
+
+
+
+#info-card{
+    background: rgba(0, 0, 0, .7);
+}
+
+.card-text{
+  color:white;
+}
+
+.card-header{
+  color:white;
+}
+
+.text-success{
+  color:#85b4dc;
+}
+
+.btn{
+  background-color:#67a1d3;
+}
+
+
+
+.axis{
+
+  fill:black;
+  font-size:10px;
+}
+
+#slider-container{
+margin-top:-110px;
+margin-right:100px;
+}
+#slider{
+  fill:#2e2e2e;
+  margin-left: -300px;
+
+}
+g .tick text{
+ font-size:1.3em;
+ font-weight: bold;
+ fill: white;
+}
+
+.track{
+  height:20px;
+  stroke:none;
+opacity:0.8;
+}
+
+#value{
+  font-size: 40px;
+  color:#2e2e2e;
+  font-weight: bold;
+  font:arial;
+
+}
+
+
 
 .gratLines {
   fill: none;
@@ -20,12 +114,12 @@
 
 .map-container {
   height: auto;
-  border: gray
+  border: gray;
 }
 
 .map-container path.country {
-  fill: gray;
-  stroke: #fff;
+  fill: #e8e8e8;
+  stroke: white;
 }
 
 .infocard {
