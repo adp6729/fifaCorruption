@@ -14,7 +14,7 @@ const height = width / 2.05
 
 const projection = d3.geoNaturalEarth1() // projection used for the mercator projection
     .center([10, 5])
-    .scale(width/6)
+    .scale(width/6.5)
     .translate([width / 2, height / 2])
 
 const pathGenerator = d3.geoPath()
@@ -26,6 +26,31 @@ var svg = container.append("svg")
 
 const countriesG = svg.append('g')
     .attr('class', 'countries')
+
+    var dataSlider = [1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016,2018];
+
+      var slider = d3.sliderHorizontal()
+        .min(d3.min(dataSlider))
+        .max(d3.max(dataSlider))
+        .step(2)
+        .width(1000)
+        .tickFormat(d3.format('.0f'))
+        .tickValues(dataSlider)
+        .on('onchange', val => {
+          d3.select("p#value").text((val));
+        });
+
+      var g = d3.select("#slider").append("svg")
+        .attr("width", 1100)
+        .attr("height", 100)
+        .append("g")
+        .attr("transform", "translate(30,30)");
+
+      g.call(slider);
+
+      d3.select("p#value").text(slider.value());
+      d3.select("a#setValue").on("click", () => slider.value(data));
+
 
 // Handle data initialization
 const attributes = [ {"indicator": "CorruptionPerceptionIndex2015",
@@ -89,30 +114,6 @@ const attributeMap = d3.map(attributes, d => d.indicator)
 const selectionIndicator = "CorruptionPerceptionIndex2015"
 
 const transitionDuration = 1000
-
-var dataSlider = [1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016,2018];
-
-  var slider = d3.sliderHorizontal()
-    .min(d3.min(dataSlider))
-    .max(d3.max(dataSlider))
-    .step(2)
-    .width(400)
-    .tickFormat(d3.format('.0f'))
-    .tickValues(dataSlider)
-    .on('onchange', val => {
-      d3.select("p#value").text((val));
-    });
-
-  var g = d3.select("#slider").append("svg")
-    .attr("width", 500)
-    .attr("height", 100)
-    .append("g")
-    .attr("transform", "translate(30,30)");
-
-  g.call(slider);
-
-  d3.select("p#value").text(slider.value());
-  d3.select("a#setValue").on("click", () => slider.value(dataSlider));
 
 // // Create Graticule
 // const graticuleG = svg.append('g')
@@ -180,7 +181,9 @@ function processData(results) {
     colorScale.domain(d3.extent(cData, d=>d.CorruptionPerceptionIndex2015))
     window.cData = cData // globalize
     window.africaArray = africaArray // globalize
+    //console.log(cData)
     return africaArray
+
 }
 
 function createMap(africaArray) {
@@ -236,9 +239,13 @@ function createMap(africaArray) {
  }
 
  d3.select('.infocard')
-    .style('left', 20 + 'px')
-    .style('top', height/1.75 + 'px')
-    .style('width', width/5 + 'px')
+    .style('left', 0 + 'px')
+    .style('height',87.8 + 'vh')
+    .style('top', height/12.1 + 'px')
+    .style('border-top-left-radius',0 + 'px')
+    .style('border-top-right-radius',0 + 'px')
+    .style('border-bottom-left-radius',0 + 'px')
+    .style('width', width/5.7 + 'px')
  d3.select('.card .card-header')
     .text(attributeMap.get(selectionIndicator).name)
     .style('font-weight', 700)
@@ -312,6 +319,8 @@ function rerender(selectionIndicator) {
         d3.select(".bar." + d.properties.ISO_A2)
             .style('stroke-width', '0')
         }
+
+
 
 
     d3.select('.card .card-header')
