@@ -39,6 +39,7 @@ li {
 .navbar{
   background: rgba(0, 0, 0, .7);
   opacity: 1;
+  height: 56px;
 }
 
 #navbar-brand{
@@ -48,7 +49,7 @@ li {
 .fa-filter{
   color:white;
   margin-left:60px;
-  margin-top:10px;
+  margin-top:12px;
   margin-right: 10px;
   opacity: 0.7;
   cursor:pointer;
@@ -60,7 +61,7 @@ li {
   font-weight: 300;
   color:white;
   font-size: 15px;
-  margin-top:9px;
+  margin-top:12px;
   margin-right:15px
 }
 
@@ -71,6 +72,7 @@ li {
 }
 
 #navbarDropdownMenuLink1{
+  margin-bottom:2px;
   color:#f7ca45;
   background-color: rgba(0,0,0,0.4);
   border: solid 1px rgba(255,255,255,0.3);
@@ -78,6 +80,7 @@ li {
   margin-right:15px;
 }
 #navbarDropdownMenuLink2{
+margin-bottom:2px;
 color:#f7ca45;
 background-color: rgba(0,0,0,0.4);
 border: solid 1px rgba(255,255,255,0.3);
