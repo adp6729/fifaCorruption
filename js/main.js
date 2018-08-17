@@ -1,5 +1,5 @@
 // main.js
-// author: Andrew Pittman
+// authors: Andrew Pittman, Vlad Sliusar, Zheng Li
 
 // Corruption and Governance map of Africa
 const body = d3.select("body")
@@ -14,35 +14,48 @@ const height = width / 2.05
 
 const projection = d3.geoNaturalEarth1() // projection used for the mercator projection
     .center([10, 5])
-    .scale(width/6.5)
+    .scale(width/6)
     .translate([width / 2, height / 2])
 
 const pathGenerator = d3.geoPath()
     .projection(projection)
 
-var svg = container.append("svg")
-    .attr("width", width)
-    .attr("height", height)
+
+//create new svg container for the map
+var svg = d3.select("#Map")
+    .classed("svg-container", true) //container class to make it responsive
+    .append("div")
+    .append("svg")
+    //responsive SVG needs these 2 attributes and no width and height attr
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "90 -20 1100 1000")
+    .attr("class", "map-container")
+    //class to make it responsive
+    .classed("svg-content-responsive", true);
 
 const countriesG = svg.append('g')
     .attr('class', 'countries')
 
+
+    //create slider
     var dataSlider = [1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016,2018];
 
       var slider = d3.sliderHorizontal()
         .min(d3.min(dataSlider))
         .max(d3.max(dataSlider))
         .step(2)
-        .width(1000)
+        .width(800)
         .tickFormat(d3.format('.0f'))
         .tickValues(dataSlider)
         .on('onchange', val => {
           d3.select("p#value").text((val));
         });
 
-      var g = d3.select("#slider").append("svg")
-        .attr("width", 1100)
-        .attr("height", 100)
+      var g = d3.select("#slider")
+        .append("div")
+        .append("svg")
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 5 1100 90")
         .append("g")
         .attr("transform", "translate(30,30)");
 
@@ -240,12 +253,12 @@ function createMap(africaArray) {
 
  d3.select('.infocard')
     .style('left', 0 + 'px')
-    .style('height',87.8 + 'vh')
-    .style('top', height/12.1 + 'px')
+    .style('height',100 + 'vh')
+    .style('top', height/300 + 'px')
     .style('border-top-left-radius',0 + 'px')
     .style('border-top-right-radius',0 + 'px')
     .style('border-bottom-left-radius',0 + 'px')
-    .style('width', width/5.7 + 'px')
+    .style('width', width/4.5 + 'px')
  d3.select('.card .card-header')
     .text(attributeMap.get(selectionIndicator).name)
     .style('font-weight', 700)

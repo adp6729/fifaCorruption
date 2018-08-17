@@ -1,4 +1,7 @@
 /* Stylesheet by Andrew Pittman, Vlad Sliusar, and Zheng Li 2018 */
+body, html {height:100%;}
+div.wrap {height:100%; overflow:hidden;}
+body {overflow: hidden; }
 
 .body {
   background-color:#a2c4da;
@@ -10,6 +13,14 @@ li {
   list-style: none;
 }
 
+
+
+#main-title {
+    font-family: sans-serif;
+    font-size: 10em;
+    font-weight: bold;
+}
+
 .navbar{
   background: rgba(0, 0, 0, .7);
   opacity: 1;
@@ -17,6 +28,43 @@ li {
 
 #navbar-brand{
   color:white;
+}
+
+.fa-filter{
+  color:white;
+  margin-left:60px;
+  margin-top:10px;
+  margin-right: 10px;
+  opacity: 0.7;
+  cursor:pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+#filter-indexes{
+  font-family: 'lato';
+  font-weight: 300;
+  color:white;
+  font-size: 15px;
+  margin-top:9px;
+  margin-right:15px
+}
+
+
+#span-navbar-UW{
+  color:white;
+  padding-left:15px;
+}
+
+#navbarDropdownMenuLink1{
+  color:#f7ca45;
+  background-color: rgba(0,0,0,0.4);
+  border-radius: 5px;
+  margin-right:15px;
+}
+#navbarDropdownMenuLink2{
+color:#f7ca45;
+background-color: rgba(0,0,0,0.4);
+border-radius: 5px;
 }
 
 /*slide out about section*/
@@ -38,11 +86,11 @@ li {
 
 .sidebar_about{
   position:relative;
-  width: 250px;
+  width: 267px;
   float:right;
   overflow: hidden;
-  height:87.8vh;
-  max-height: 87.8vh;
+  height:100vh;
+  max-height: 100vh;
   background-color: rgba(0,0,0,0.7);
   opacity:1;
   transition: all 0.3s ease-in-out;
@@ -125,16 +173,12 @@ li {
   color:#f7ca45;
 }
 
-#span-navbar-UW{
-  color:white;
-  padding-left:15px;
+@media only screen and (max-width: 75em) {
+  #toggle-border:before{
+      content: none;
+      color:none;
+    }
 }
-
-
-#navbarDropdownMenuLink{
-  color:#f7ca45;
-}
-
 
 
 #info-card{
@@ -166,20 +210,27 @@ li {
 }
 
 #slider-container{
-position:relative;
-margin-top:17px;
-background-color:rgba(0,0,0,0.7);
-border-radius: 5px;
+bottom:0px;
+/*background-color:rgba(0,0,0,0.7);*/
+border-radius: 0px;
+left: 67.5%;
+bottom:5%;
+margin-left: -37.5%;
+position:absolute;
+overflow: hidden;
 }
 
 #slider{
+  margin-top: 2%;
   fill:white;
+  margin-left: 22%;
+  bottom:500px;
 }
 
 g .tick text{
- font-size:2em;
- font-weight: normal;
- fill: white;
+ font-size:1.8em;
+ font-weight: bold;
+ fill: #2e2e2e;
 }
 
 
@@ -212,9 +263,9 @@ g .tick text{
 /* map css styles */
 
 .map-container {
-  margin-top:30px;
-  padding-right:270px;
-  margin-left: 110px;
+  margin-top:%;
+  padding-right:px;
+  margin-left:px;
   height: auto;
   border: gray;
 }
@@ -239,8 +290,14 @@ g .tick text{
 }
 
 .infocard {
-  z-index: 998;
-  position: absolute;
+  position: relative;
+  margin-top:-2px;
+  float:left;
+  overflow: hidden;
+  height:100vh;
+  max-height: 100vh;
+  background-color: rgba(0,0,0,0.7);
+  opacity:1;
 }
 
 .info {
@@ -315,10 +372,4 @@ g .tick text{
 .axis text {
   font-family: sans-serif;
   font-size: 1.2em;
-}
-
-.title {
-    font-family: sans-serif;
-    font-size: 1.5em;
-    font-weight: bold;
 }
