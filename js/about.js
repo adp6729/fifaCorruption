@@ -8,7 +8,8 @@ $(".sidebar_about").css('display', 'none');
       $(".sidebar_about").removeClass("hide_about");
       $(".toggle_about").removeClass("opacity_one");
     } else {
-      $(".sidebar_about").css('display', 'none');
+      $(".sidebar_about").hide();
+      $(".toggle_about").addClass("opacity_one");
     }
 
   });
