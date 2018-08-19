@@ -13,8 +13,8 @@ const width = parseInt(container.style("width")) - 30
 const height = width / 2.05
 
 const projection = d3.geoNaturalEarth1() // projection used
-    .center([10, 5])
-    .scale(width/6)
+    .center([-30, 20])
+    .scale(width/4)
     .translate([width / 2, height / 2])
 
 const pathGenerator = d3.geoPath()
