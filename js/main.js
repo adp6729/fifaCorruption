@@ -12,8 +12,7 @@ const widthBody = parseInt(body.style("width"))
 const width = parseInt(container.style("width")) - 30
 const height = width / 2.05
 
-// const projection = d3.geoNaturalEarth1() // projection used
-const projection = d3.geoAlbers() // projection used
+const projection = d3.geoNaturalEarth1() // projection used
     .center([10, 5])
     .scale(width/6)
     .translate([width / 2, height / 2])
@@ -38,11 +37,11 @@ const countriesG = svg.append('g')
     .attr('class', 'countries')
 
 // initialize cartogram
-var cartogram = d3.cartogram()
-    .projection(projection)
-    .value(function(d) {
-        return Math.random() * 100;
-    })
+// var cartogram = d3.cartogram()
+//     .projection(projection)
+//     .value(function(d) {
+//         return Math.random() * 100;
+//     })
 
 //create slider
 var dataSlider = [1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016,2018];
@@ -213,8 +212,8 @@ function createMap(countryArray) {
        .enter()
           .append('path')
              .attr('class', d => 'country ' + d.properties.ISO_A2)
-            //  .attr('d', pathGenerator)
-             .attr('d', cartogram.path)
+             .attr('d', pathGenerator)
+            //  .attr('d', cartogram.path)
              .style('fill', d => {
                 if (d.properties.CorruptionPerceptionIndex2015) {
                    return colorScale(d.properties.CorruptionPerceptionIndex2015)
