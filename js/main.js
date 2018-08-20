@@ -13,8 +13,8 @@ const width = parseInt(container.style("width")) - 30
 const height = width / 2.05
 
 const projection = d3.geoNaturalEarth1() // projection used for the mercator projection
-    .center([10, 5])
-    .scale(width/6)
+    .center([60, -24])
+    .scale(220)
     .translate([width / 2, height / 2])
 
 const pathGenerator = d3.geoPath()
@@ -28,7 +28,7 @@ var svg = d3.select("#Map")
     .append("svg")
     //responsive SVG needs these 2 attributes and no width and height attr
     .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "90 -20 1100 1000")
+    .attr("viewBox", "0 0 1300 1300")
     .attr("class", "map-container")
     //class to make it responsive
     .classed("svg-content-responsive", true);
@@ -55,7 +55,7 @@ const countriesG = svg.append('g')
         .append("div")
         .append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 5 1100 90")
+        .attr("viewBox", "-55 20 1300 90")
         .append("g")
         .attr("transform", "translate(30,30)");
 
@@ -251,13 +251,23 @@ function createMap(africaArray) {
     }
  }
 
- d3.select('.infocard')
+
+
+    //attribute panel text
+    d3.select('.card-header')
+       .text(attributeMap.get(selectionIndicator).name)
+       .style('font-weight', 700)
+    d3.select('.card-text')
+       .text(attributeMap.get(selectionIndicator).infoCardText)
+
+ /*d3.select('.infocard')
     .style('left', 0 + 'px')
     .style('height',100 + 'vh')
     .style('top', height/300 + 'px')
     .style('border-top-left-radius',0 + 'px')
     .style('border-top-right-radius',0 + 'px')
     .style('border-bottom-left-radius',0 + 'px')
+    //.style('width', width/4.5 + 'px')
     .style('width', 293 + 'px')
  d3.select('.card .card-header')
     .text(attributeMap.get(selectionIndicator).name)
@@ -267,7 +277,7 @@ function createMap(africaArray) {
  d3.select('.card .card-body a')
     .attr("href", attributeMap.get(selectionIndicator).infoCardLinkURL)
  d3.select('.sourceLink')
-    .text(attributeMap.get(selectionIndicator).infoCardLinkTitle)
+    .text(attributeMap.get(selectionIndicator).infoCardLinkTitle)*/
 
 function rerender(selectionIndicator) {
     const dataString = "d.properties." + selectionIndicator
@@ -335,8 +345,8 @@ function rerender(selectionIndicator) {
 
 
 
-
-    d3.select('.card .card-header')
+    //attribute panel text
+    d3.select('.card-header')
         .text(attributeMap.get(selectionIndicator).name)
     d3.select('.card-text')
         .text(attributeMap.get(selectionIndicator).infoCardText)
