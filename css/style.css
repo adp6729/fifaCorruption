@@ -346,19 +346,10 @@ g .tick text{
 /*end temporal slider*/
 
 
-.gratLines {
-  fill: none;
-  stroke: #999;
-  stroke-width: 1px;
-}
-
-.gratBackground {
-  fill: rgba(36, 71, 141, 0.212);
-}
-
 /* map css styles */
 
 .map-container {
+<<<<<<< HEAD
   margin-top:%;
   margin-right:;
   margin-left:px;
@@ -371,6 +362,13 @@ g .tick text{
 .main {
     width: 100%;
     float: left;
+=======
+  /* margin-top:%;
+  padding-right:px;
+  margin-left:px;
+  height: auto;
+  border: gray; */
+>>>>>>> 73452c50089d63e9ebc73a1af92c536aadc0b217
 }
 
 /*.main.sidebar-open {
