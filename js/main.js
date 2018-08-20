@@ -12,7 +12,7 @@ const widthBody = parseInt(body.style("width"))
 const width = parseInt(container.style("width")) - 30
 const height = width / 2.05
 
-const projection = d3.geoNaturalEarth1() // projection used 
+const projection = d3.geoNaturalEarth1() // projection used for the mercator projection
     .center([60, -24])
     .scale(220)
     .translate([width / 2, height / 2])
@@ -36,36 +36,7 @@ var svg = d3.select("#Map")
 const countriesG = svg.append('g')
     .attr('class', 'countries')
 
-// initialize cartogram
-// var cartogram = d3.cartogram()
-//     .projection(projection)
-//     .value(function(d) {
-//         return Math.random() * 100;
-//     })
 
-//create slider
-var dataSlider = [1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016,2018];
-
-var slider = d3.sliderHorizontal()
-    .min(d3.min(dataSlider))
-    .max(d3.max(dataSlider))
-    .step(2)
-    .width(800)
-    .tickFormat(d3.format('.0f'))
-    .tickValues(dataSlider)
-    .on('onchange', val => {
-        d3.select("p#value").text((val));
-    });
-
-var g = d3.select("#slider")
-    .append("div")
-    .append("svg")
-    .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0 5 1100 90")
-    .append("g")
-    .attr("transform", "translate(30,30)");
-
-<<<<<<< HEAD
     //create slider
     var dataSlider = [1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016,2018];
 
@@ -89,12 +60,9 @@ var g = d3.select("#slider")
         .attr("transform", "translate(30,30)");
 
       g.call(slider);
-=======
-    g.call(slider);
->>>>>>> 73452c50089d63e9ebc73a1af92c536aadc0b217
 
-    d3.select("p#value").text(slider.value());
-    d3.select("a#setValue").on("click", () => slider.value(data));
+      d3.select("p#value").text(slider.value());
+      d3.select("a#setValue").on("click", () => slider.value(data));
 
 
 // Handle data initialization
@@ -206,7 +174,7 @@ Promise.all([
 function processData(results) {
     const geoJson = topojson.feature(results[0],results[0].objects.ne_50m_admin_0_countries_lakes)
     const cData = results[1]
-    var countryArray = []
+    var africaArray = []
     for (const feature of geoJson.features) {
         if (feature.properties.CONTINENT != "Antarctica") {
             for (const stat of cData) {
@@ -220,26 +188,25 @@ function processData(results) {
                     break
                 }
             }
-            countryArray.push(feature)
+            africaArray.push(feature)
         }
     }
     colorScale.domain(d3.extent(cData, d=>d.CorruptionPerceptionIndex2015))
     window.cData = cData // globalize
-    window.countryArray = countryArray // globalize
+    window.africaArray = africaArray // globalize
     //console.log(cData)
-    return countryArray
+    return africaArray
 
 }
 
-function createMap(countryArray) {
+function createMap(africaArray) {
     countriesG
        .selectAll('path')
-       .data(countryArray)
+       .data(africaArray)
        .enter()
           .append('path')
              .attr('class', d => 'country ' + d.properties.ISO_A2)
              .attr('d', pathGenerator)
-            //  .attr('d', cartogram.path)
              .style('fill', d => {
                 if (d.properties.CorruptionPerceptionIndex2015) {
                    return colorScale(d.properties.CorruptionPerceptionIndex2015)
@@ -248,7 +215,7 @@ function createMap(countryArray) {
              .on("mousemove", moveToolTip)
              .on("mouseout", hideToolTip)
 
-    return countryArray
+    return africaArray
  }
 
  function moveToolTip(d) {
@@ -297,16 +264,10 @@ function createMap(countryArray) {
     .style('left', 0 + 'px')
     .style('height',100 + 'vh')
     .style('top', height/300 + 'px')
-<<<<<<< HEAD
     .style('border-top-left-radius',0 + 'px')
     .style('border-top-right-radius',0 + 'px')
     .style('border-bottom-left-radius',0 + 'px')
     //.style('width', width/4.5 + 'px')
-=======
-    // .style('border-top-left-radius',0 + 'px')
-    // .style('border-top-right-radius',0 + 'px')
-    // .style('border-bottom-left-radius',0 + 'px')
->>>>>>> 73452c50089d63e9ebc73a1af92c536aadc0b217
     .style('width', 293 + 'px')
  d3.select('.card .card-header')
     .text(attributeMap.get(selectionIndicator).name)
