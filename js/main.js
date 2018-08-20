@@ -13,8 +13,8 @@ const width = parseInt(container.style("width")) - 30
 const height = width / 2.05
 
 const projection = d3.geoNaturalEarth1() // projection used for the mercator projection
-    .center([60, -24])
-    .scale(220)
+    .center([0, 15])
+    .scale(250)
     .translate([width / 2, height / 2])
 
 const pathGenerator = d3.geoPath()
@@ -38,7 +38,7 @@ const countriesG = svg.append('g')
 
 
     //create slider
-    var dataSlider = [1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016,2018];
+    var dataSlider = [1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016];
 
       var slider = d3.sliderHorizontal()
         .min(d3.min(dataSlider))
@@ -65,89 +65,74 @@ const countriesG = svg.append('g')
       d3.select("a#setValue").on("click", () => slider.value(data));
 
 
-// Handle data initialization
-const attributes = [ {"indicator": "CorruptionPerceptionIndex2015",
-                        "name": "Corruption Perception Index",
-                        "infoCardText": "Transparency International\'s Corruption Perception Index: Low scores indicate that a country is perceived as highly corrupt.",
-                        "infoCardLinkURL": "https://ourworldindata.org/corruption",
-                        "infoCardLinkTitle": "Our World in Data",
-                        "formatText": ".0f",
-                        "formatScale": ".0f",
-                        "domainData": [0, 100],
-                        "domainBar": [0, 100]},
-                    {"indicator": "CorruptionControl2015",
-                        "name": "Corruption Control",
-                        "infoCardText": "World Bank's Corruption Control Index: Perceptions of the extent to which public power is exercised for private gain, including both petty and grand forms of corruption, as well as \"capture\" of the state by elites and private interests.",
-                        "infoCardLinkURL": "https://wid.world/data/",
-                        "infoCardLinkTitle": "World Inequality Database",
-                        "formatText": ".0f",
-                        "formatScale": ".0f",
-                        "domainData": [0, 100],
-                        "domainBar": [0, 100]},
-                    {"indicator": "IbrahimIndex2015",
-                        "name": "Ibrahim Index Rank",
-                        "infoCardText": "The Ibrahim Index of African Governance (IIAG), generated my the Mo Ibrahim Foundation, ranks governance performance in African countries.",
-                        "infoCardLinkURL": "http://dataportal.opendataforafrica.org/lfkgixg/governance",
-                        "infoCardLinkTitle": "Africa Information Highway",
-                        "formatText": ".0f",
-                        "formatScale": ".0f",
-                        "domainData": [55, 0],
-                        "domainBar": [0, 55]},
-                    {"indicator": "EaseOfDoingBusinessRank2015",
+// Handle data initialization of governance indicators
+const govAttributes = [ {"indicator": "gi1",
+                        "name": "Voice and Accountability",
+                        "infoCardText": "Reflects perceptions of the extent to which a country's citizens are able to participate in selecting their government, as well as freedom of expression, freedom of association, and a free media. Attribute ranges from -2.5 (weak) to 2.5 (strong) governance performance.",
+                        "infoCardLinkURL": "www.govindicators.org",
+                        "infoCardLinkTitle": "The World Bank",
+                        "formatText": ".1f"},
+                    {"indicator": "gi2",
+                        "name": "Political Stability and Absence of Violence/Terrorism",
+                        "infoCardText": "Political Stability and Absence of Violence/Terrorism measures perceptions of the likelihood of political instability and/or politically-motivated violence, including terrorism. Attribute ranges from -2.5 (weak) to 2.5 (strong) governance performance.",
+                        "infoCardLinkURL": "www.govindicators.org",
+                        "infoCardLinkTitle": "The World Bank",
+                        "formatText": ".1f"},
+                    {"indicator": "gi3",
+                        "name": "Government Effectiveness",
+                        "infoCardText": "Reflects perceptions of the quality of public services, the quality of the civil service and the degree of its independence from political pressures, the quality of policy formulation and implementation, and the credibility of the government's commitment to such policies. Attribute ranges from -2.5 (weak) to 2.5 (strong) governance performance.",
+                        "infoCardLinkURL": "www.govindicators.org",
+                        "infoCardLinkTitle": "The World Bank",
+                        "formatText": ".1f"},
+                    {"indicator": "gi4",
                         "name": "Ease of Doing Business Rank",
-                        "infoCardText": "This topic tracks the procedures that agregate a number of indicators that shows the global level of difficulty of doing business in a given country",
-                        "infoCardLinkURL": "http://dataportal.opendataforafrica.org/lfkgixg/governance",
-                        "infoCardLinkTitle": "Africa Information Highway",
-                        "formatText": ".0f",
-                        "formatScale": ".0f",
-                        "domainData": [195, 0],
-                        "domainBar": [0, 195]},
-                    {"indicator": "NAIPerAdultDollars2017",
+                        "infoCardText": "Reflects perceptions of the ability of the government to formulate and implement sound policies and regulations that permit and promote private sector development. Attribute ranges from -2.5 (weak) to 2.5 (strong) governance performance.",
+                        "infoCardLinkURL": "www.govindicators.org",
+                        "infoCardLinkTitle": "The World Bank",
+                        "formatText": ".1f"},
+                    {"indicator": "gi5",
                         "name": "National Average Income Per Adult",
-                        "infoCardText": "National income garnered by every adult in a country divided by the number of adults in that country. Converted to USD.",
-                        "infoCardLinkURL": "https://wid.world/data/",
-                        "infoCardLinkTitle": "World Inequality Database",
-                        "formatText": "$,.0f",
-                        "formatScale": "~s",
-                        "domainData": [0, 35000],
-                        "domainBar": [0, 35000]},
-                    {"indicator": "GDPPerAdultDollars2017",
+                        "infoCardText": "Reflects perceptions of the extent to which agents have confidence in and abide by the rules of society, and in particular the quality of contract enforcement, property rights, the police, and the courts, as well as the likelihood of crime and violence. Attribute ranges from -2.5 (weak) to 2.5 (strong) governance performance.",
+                        "infoCardLinkURL": "www.govindicators.org",
+                        "infoCardLinkTitle": "The World Bank",
+                        "formatText": ".1f"},
+                    {"indicator": "gi6",
                         "name": "Gross Domestic Product Per Adult",
-                        "infoCardText": "Gross domestic product total generated by a country divided by the number of adults in that country. Converted to USD.",
-                        "infoCardLinkURL": "https://wid.world/data/",
-                        "infoCardLinkTitle": "World Inequality Database",
-                        "formatText": "$,.0f",
-                        "formatScale": "~s",
-                        "domainData": [0, 45000],
-                        "domainBar": [0, 45000]}
+                        "infoCardText": "Reflects perceptions of the extent to which public power is exercised for private gain, including both petty and grand forms of corruption, as well as \"capture\" of the state by elites and private interests. Attribute ranges from -2.5 (weak) to 2.5 (strong) governance performance.",
+                        "infoCardLinkURL": "www.govindicators.org",
+                        "infoCardLinkTitle": "The World Bank",
+                        "formatText": ".1f"}
                     ]
 
-const attributeMap = d3.map(attributes, d => d.indicator)
+const govAttributeMap = d3.map(govAttributes, d => d.indicator)
 
-const selectionIndicator = "CorruptionPerceptionIndex2015"
+// Handle data initialization of governance indicators
+const perfAttributes = [ {"indicator": "pi1",
+                        "name": "Total Points",
+                        "infoCardText": "Points scored by a nation during the world cup. Ranges from 0 points to 21 points possible.",
+                        "infoCardLinkURL": "www.govindicators.org",
+                        "infoCardLinkTitle": "The World Bank",
+                        "formatText": ".0f"},
+                    {"indicator": "pi2",
+                        "name": "Average Points",
+                        "infoCardText": "The total number of points scored by a nation divided by the number of games played during the World Cup. Ranges from 0 points",
+                        "infoCardLinkURL": "www.govindicators.org",
+                        "infoCardLinkTitle": "The World Bank",
+                        "formatText": ".2f"},
+                    {"indicator": "pi3",
+                        "name": "Average Goal Differential",
+                        "infoCardText": "The total number of goals scored against a nation subtracted from the total goals scored by that nation, then divided by the number of games played during the World Cup. Minimum and maximum values vary.",
+                        "infoCardLinkURL": "www.govindicators.org",
+                        "infoCardLinkTitle": "The World Bank",
+                        "formatText": ".1f"}
+                    ]
+
+const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
+
+const giSelection = "gi1_1996"
+const piSelection = "pi3_1996"
 
 const transitionDuration = 1000
-
-// // Create Graticule
-// const graticuleG = svg.append('g')
-//     .attr('class', 'graticule')
-
-// const graticule = d3.geoGraticule()
-//     .step([12, 12])
-
-// var gratLines = graticuleG.selectAll(".gratLines")
-//     .data(graticule.lines())
-//     .enter()
-//         .append("path")
-//             .attr("class", "gratLines")
-//             .attr("d", pathGenerator)
-
-// var gratBackground = graticuleG.append("path")
-//     .datum(graticule.outline())
-//     .attr("class", "gratBackground")
-//     .attr("d", pathGenerator)
-
-// gratLines.exit().remove()
 
 const colorScale = d3.scaleLinear()
     .range(['black', 'red'])
@@ -158,13 +143,106 @@ const colorScaleMoney = d3.scaleLinear()
 Promise.all([
     d3.json('data/worldMap50mSimplified.json', function(error, world) {
         if (error) return console.error(error)}),
-    d3.csv('data/africaCorruptionData.csv', d => {
-       d.CorruptionPerceptionIndex2015 = +d.CorruptionPerceptionIndex2015
-       d.CorruptionControl2015 = +d.CorruptionControl2015
-       d.IbrahimIndex2015 = +d.IbrahimIndex2015
-       d.EaseOfDoingBusinessRank2015 = +d.EaseOfDoingBusinessRank2015
-       d.NAIPerAdultDollars2017 = +d.NAIPerAdultDollars2017
-       d.GDPPerAdultDollars2017 = +d.GDPPerAdultDollars2017
+    d3.csv('data/fifaData.csv', d => {
+       d.gi1_1996 = +d.gi1_1996
+       d.gi2_1996 = +d.gi2_1996
+       d.gi3_1996 = +d.gi3_1996
+       d.gi4_1996 = +d.gi4_1996
+       d.gi5_1996 = +d.gi5_1996
+       d.gi6_1996 = +d.gi6_1996
+       d.pi1_1996 = +d.pi1_1996
+       d.pi2_1996 = +d.pi2_1996
+       d.pi3_1996 = +d.pi3_1996       
+       d.gi1_1998 = +d.gi1_1998
+       d.gi2_1998 = +d.gi2_1998
+       d.gi3_1998 = +d.gi3_1998
+       d.gi4_1998 = +d.gi4_1998
+       d.gi5_1998 = +d.gi5_1998
+       d.gi6_1998 = +d.gi6_1998
+       d.pi1_1998 = +d.pi1_1998
+       d.pi2_1998 = +d.pi2_1998
+       d.pi3_1998 = +d.pi3_1998
+       d.gi1_2000 = +d.gi1_2000
+       d.gi2_2000 = +d.gi2_2000
+       d.gi3_2000 = +d.gi3_2000
+       d.gi4_2000 = +d.gi4_2000
+       d.gi5_2000 = +d.gi5_2000
+       d.gi6_2000 = +d.gi6_2000
+       d.pi1_2000 = +d.pi1_2000
+       d.pi2_2000 = +d.pi2_2000
+       d.pi3_2000 = +d.pi3_2000       
+       d.gi1_2002 = +d.gi1_2002
+       d.gi2_2002 = +d.gi2_2002
+       d.gi3_2002 = +d.gi3_2002
+       d.gi4_2002 = +d.gi4_2002
+       d.gi5_2002 = +d.gi5_2002
+       d.gi6_2002 = +d.gi6_2002
+       d.pi1_2002 = +d.pi1_2002
+       d.pi2_2002 = +d.pi2_2002
+       d.pi3_2002 = +d.pi3_2002
+       d.gi1_2004 = +d.gi1_2004
+       d.gi2_2004 = +d.gi2_2004
+       d.gi3_2004 = +d.gi3_2004
+       d.gi4_2004 = +d.gi4_2004
+       d.gi5_2004 = +d.gi5_2004
+       d.gi6_2004 = +d.gi6_2004
+       d.pi1_2004 = +d.pi1_2004
+       d.pi2_2004 = +d.pi2_2004
+       d.pi3_2004 = +d.pi3_2004
+       d.gi1_2006 = +d.gi1_2006
+       d.gi2_2006 = +d.gi2_2006
+       d.gi3_2006 = +d.gi3_2006
+       d.gi4_2006 = +d.gi4_2006
+       d.gi5_2006 = +d.gi5_2006
+       d.gi6_2006 = +d.gi6_2006
+       d.pi1_2006 = +d.pi1_2006
+       d.pi2_2006 = +d.pi2_2006
+       d.pi3_2006 = +d.pi3_2006
+       d.gi1_2008 = +d.gi1_2008
+       d.gi2_2008 = +d.gi2_2008
+       d.gi3_2008 = +d.gi3_2008
+       d.gi4_2008 = +d.gi4_2008
+       d.gi5_2008 = +d.gi5_2008
+       d.gi6_2008 = +d.gi6_2008
+       d.pi1_2008 = +d.pi1_2008
+       d.pi2_2008 = +d.pi2_2008
+       d.pi3_2008 = +d.pi3_2008       
+       d.gi1_2010 = +d.gi1_2010
+       d.gi2_2010 = +d.gi2_2010
+       d.gi3_2010 = +d.gi3_2010
+       d.gi4_2010 = +d.gi4_2010
+       d.gi5_2010 = +d.gi5_2010
+       d.gi6_2010 = +d.gi6_2010
+       d.pi1_2010 = +d.pi1_2010
+       d.pi2_2010 = +d.pi2_2010
+       d.pi3_2010 = +d.pi3_2010
+       d.gi1_2012 = +d.gi1_2012
+       d.gi2_2012 = +d.gi2_2012
+       d.gi3_2012 = +d.gi3_2012
+       d.gi4_2012 = +d.gi4_2012
+       d.gi5_2012 = +d.gi5_2012
+       d.gi6_2012 = +d.gi6_2012
+       d.pi1_2012 = +d.pi1_2012
+       d.pi2_2012 = +d.pi2_2012
+       d.pi3_2012 = +d.pi3_2012
+       d.gi1_2014 = +d.gi1_2014
+       d.gi2_2014 = +d.gi2_2014
+       d.gi3_2014 = +d.gi3_2014
+       d.gi4_2014 = +d.gi4_2014
+       d.gi5_2014 = +d.gi5_2014
+       d.gi6_2014 = +d.gi6_2014
+       d.pi1_2014 = +d.pi1_2014
+       d.pi2_2014 = +d.pi2_2014
+       d.pi3_2014 = +d.pi3_2014       
+       d.gi1_2016 = +d.gi1_2016
+       d.gi2_2016 = +d.gi2_2016
+       d.gi3_2016 = +d.gi3_2016
+       d.gi4_2016 = +d.gi4_2016
+       d.gi5_2016 = +d.gi5_2016
+       d.gi6_2016 = +d.gi6_2016
+       d.pi1_2016 = +d.pi1_2016
+       d.pi2_2016 = +d.pi2_2016
+       d.pi3_2016 = +d.pi3_2016
        return d
     })]
 )
@@ -174,55 +252,148 @@ Promise.all([
 function processData(results) {
     const geoJson = topojson.feature(results[0],results[0].objects.ne_50m_admin_0_countries_lakes)
     const cData = results[1]
-    var africaArray = []
+    var countryArray = []
     for (const feature of geoJson.features) {
         if (feature.properties.CONTINENT != "Antarctica") {
             for (const stat of cData) {
-                if (feature.properties.ISO_A2 == stat.ISO2) {
-                    feature.properties.CorruptionPerceptionIndex2015 = stat.CorruptionPerceptionIndex2015
-                    feature.properties.CorruptionControl2015 = stat.CorruptionControl2015
-                    feature.properties.IbrahimIndex2015 = stat.IbrahimIndex2015
-                    feature.properties.EaseOfDoingBusinessRank2015 = stat.EaseOfDoingBusinessRank2015
-                    feature.properties.NAIPerAdultDollars2017 = stat.NAIPerAdultDollars2017
-                    feature.properties.GDPPerAdultDollars2017 = stat.GDPPerAdultDollars2017
+                if (feature.properties.ADM0_A3_US == stat.WBCode) {
+                    feature.properties.gi1_1996 = stat.gi1_1996
+                    feature.properties.gi2_1996 = stat.gi2_1996
+                    feature.properties.gi3_1996 = stat.gi3_1996
+                    feature.properties.gi4_1996 = stat.gi4_1996
+                    feature.properties.gi5_1996 = stat.gi5_1996
+                    feature.properties.gi6_1996 = stat.gi6_1996
+                    feature.properties.pi1_1996 = stat.pi1_1996
+                    feature.properties.pi2_1996 = stat.pi2_1996
+                    feature.properties.pi3_1996 = stat.pi3_1996       
+                    feature.properties.gi1_1998 = stat.gi1_1998
+                    feature.properties.gi2_1998 = stat.gi2_1998
+                    feature.properties.gi3_1998 = stat.gi3_1998
+                    feature.properties.gi4_1998 = stat.gi4_1998
+                    feature.properties.gi5_1998 = stat.gi5_1998
+                    feature.properties.gi6_1998 = stat.gi6_1998
+                    feature.properties.pi1_1998 = stat.pi1_1998
+                    feature.properties.pi2_1998 = stat.pi2_1998
+                    feature.properties.pi3_1998 = stat.pi3_1998
+                    feature.properties.gi1_2000 = stat.gi1_2000
+                    feature.properties.gi2_2000 = stat.gi2_2000
+                    feature.properties.gi3_2000 = stat.gi3_2000
+                    feature.properties.gi4_2000 = stat.gi4_2000
+                    feature.properties.gi5_2000 = stat.gi5_2000
+                    feature.properties.gi6_2000 = stat.gi6_2000
+                    feature.properties.pi1_2000 = stat.pi1_2000
+                    feature.properties.pi2_2000 = stat.pi2_2000
+                    feature.properties.pi3_2000 = stat.pi3_2000       
+                    feature.properties.gi1_2002 = stat.gi1_2002
+                    feature.properties.gi2_2002 = stat.gi2_2002
+                    feature.properties.gi3_2002 = stat.gi3_2002
+                    feature.properties.gi4_2002 = stat.gi4_2002
+                    feature.properties.gi5_2002 = stat.gi5_2002
+                    feature.properties.gi6_2002 = stat.gi6_2002
+                    feature.properties.pi1_2002 = stat.pi1_2002
+                    feature.properties.pi2_2002 = stat.pi2_2002
+                    feature.properties.pi3_2002 = stat.pi3_2002
+                    feature.properties.gi1_2004 = stat.gi1_2004
+                    feature.properties.gi2_2004 = stat.gi2_2004
+                    feature.properties.gi3_2004 = stat.gi3_2004
+                    feature.properties.gi4_2004 = stat.gi4_2004
+                    feature.properties.gi5_2004 = stat.gi5_2004
+                    feature.properties.gi6_2004 = stat.gi6_2004
+                    feature.properties.pi1_2004 = stat.pi1_2004
+                    feature.properties.pi2_2004 = stat.pi2_2004
+                    feature.properties.pi3_2004 = stat.pi3_2004
+                    feature.properties.gi1_2006 = stat.gi1_2006
+                    feature.properties.gi2_2006 = stat.gi2_2006
+                    feature.properties.gi3_2006 = stat.gi3_2006
+                    feature.properties.gi4_2006 = stat.gi4_2006
+                    feature.properties.gi5_2006 = stat.gi5_2006
+                    feature.properties.gi6_2006 = stat.gi6_2006
+                    feature.properties.pi1_2006 = stat.pi1_2006
+                    feature.properties.pi2_2006 = stat.pi2_2006
+                    feature.properties.pi3_2006 = stat.pi3_2006
+                    feature.properties.gi1_2008 = stat.gi1_2008
+                    feature.properties.gi2_2008 = stat.gi2_2008
+                    feature.properties.gi3_2008 = stat.gi3_2008
+                    feature.properties.gi4_2008 = stat.gi4_2008
+                    feature.properties.gi5_2008 = stat.gi5_2008
+                    feature.properties.gi6_2008 = stat.gi6_2008
+                    feature.properties.pi1_2008 = stat.pi1_2008
+                    feature.properties.pi2_2008 = stat.pi2_2008
+                    feature.properties.pi3_2008 = stat.pi3_2008       
+                    feature.properties.gi1_2010 = stat.gi1_2010
+                    feature.properties.gi2_2010 = stat.gi2_2010
+                    feature.properties.gi3_2010 = stat.gi3_2010
+                    feature.properties.gi4_2010 = stat.gi4_2010
+                    feature.properties.gi5_2010 = stat.gi5_2010
+                    feature.properties.gi6_2010 = stat.gi6_2010
+                    feature.properties.pi1_2010 = stat.pi1_2010
+                    feature.properties.pi2_2010 = stat.pi2_2010
+                    feature.properties.pi3_2010 = stat.pi3_2010
+                    feature.properties.gi1_2012 = stat.gi1_2012
+                    feature.properties.gi2_2012 = stat.gi2_2012
+                    feature.properties.gi3_2012 = stat.gi3_2012
+                    feature.properties.gi4_2012 = stat.gi4_2012
+                    feature.properties.gi5_2012 = stat.gi5_2012
+                    feature.properties.gi6_2012 = stat.gi6_2012
+                    feature.properties.pi1_2012 = stat.pi1_2012
+                    feature.properties.pi2_2012 = stat.pi2_2012
+                    feature.properties.pi3_2012 = stat.pi3_2012
+                    feature.properties.gi1_2014 = stat.gi1_2014
+                    feature.properties.gi2_2014 = stat.gi2_2014
+                    feature.properties.gi3_2014 = stat.gi3_2014
+                    feature.properties.gi4_2014 = stat.gi4_2014
+                    feature.properties.gi5_2014 = stat.gi5_2014
+                    feature.properties.gi6_2014 = stat.gi6_2014
+                    feature.properties.pi1_2014 = stat.pi1_2014
+                    feature.properties.pi2_2014 = stat.pi2_2014
+                    feature.properties.pi3_2014 = stat.pi3_2014       
+                    feature.properties.gi1_2016 = stat.gi1_2016
+                    feature.properties.gi2_2016 = stat.gi2_2016
+                    feature.properties.gi3_2016 = stat.gi3_2016
+                    feature.properties.gi4_2016 = stat.gi4_2016
+                    feature.properties.gi5_2016 = stat.gi5_2016
+                    feature.properties.gi6_2016 = stat.gi6_2016
+                    feature.properties.pi1_2016 = stat.pi1_2016
+                    feature.properties.pi2_2016 = stat.pi2_2016
+                    feature.properties.pi3_2016 = stat.pi3_2016
                     break
                 }
             }
-            africaArray.push(feature)
+            countryArray.push(feature)
         }
     }
-    colorScale.domain(d3.extent(cData, d=>d.CorruptionPerceptionIndex2015))
+    colorScale.domain(d3.extent(cData, d=>d[giSelection]))
     window.cData = cData // globalize
-    window.africaArray = africaArray // globalize
-    //console.log(cData)
-    return africaArray
+    window.countryArray = countryArray // globalize
+    return countryArray
 
 }
 
-function createMap(africaArray) {
+function createMap(countryArray) {
     countriesG
        .selectAll('path')
-       .data(africaArray)
+       .data(countryArray)
        .enter()
           .append('path')
-             .attr('class', d => 'country ' + d.properties.ISO_A2)
+             .attr('class', d => 'country ' + d.properties.ADM0_A3_US)
              .attr('d', pathGenerator)
              .style('fill', d => {
-                if (d.properties.CorruptionPerceptionIndex2015) {
-                   return colorScale(d.properties.CorruptionPerceptionIndex2015)
+                if (d.properties[giSelection]) {
+                   return colorScale(d.properties[giSelection])
                 }
              })
              .on("mousemove", moveToolTip)
              .on("mouseout", hideToolTip)
 
-    return africaArray
+    return countryArray
  }
 
  function moveToolTip(d) {
-    if (d.properties.CorruptionPerceptionIndex2015) {
-       const cPFormat = d3.format(attributeMap.get(selectionIndicator).formatText)
+     console.log(d.properties[giSelection])
+    if (d.properties[giSelection]) {
+       const cPFormat = d3.format(govAttributeMap.get(giSelection.slice(0,3)).formatText)
        tooltip.html(`
-          <p>${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.CorruptionPerceptionIndex2015)}</span></p>
+          <p>${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties[giSelection])}</span></p>
        `)
        tooltip.style('opacity', 1)
        let mouseX = d3.event.pageX
@@ -233,7 +404,7 @@ function createMap(africaArray) {
        tooltip.style('left', (mouseX + 10) + 'px')
        tooltip.style('top', (d3.event.pageY + 20) + 'px')
 
-       d3.selectAll("." + d.properties.ISO_A2)
+       d3.selectAll("." + d.properties.ADM0_A3_US)
           .style('stroke', '#fff')
           .style('stroke-width', '2.5')
           .raise()
@@ -241,13 +412,11 @@ function createMap(africaArray) {
  }
 
  function hideToolTip(d) {
-    if (d.properties.CorruptionPerceptionIndex2015) {
+    if (d.properties[giSelection]) {
         tooltip.style('opacity', 0)
-        d3.select(".country." + d.properties.ISO_A2)
+        d3.select(".country." + d.properties.ADM0_A3_US)
             .style('stroke', 'white')
             .style('stroke-width', '1')
-        d3.select(".bar." + d.properties.ISO_A2)
-            .style('stroke-width', '0')
     }
  }
 
@@ -255,10 +424,10 @@ function createMap(africaArray) {
 
     //attribute panel text
     d3.select('.card-header')
-       .text(attributeMap.get(selectionIndicator).name)
+       .text(govAttributeMap.get(giSelection.slice(0,3)).name)
        .style('font-weight', 700)
     d3.select('.card-text')
-       .text(attributeMap.get(selectionIndicator).infoCardText)
+       .text(govAttributeMap.get(giSelection.slice(0,3)).infoCardText)
 
  /*d3.select('.infocard')
     .style('left', 0 + 'px')
@@ -270,30 +439,30 @@ function createMap(africaArray) {
     //.style('width', width/4.5 + 'px')
     .style('width', 293 + 'px')
  d3.select('.card .card-header')
-    .text(attributeMap.get(selectionIndicator).name)
+    .text(govAttributeMap.get(giSelection).name)
     .style('font-weight', 700)
  d3.select('.card-text')
-    .text(attributeMap.get(selectionIndicator).infoCardText)
+    .text(govAttributeMap.get(giSelection).infoCardText)
  d3.select('.card .card-body a')
-    .attr("href", attributeMap.get(selectionIndicator).infoCardLinkURL)
+    .attr("href", govAttributeMap.get(giSelection).infoCardLinkURL)
  d3.select('.sourceLink')
-    .text(attributeMap.get(selectionIndicator).infoCardLinkTitle)*/
+    .text(govAttributeMap.get(giSelection).infoCardLinkTitle)*/
 
-function rerender(selectionIndicator) {
-    const dataString = "d.properties." + selectionIndicator
-    const cPFormat = d3.format(attributeMap.get(selectionIndicator).formatText)
-    const tickFormat = d3.format(attributeMap.get(selectionIndicator).formatScale)
-    if (attributeMap.get(selectionIndicator).formatText.includes('$')) {
-        colorScaleMoney.domain(attributeMap.get(selectionIndicator).domainData)
+function rerender(giSelection) {
+    const dataString = "d.properties." + giSelection
+    const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
+    const tickFormat = d3.format(govAttributeMap.get(giSelection).formatScale)
+    if (govAttributeMap.get(giSelection).formatText.includes('$')) {
+        colorScaleMoney.domain(govAttributeMap.get(giSelection).domainData)
         var moneyFlag = true
     } else {
-        colorScale.domain(attributeMap.get(selectionIndicator).domainData)
+        colorScale.domain(govAttributeMap.get(giSelection).domainData)
         var moneyFlag = false
     }
 
     // Reset indicator text on nav bar
     d3.select("#navbarDropdownMenuLink")
-        .text(attributeMap.get(selectionIndicator).name)
+        .text(govAttributeMap.get(giSelection).name)
 
     // Change map fill and tooltip text upon indicator change
     d3.selectAll(".country")
@@ -327,7 +496,7 @@ function rerender(selectionIndicator) {
             tooltip.style('left', (mouseX + 10) + 'px')
             tooltip.style('top', d3.event.pageY + 20 + 'px')
 
-            d3.selectAll("." + d.properties.ISO_A2)
+            d3.selectAll("." + d.properties.ADM0_A3_US)
                 .style('stroke', '#fff')
                 .style('stroke-width', '2.5')
                 .raise()
@@ -336,10 +505,10 @@ function rerender(selectionIndicator) {
 
     function hideToolTip(d) {
         tooltip.style('opacity', 0)
-        d3.select(".country." + d.properties.ISO_A2)
+        d3.select(".country." + d.properties.ADM0_A3_US)
                 .style('stroke', 'white')
                 .style('stroke-width', '1')
-        d3.select(".bar." + d.properties.ISO_A2)
+        d3.select(".bar." + d.properties.ADM0_A3_US)
             .style('stroke-width', '0')
         }
 
@@ -347,11 +516,11 @@ function rerender(selectionIndicator) {
 
     //attribute panel text
     d3.select('.card-header')
-        .text(attributeMap.get(selectionIndicator).name)
+        .text(govAttributeMap.get(giSelection).name)
     d3.select('.card-text')
-        .text(attributeMap.get(selectionIndicator).infoCardText)
+        .text(govAttributeMap.get(giSelection).infoCardText)
     d3.select('.card .card-body a')
-        .attr("href", attributeMap.get(selectionIndicator).infoCardLinkURL)
+        .attr("href", govAttributeMap.get(giSelection).infoCardLinkURL)
     d3.select('.sourceLink')
-        .text(attributeMap.get(selectionIndicator).infoCardLinkTitle)
+        .text(govAttributeMap.get(giSelection).infoCardLinkTitle)
 }
