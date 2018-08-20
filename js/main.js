@@ -13,7 +13,7 @@ const width = parseInt(container.style("width")) - 30
 const height = width / 2.05
 
 const projection = d3.geoNaturalEarth1() // projection used for the mercator projection
-    .center([0, 15])
+    .center([30, 0])
     .scale(250)
     .translate([width / 2, height / 2])
 
