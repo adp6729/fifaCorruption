@@ -323,9 +323,6 @@ position:absolute;
 overflow: hidden;
 }*/
 
-#container-map-slider{
-  height:100vh;
-}
 
 #slider{
   position:absolute;
@@ -361,14 +358,13 @@ g .tick text{
 
 /* map css styles */
 
-.map-container {
-  margin-top:%;
-  margin-right:;
-  margin-left:px;
-  height: auto;
-  border: gray;
-  position:relative;
 
+
+.map-container {
+  width:100%;
+  height: 100%;
+  vertical-align: middle;
+  width: 100%;
 }
 
 .main {

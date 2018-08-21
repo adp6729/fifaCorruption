@@ -13,28 +13,46 @@ const width = parseInt(container.style("width")) - 30
 const height = width / 2.05
 
 const projection = d3.geoNaturalEarth1() // projection used for the mercator projection
-    .center([60, -12])
-    .scale(220)
-    .translate([width / 2, height / 2])
+    .center([10, 0])
+    .scale(160)
 
 const pathGenerator = d3.geoPath()
     .projection(projection)
 
+    //responsive map
+    function responsivefy(svg) {
+        // get container + svg aspect ratio
+        var container = d3.select(svg.node().parentNode),
+            width = parseInt(svg.style("width")),
+            height = parseInt(svg.style("height")),
+            aspect = width / height;
+
+        // add viewBox and preserveAspectRatio properties,
+        // and call resize so that svg resizes on inital page load
+        svg.attr("viewBox", "0 0 " + width + " " + height)
+            .attr("perserveAspectRatio", "xMinYMid")
+            .call(resize);
+
+        d3.select(window).on("resize." + container.attr("id"), resize);
+
+        // get width of container and resize svg to fit it
+        function resize() {
+            var targetWidth = parseInt(container.style("width"));
+            svg.attr("width", targetWidth);
+            svg.attr("height", Math.round(targetWidth / aspect));
+        }
+    }
 
 //create new svg container for the map
 var svg = d3.select("#Map")
-    .classed("svg-container", true) //container class to make it responsive
     .append("div")
     .append("svg")
-    //responsive SVG needs these 2 attributes and no width and height attr
-    .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0 0 1300 1300")
-    .attr("class", "map-container")
-    //class to make it responsive
-    .classed("svg-content-responsive", true);
+    .attr("width", 960)
+    .attr("height", 500)
+    .call(responsivefy);
 
 const countriesG = svg.append('g')
-    .attr('class', 'countries')
+    //.attr('class', 'countries')
 
 
     //create slider
