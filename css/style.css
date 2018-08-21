@@ -325,7 +325,7 @@ overflow: hidden;
 
 
 #slider{
-  position:absolute;
+  position:;
   margin-top: 2%;
   fill:white;
   margin-left: 22%;
@@ -365,6 +365,7 @@ g .tick text{
   height: 100%;
   vertical-align: middle;
   width: 100%;
+  margin-bottom:-10%;
 }
 
 .main {
@@ -378,7 +379,6 @@ g .tick text{
 }*/
 
 #year-container{
-
   padding:0px;
   margin-top:5px;
   margin-left:50px;

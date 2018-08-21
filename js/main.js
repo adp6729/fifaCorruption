@@ -153,7 +153,7 @@ const piSelection = "pi3_1996"
 const transitionDuration = 1000
 
 const colorScale = d3.scaleLinear()
-    .range(['black', 'red'])
+    .range(['#fee5d9', '#a50f15'])
 
 const colorScaleMoney = d3.scaleLinear()
     .range(['black', 'green'])
@@ -387,6 +387,7 @@ function processData(results) {
 
 }
 
+
 function createMap(countryArray) {
     countriesG
        .selectAll('path')
@@ -405,6 +406,7 @@ function createMap(countryArray) {
 
     return countryArray
  }
+
 
  function moveToolTip(d) {
      //console.log(d.properties[giSelection])
