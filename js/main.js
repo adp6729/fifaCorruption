@@ -13,8 +13,8 @@ const width = parseInt(container.style("width")) - 30
 const height = width / 2.05
 
 const projection = d3.geoNaturalEarth1() // projection used for the mercator projection
-    .center([30, 0])
-    .scale(250)
+    .center([85, -30])
+    .scale(200)
     .translate([width / 2, height / 2])
 
 const pathGenerator = d3.geoPath()
@@ -106,24 +106,24 @@ const govAttributes = [ {"indicator": "gi1",
 
 const govAttributeMap = d3.map(govAttributes, d => d.indicator)
 
-// Handle data initialization of governance indicators
+// Handle data initialization of performance indicators
 const perfAttributes = [ {"indicator": "pi1",
                         "name": "Total Points",
                         "infoCardText": "Points scored by a nation during the world cup. Ranges from 0 points to 21 points possible.",
-                        "infoCardLinkURL": "www.govindicators.org",
-                        "infoCardLinkTitle": "The World Bank",
+                        "infoCardLinkURL": "www.wikipedia.org",
+                        "infoCardLinkTitle": "Wikipedia",
                         "formatText": ".0f"},
                     {"indicator": "pi2",
                         "name": "Average Points",
                         "infoCardText": "The total number of points scored by a nation divided by the number of games played during the World Cup. Ranges from 0 points",
-                        "infoCardLinkURL": "www.govindicators.org",
-                        "infoCardLinkTitle": "The World Bank",
+                        "infoCardLinkURL": "www.wikipedia.org",
+                        "infoCardLinkTitle": "Wikipedia",
                         "formatText": ".2f"},
                     {"indicator": "pi3",
                         "name": "Average Goal Differential",
                         "infoCardText": "The total number of goals scored against a nation subtracted from the total goals scored by that nation, then divided by the number of games played during the World Cup. Minimum and maximum values vary.",
-                        "infoCardLinkURL": "www.govindicators.org",
-                        "infoCardLinkTitle": "The World Bank",
+                        "infoCardLinkURL": "www.wikipedia.org",
+                        "infoCardLinkTitle": "Wikipedia",
                         "formatText": ".1f"}
                     ]
 
