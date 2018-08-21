@@ -13,8 +13,8 @@ const width = parseInt(container.style("width")) - 30
 const height = width / 2.05
 
 const projection = d3.geoNaturalEarth1() // projection used for the mercator projection
-    .center([85, -30])
-    .scale(200)
+    .center([60, -12])
+    .scale(220)
     .translate([width / 2, height / 2])
 
 const pathGenerator = d3.geoPath()
@@ -152,7 +152,7 @@ Promise.all([
        d.gi6_1996 = +d.gi6_1996
        d.pi1_1996 = +d.pi1_1996
        d.pi2_1996 = +d.pi2_1996
-       d.pi3_1996 = +d.pi3_1996       
+       d.pi3_1996 = +d.pi3_1996
        d.gi1_1998 = +d.gi1_1998
        d.gi2_1998 = +d.gi2_1998
        d.gi3_1998 = +d.gi3_1998
@@ -170,7 +170,7 @@ Promise.all([
        d.gi6_2000 = +d.gi6_2000
        d.pi1_2000 = +d.pi1_2000
        d.pi2_2000 = +d.pi2_2000
-       d.pi3_2000 = +d.pi3_2000       
+       d.pi3_2000 = +d.pi3_2000
        d.gi1_2002 = +d.gi1_2002
        d.gi2_2002 = +d.gi2_2002
        d.gi3_2002 = +d.gi3_2002
@@ -206,7 +206,7 @@ Promise.all([
        d.gi6_2008 = +d.gi6_2008
        d.pi1_2008 = +d.pi1_2008
        d.pi2_2008 = +d.pi2_2008
-       d.pi3_2008 = +d.pi3_2008       
+       d.pi3_2008 = +d.pi3_2008
        d.gi1_2010 = +d.gi1_2010
        d.gi2_2010 = +d.gi2_2010
        d.gi3_2010 = +d.gi3_2010
@@ -233,7 +233,7 @@ Promise.all([
        d.gi6_2014 = +d.gi6_2014
        d.pi1_2014 = +d.pi1_2014
        d.pi2_2014 = +d.pi2_2014
-       d.pi3_2014 = +d.pi3_2014       
+       d.pi3_2014 = +d.pi3_2014
        d.gi1_2016 = +d.gi1_2016
        d.gi2_2016 = +d.gi2_2016
        d.gi3_2016 = +d.gi3_2016
@@ -265,7 +265,7 @@ function processData(results) {
                     feature.properties.gi6_1996 = stat.gi6_1996
                     feature.properties.pi1_1996 = stat.pi1_1996
                     feature.properties.pi2_1996 = stat.pi2_1996
-                    feature.properties.pi3_1996 = stat.pi3_1996       
+                    feature.properties.pi3_1996 = stat.pi3_1996
                     feature.properties.gi1_1998 = stat.gi1_1998
                     feature.properties.gi2_1998 = stat.gi2_1998
                     feature.properties.gi3_1998 = stat.gi3_1998
@@ -283,7 +283,7 @@ function processData(results) {
                     feature.properties.gi6_2000 = stat.gi6_2000
                     feature.properties.pi1_2000 = stat.pi1_2000
                     feature.properties.pi2_2000 = stat.pi2_2000
-                    feature.properties.pi3_2000 = stat.pi3_2000       
+                    feature.properties.pi3_2000 = stat.pi3_2000
                     feature.properties.gi1_2002 = stat.gi1_2002
                     feature.properties.gi2_2002 = stat.gi2_2002
                     feature.properties.gi3_2002 = stat.gi3_2002
@@ -319,7 +319,7 @@ function processData(results) {
                     feature.properties.gi6_2008 = stat.gi6_2008
                     feature.properties.pi1_2008 = stat.pi1_2008
                     feature.properties.pi2_2008 = stat.pi2_2008
-                    feature.properties.pi3_2008 = stat.pi3_2008       
+                    feature.properties.pi3_2008 = stat.pi3_2008
                     feature.properties.gi1_2010 = stat.gi1_2010
                     feature.properties.gi2_2010 = stat.gi2_2010
                     feature.properties.gi3_2010 = stat.gi3_2010
@@ -346,7 +346,7 @@ function processData(results) {
                     feature.properties.gi6_2014 = stat.gi6_2014
                     feature.properties.pi1_2014 = stat.pi1_2014
                     feature.properties.pi2_2014 = stat.pi2_2014
-                    feature.properties.pi3_2014 = stat.pi3_2014       
+                    feature.properties.pi3_2014 = stat.pi3_2014
                     feature.properties.gi1_2016 = stat.gi1_2016
                     feature.properties.gi2_2016 = stat.gi2_2016
                     feature.properties.gi3_2016 = stat.gi3_2016
@@ -389,7 +389,7 @@ function createMap(countryArray) {
  }
 
  function moveToolTip(d) {
-     console.log(d.properties[giSelection])
+     //console.log(d.properties[giSelection])
     if (d.properties[giSelection]) {
        const cPFormat = d3.format(govAttributeMap.get(giSelection.slice(0,3)).formatText)
        tooltip.html(`

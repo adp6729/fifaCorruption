@@ -311,22 +311,29 @@ color:#f7ca45;
   font-size:10px;
 }
 
+/*
 #slider-container{
-bottom:0px;
-/*background-color:rgba(0,0,0,0.7);*/
+bottom:px;
+/*background-color:rgba(0,0,0,0.7);
 border-radius: 0px;
 left: 67.5%;
-bottom:5%;
+top:5%;
 margin-left: -37.5%;
 position:absolute;
 overflow: hidden;
+}*/
+
+#container-map-slider{
+  height:100vh;
 }
 
 #slider{
+  position:absolute;
   margin-top: 2%;
   fill:white;
   margin-left: 22%;
-  bottom:500px;
+  bottom:30px;
+  -webkit-transform: translate3d(0,0,0);
 }
 
 g .tick text{
@@ -414,7 +421,7 @@ g .tick text{
 
 /* tooltip styles */
 
-.body > .main-tooltip {
+.body .main-tooltip {
   background-color: hsla(210, 10%, 23%, 0.7);
   opacity: 0;
   z-index: 999;
@@ -427,7 +434,7 @@ g .tick text{
   box-shadow: 2px 2px 2px black;
 }
 
-.body > .main-tooltip .number {
+.body .main-tooltip .number {
   font-family: monospace;
   text-align: right;
   font-size: 1.3em;
@@ -435,7 +442,7 @@ g .tick text{
   color: white;
 }
 
-.body > .main-tooltip p {
+.body .main-tooltip p {
   margin: 2px;
   color: white;
   display: inline;
