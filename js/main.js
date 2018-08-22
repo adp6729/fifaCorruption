@@ -170,7 +170,7 @@ const colorScale = d3.scaleLinear()
     .range(['#fee5d9', '#a50f15'])
 
 const colorScaleMoney = d3.scaleLinear()
-    .range(['black', 'green'])
+    .range(['#d7f2cd', '#006d2c'])
 
 Promise.all([
     d3.json('data/worldMap50mSimplified.json', function(error, world) {
@@ -399,7 +399,6 @@ function processData(results) {
     window.cData = cData // globalize
     window.countryArray = countryArray // globalize
     return countryArray
-
 }
 
 
