@@ -339,33 +339,37 @@ function createMap(countryArray) {
 
 
  function moveToolTip(d) {
-    if (d.properties.stat[giCurrent]) {
-       const cPFormat = d3.format(govAttributeMap.get(giCurrent).formatText)
-       tooltip.html(`
-          <p>${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-       `)
-       tooltip.style('opacity', 1)
-       let mouseX = d3.event.pageX
-       const tooltipWidth = parseInt(tooltip.style('width'))
-       if ((mouseX + tooltipWidth + 20) >= widthBody - 17) {
-           mouseX = (widthBody - tooltipWidth - 20 - 17)
-       }
-       tooltip.style('left', (mouseX + 10) + 'px')
-       tooltip.style('top', (d3.event.pageY + 20) + 'px')
+    if (d.properties.hasOwnProperty('stat')) {
+        if (d.properties.stat[giCurrent]) {
+           const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
+           tooltip.html(`
+              <p>${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+           `)
+           tooltip.style('opacity', 1)
+           let mouseX = d3.event.pageX
+           const tooltipWidth = parseInt(tooltip.style('width'))
+           if ((mouseX + tooltipWidth + 20) >= widthBody - 17) {
+               mouseX = (widthBody - tooltipWidth - 20 - 17)
+           }
+           tooltip.style('left', (mouseX + 10) + 'px')
+           tooltip.style('top', (d3.event.pageY + 20) + 'px')
 
-       d3.selectAll("." + d.properties.ADM0_A3_US)
-          .style('stroke', '#fff')
-          .style('stroke-width', '2')
-          .raise()
+           d3.selectAll("." + d.properties.ADM0_A3_US)
+              .style('stroke', '#fff')
+              .style('stroke-width', '2')
+              .raise()
+        }
     }
  }
 
  function hideToolTip(d) {
-    if (d.properties.stat[giCurrent]) {
-        tooltip.style('opacity', 0)
-        d3.select(".country." + d.properties.ADM0_A3_US)
-            .style('stroke', 'white')
-            .style('stroke-width', '0.5')
+    if (d.properties.hasOwnProperty('stat')) {
+        if (d.properties.stat[giCurrent]) {
+            tooltip.style('opacity', 0)
+            d3.select(".country." + d.properties.ADM0_A3_US)
+                .style('stroke', 'white')
+                .style('stroke-width', '0.5')
+        }
     }
  }
 
