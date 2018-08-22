@@ -82,6 +82,9 @@ const countriesG = svg.append('g')
       d3.select("p#value").text(slider.value());
       d3.select("a#setValue").on("click", () => slider.value(data));
 
+// const giSelection = "gi1"
+// const piSelection = "pi3"
+// const yearSelection = "1996"
 
 // Handle data initialization of governance indicators
 const govAttributes = [ {"indicator": "gi1",
@@ -123,6 +126,16 @@ const govAttributes = [ {"indicator": "gi1",
                     ]
 
 const govAttributeMap = d3.map(govAttributes, d => d.indicator)
+
+// d3.select("#dropdownDiv1")
+//   .data(govAttributes)
+//   .enter()
+//      .append("a")                    
+//         .attr("class", "dropdown-item")
+//         .attr("href", "#")
+//         .attr("data-toggle", "collapse")
+//         .on("click", d => "rerender(" + d.indicator + "_" + yearSelection + ")")
+//         .html(d => d.name);
 
 // Handle data initialization of performance indicators
 const perfAttributes = [ {"indicator": "pi1",
