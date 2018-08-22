@@ -470,10 +470,10 @@ function createMap(countryArray) {
 
     //attribute panel text
     d3.select('.card-header')
-       .text(govAttributeMap.get(giCurrent).name)
+       .text(govAttributeMap.get(giSelection).name)
        .style('font-weight', 700)
     d3.select('.card-text')
-       .text(govAttributeMap.get(giCurrent).infoCardText)
+       .text(govAttributeMap.get(giSelection).infoCardText)
 
  /*d3.select('.infocard')
     .style('left', 0 + 'px')
