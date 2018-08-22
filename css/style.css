@@ -122,6 +122,7 @@ color:#f7ca45;
   transition: all 0.4s ease-in-out;
   border-bottom-left-radius: 5px;
   z-index: 3;
+  overflow-y:auto;
 }
 
 /*collapse side panles styles*/
@@ -213,6 +214,7 @@ color:#f7ca45;
   transition: all 0.4s ease-in-out;
   border-bottom-left-radius: 5px;
   z-index: 3;
+  overflow-y:auto;
 }
 
 .toggle_attribute{
