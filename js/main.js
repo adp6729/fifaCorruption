@@ -103,19 +103,19 @@ const govAttributes = [ {"indicator": "gi1",
                         "infoCardLinkTitle": "The World Bank",
                         "formatText": ".1f"},
                     {"indicator": "gi4",
-                        "name": "Ease of Doing Business Rank",
+                        "name": "Regulatory Quality",
                         "infoCardText": "Reflects perceptions of the ability of the government to formulate and implement sound policies and regulations that permit and promote private sector development. Attribute ranges from -2.5 (weak) to 2.5 (strong) governance performance.",
                         "infoCardLinkURL": "www.govindicators.org",
                         "infoCardLinkTitle": "The World Bank",
                         "formatText": ".1f"},
                     {"indicator": "gi5",
-                        "name": "National Average Income Per Adult",
+                        "name": "Rule of Law",
                         "infoCardText": "Reflects perceptions of the extent to which agents have confidence in and abide by the rules of society, and in particular the quality of contract enforcement, property rights, the police, and the courts, as well as the likelihood of crime and violence. Attribute ranges from -2.5 (weak) to 2.5 (strong) governance performance.",
                         "infoCardLinkURL": "www.govindicators.org",
                         "infoCardLinkTitle": "The World Bank",
                         "formatText": ".1f"},
                     {"indicator": "gi6",
-                        "name": "Gross Domestic Product Per Adult",
+                        "name": "Conrtol of Corruption",
                         "infoCardText": "Reflects perceptions of the extent to which public power is exercised for private gain, including both petty and grand forms of corruption, as well as \"capture\" of the state by elites and private interests. Attribute ranges from -2.5 (weak) to 2.5 (strong) governance performance.",
                         "infoCardLinkURL": "www.govindicators.org",
                         "infoCardLinkTitle": "The World Bank",
@@ -469,20 +469,29 @@ function createMap(countryArray) {
     .text(govAttributeMap.get(giSelection).infoCardLinkTitle)*/
 
 function rerender(giSelection) {
-    const dataString = "d.properties." + giSelection
-    const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
-    const tickFormat = d3.format(govAttributeMap.get(giSelection).formatScale)
-    if (govAttributeMap.get(giSelection).formatText.includes('$')) {
-        colorScaleMoney.domain(govAttributeMap.get(giSelection).domainData)
-        var moneyFlag = true
-    } else {
-        colorScale.domain(govAttributeMap.get(giSelection).domainData)
-        var moneyFlag = false
-    }
+    const dataString = "d.properties." + giSelection;
+    const cPFormat = d3.format(govAttributeMap.get(giSelection.slice(0,3)).formatText)
+//    const tickFormat = d3.format(govAttributeMap.get(giSelection).formatScale)
+//    if (govAttributeMap.get(giSelection).formatText.includes('$')) {
+//        colorScaleMoney.domain(govAttributeMap.get(giSelection).domainData)
+//        var moneyFlag = true
+//    } else {
+//        colorScale.domain(govAttributeMap.get(giSelection).domainData)
+//        var moneyFlag = false
+//    }
 
     // Reset indicator text on nav bar
-    d3.select("#navbarDropdownMenuLink")
-        .text(govAttributeMap.get(giSelection).name)
+    if (giSelection.startsWith('g')){
+        d3.select("#navbarDropdownMenuLink1")
+          .text(govAttributeMap.get(giSelection).name);
+        colorScale.domain([-2.5, 2.5]);
+    }
+    else if (giSelection.startsWith('p')){
+        d3.select("#navbarDropdownMenuLink2")
+          .text(perfAttributeMap.get(giSelection).name);
+        //need to calculate and assign domain to perf
+    }
+
 
     // Change map fill and tooltip text upon indicator change
     d3.selectAll(".country")
@@ -492,12 +501,14 @@ function rerender(giSelection) {
             .duration(transitionDuration)
             .style("fill", d => {
                 outColor = "#808080"
+                console.log(dataString);
                 if (eval(dataString)) {
-                    if (moneyFlag) {
-                        outColor = colorScaleMoney(eval(dataString))
-                    } else {
-                        outColor = colorScale(eval(dataString))
-                    }
+//                    if (moneyFlag) {
+//                        outColor = colorScaleMoney(eval(dataString))
+//                    } else {
+//                        outColor = colorScale(eval(dataString))
+//                    }
+                    outColor = colorScale(eval(dataString));
                 }
                 return outColor
             })
