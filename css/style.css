@@ -396,6 +396,17 @@ g .tick text{
       margin-top: -20%;
     }
 }
+}
+@media only screen and (max-width: 20em) {
+  #play{
+      margin-top: -22%;
+    }
+}
+@media only screen and (max-width: 15em) {
+  #play{
+      margin-top: -23%;
+    }
+}
 /*end temporal slider*/
 
 
