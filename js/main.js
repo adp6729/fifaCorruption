@@ -424,8 +424,8 @@ function createMap(countryArray) {
              .attr('class', d => 'country ' + d.properties.ADM0_A3_US)
              .attr('d', pathGenerator)
              .style('fill', d => {
-                if (d.properties[giCurrent]) {
-                   return colorScale(d.properties[giCurrent])
+                if (d.properties.stat[giCurrent]) {
+                   return colorScale(d.properties.stat[giCurrent])
                 }
              })
              .on("mousemove", moveToolTip)
