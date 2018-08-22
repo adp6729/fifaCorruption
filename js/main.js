@@ -161,6 +161,12 @@ const perfAttributes = [ {"indicator": "pi1",
                         "infoCardLinkURL": "www.wikipedia.org",
                         "infoCardLinkTitle": "Wikipedia",
                         "formatText": ".1f"}
+                    // {"indicator": "none",
+                    //     "name": "None",
+                    //     "infoCardText": "",
+                    //     "infoCardLinkURL": "",
+                    //     "infoCardLinkTitle": "",
+                    //     "formatText": ""}
                     ]
 
 const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
@@ -174,126 +180,41 @@ d3.select("#dropdownDiv2").selectAll("a")
         .attr("href", "#")
         .attr("data-toggle", "collapse")
         .attr("data-target", "#navbarNavDropdown.show")
-        .on("click", d => perfrender(d.indicator + "_" + yearSelection))
+        .on("click", d => perfrender(d.indicator))
         .text(d => d.name);
 
 const transitionDuration = 1000
 
-const colorScale = d3.scaleLinear()
-    .range(['#fee5d9', '#a50f15'])
+// GI color scale for countries who didn't make it into the world cup
+const colorScaleGIOut = d3.scaleLinear()
+    .range(['#a50f15', '#fee5d9']) // this needs tweaking
 
-const colorScaleMoney = d3.scaleLinear()
-    .range(['#d7f2cd', '#006d2c'])
+// GI color scale for countries who make it into the world cup
+const colorScaleGIIn = d3.scaleLinear()
+    .range(['#000', '#000']) // this needs tweaking
+
+// PI opacity scale
+const colorScalePI = d3.scaleLinear()
+    .range([0.05, 1])
 
 Promise.all([
     d3.json('data/worldMap50mSimplified.json', function(error, world) {
         if (error) return console.error(error)}),
     d3.csv('data/fifaData.csv', d => {
-       d.gi1_1996 = +d.gi1_1996
-       d.gi2_1996 = +d.gi2_1996
-       d.gi3_1996 = +d.gi3_1996
-       d.gi4_1996 = +d.gi4_1996
-       d.gi5_1996 = +d.gi5_1996
-       d.gi6_1996 = +d.gi6_1996
-       d.pi1_1996 = +d.pi1_1996
-       d.pi2_1996 = +d.pi2_1996
-       d.pi3_1996 = +d.pi3_1996
-       d.gi1_1998 = +d.gi1_1998
-       d.gi2_1998 = +d.gi2_1998
-       d.gi3_1998 = +d.gi3_1998
-       d.gi4_1998 = +d.gi4_1998
-       d.gi5_1998 = +d.gi5_1998
-       d.gi6_1998 = +d.gi6_1998
-       d.pi1_1998 = +d.pi1_1998
-       d.pi2_1998 = +d.pi2_1998
-       d.pi3_1998 = +d.pi3_1998
-       d.gi1_2000 = +d.gi1_2000
-       d.gi2_2000 = +d.gi2_2000
-       d.gi3_2000 = +d.gi3_2000
-       d.gi4_2000 = +d.gi4_2000
-       d.gi5_2000 = +d.gi5_2000
-       d.gi6_2000 = +d.gi6_2000
-       d.pi1_2000 = +d.pi1_2000
-       d.pi2_2000 = +d.pi2_2000
-       d.pi3_2000 = +d.pi3_2000
-       d.gi1_2002 = +d.gi1_2002
-       d.gi2_2002 = +d.gi2_2002
-       d.gi3_2002 = +d.gi3_2002
-       d.gi4_2002 = +d.gi4_2002
-       d.gi5_2002 = +d.gi5_2002
-       d.gi6_2002 = +d.gi6_2002
-       d.pi1_2002 = +d.pi1_2002
-       d.pi2_2002 = +d.pi2_2002
-       d.pi3_2002 = +d.pi3_2002
-       d.gi1_2004 = +d.gi1_2004
-       d.gi2_2004 = +d.gi2_2004
-       d.gi3_2004 = +d.gi3_2004
-       d.gi4_2004 = +d.gi4_2004
-       d.gi5_2004 = +d.gi5_2004
-       d.gi6_2004 = +d.gi6_2004
-       d.pi1_2004 = +d.pi1_2004
-       d.pi2_2004 = +d.pi2_2004
-       d.pi3_2004 = +d.pi3_2004
-       d.gi1_2006 = +d.gi1_2006
-       d.gi2_2006 = +d.gi2_2006
-       d.gi3_2006 = +d.gi3_2006
-       d.gi4_2006 = +d.gi4_2006
-       d.gi5_2006 = +d.gi5_2006
-       d.gi6_2006 = +d.gi6_2006
-       d.pi1_2006 = +d.pi1_2006
-       d.pi2_2006 = +d.pi2_2006
-       d.pi3_2006 = +d.pi3_2006
-       d.gi1_2008 = +d.gi1_2008
-       d.gi2_2008 = +d.gi2_2008
-       d.gi3_2008 = +d.gi3_2008
-       d.gi4_2008 = +d.gi4_2008
-       d.gi5_2008 = +d.gi5_2008
-       d.gi6_2008 = +d.gi6_2008
-       d.pi1_2008 = +d.pi1_2008
-       d.pi2_2008 = +d.pi2_2008
-       d.pi3_2008 = +d.pi3_2008
-       d.gi1_2010 = +d.gi1_2010
-       d.gi2_2010 = +d.gi2_2010
-       d.gi3_2010 = +d.gi3_2010
-       d.gi4_2010 = +d.gi4_2010
-       d.gi5_2010 = +d.gi5_2010
-       d.gi6_2010 = +d.gi6_2010
-       d.pi1_2010 = +d.pi1_2010
-       d.pi2_2010 = +d.pi2_2010
-       d.pi3_2010 = +d.pi3_2010
-       d.gi1_2012 = +d.gi1_2012
-       d.gi2_2012 = +d.gi2_2012
-       d.gi3_2012 = +d.gi3_2012
-       d.gi4_2012 = +d.gi4_2012
-       d.gi5_2012 = +d.gi5_2012
-       d.gi6_2012 = +d.gi6_2012
-       d.pi1_2012 = +d.pi1_2012
-       d.pi2_2012 = +d.pi2_2012
-       d.pi3_2012 = +d.pi3_2012
-       d.gi1_2014 = +d.gi1_2014
-       d.gi2_2014 = +d.gi2_2014
-       d.gi3_2014 = +d.gi3_2014
-       d.gi4_2014 = +d.gi4_2014
-       d.gi5_2014 = +d.gi5_2014
-       d.gi6_2014 = +d.gi6_2014
-       d.pi1_2014 = +d.pi1_2014
-       d.pi2_2014 = +d.pi2_2014
-       d.pi3_2014 = +d.pi3_2014
-       d.gi1_2016 = +d.gi1_2016
-       d.gi2_2016 = +d.gi2_2016
-       d.gi3_2016 = +d.gi3_2016
-       d.gi4_2016 = +d.gi4_2016
-       d.gi5_2016 = +d.gi5_2016
-       d.gi6_2016 = +d.gi6_2016
-       d.pi1_2016 = +d.pi1_2016
-       d.pi2_2016 = +d.pi2_2016
-       d.pi3_2016 = +d.pi3_2016
-       return d
+        for (var key in d) {
+            if (isNaN(+d[key])) {
+                d[key] = d[key]
+            } else {
+                d[key] = +d[key]                
+            }
+        }
+        return d
     })]
 
 )
     .then(processData)
     .then(createMap)
+    .then(disablePI)
 
 function processData(results) {
     const geoJson = topojson.feature(results[0],results[0].objects.ne_50m_admin_0_countries_lakes)
@@ -310,7 +231,7 @@ function processData(results) {
             countryArray.push(feature)
         }
     }
-    colorScale.domain(d3.extent(cData, d=>d[giCurrent]))
+    colorScaleGIOut.domain(d3.extent(cData, d=>d[giCurrent]))
     window.cData = cData // globalize
     window.countryArray = countryArray // globalize
     return countryArray
@@ -328,7 +249,7 @@ function createMap(countryArray) {
              .style('fill', d => {
                 if (d.properties.hasOwnProperty('stat')) {
                     if (d.properties.stat[giCurrent]) {
-                       return colorScale(d.properties.stat[giCurrent])
+                       return colorScaleGIOut(d.properties.stat[giCurrent])
                     }
                 }
              })
@@ -336,52 +257,48 @@ function createMap(countryArray) {
              .on("mouseout", hideToolTip)
 
     return countryArray
- }
+}
 
 
- function moveToolTip(d) {
+function moveToolTip(d) {
     if (d.properties.hasOwnProperty('stat')) {
         if (d.properties.stat[giCurrent]) {
-           const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
-           tooltip.html(`
-              <p>${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-           `)
-           tooltip.style('opacity', 1)
-           let mouseX = d3.event.pageX
-           const tooltipWidth = parseInt(tooltip.style('width'))
-           if ((mouseX + tooltipWidth + 20) >= widthBody - 17) {
-               mouseX = (widthBody - tooltipWidth - 20 - 17)
-           }
-           tooltip.style('left', (mouseX + 10) + 'px')
-           tooltip.style('top', (d3.event.pageY + 20) + 'px')
+            const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
+            tooltip.html(`
+                <p>${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+            `)
+            tooltip.style('opacity', 1)
+            let mouseX = d3.event.pageX
+            const tooltipWidth = parseInt(tooltip.style('width'))
+            if ((mouseX + tooltipWidth + 20) >= widthBody - 17) {
+                mouseX = (widthBody - tooltipWidth - 20 - 17)
+            }
+            tooltip.style('left', (mouseX + 10) + 'px')
+            tooltip.style('top', (d3.event.pageY + 20) + 'px')
 
-           d3.selectAll("." + d.properties.ADM0_A3_US)
-              .style('stroke', '#fff')
-              .style('stroke-width', '2')
-              .raise()
+            d3.selectAll("." + d.properties.ADM0_A3_US)
+                .style('stroke', '#fff')
+                .style('stroke-width', '2')
+                .raise()
         }
     }
- }
+}
 
- function hideToolTip(d) {
-    if (d.properties.hasOwnProperty('stat')) {
-        if (d.properties.stat[giCurrent]) {
-            tooltip.style('opacity', 0)
-            d3.select(".country." + d.properties.ADM0_A3_US)
-                .style('stroke', 'white')
-                .style('stroke-width', '0.5')
-        }
-    }
- }
+function hideToolTip(d) {
+    tooltip.style('opacity', 0)
+    d3.selectAll("." + d.properties.ADM0_A3_US)
+        .style('stroke', 'white')
+        .style('stroke-width', '0.5')
+}
 
 
 
-    //attribute panel text
-    d3.select('.card-header')
-       .text(govAttributeMap.get(giSelection).name)
-       .style('font-weight', 700)
-    d3.select('.card-text')
-       .text(govAttributeMap.get(giSelection).infoCardText)
+//attribute panel text
+d3.select('.card-header')
+    .text(govAttributeMap.get(giSelection).name)
+    .style('font-weight', 700)
+d3.select('.card-text')
+    .text(govAttributeMap.get(giSelection).infoCardText)
 
  /*d3.select('.infocard')
     .style('left', 0 + 'px')
@@ -410,21 +327,14 @@ function rerender(giNew, yearNew) {
         piCurrent = piSelection + "_" + yearSelection
     }
     giCurrent = giSelection + "_" + yearSelection
+
     const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
-//    const tickFormat = d3.format(govAttributeMap.get(giSelection).formatScale)
-//    if (govAttributeMap.get(giSelection).formatText.includes('$')) {
-//        colorScaleMoney.domain(govAttributeMap.get(giSelection).domainData)
-//        var moneyFlag = true
-//    } else {
-//        colorScale.domain(govAttributeMap.get(giSelection).domainData)
-//        var moneyFlag = false
-//    }
 
     // Reset indicator text on nav bar
     if (giSelection.startsWith('g')){
         d3.select("#navbarDropdownMenuLink1")
           .text(govAttributeMap.get(giSelection).name);
-        colorScale.domain([-2.5, 2.5]);
+        colorScaleGIOut.domain([-2.5, 2.5]);
     }
     else if (giSelection.startsWith('p')){
         d3.select("#navbarDropdownMenuLink2")
@@ -443,7 +353,7 @@ function rerender(giNew, yearNew) {
                 outColor = "#808080"
                 if (d.properties.hasOwnProperty('stat')) {
                     if (d.properties.stat[giCurrent]) {
-                        outColor = colorScale(d.properties.stat[giCurrent]);
+                        outColor = colorScaleGIOut(d.properties.stat[giCurrent]);
                     }
                 }
                 return outColor
@@ -472,14 +382,10 @@ function rerender(giNew, yearNew) {
 
     function hideToolTip(d) {
         tooltip.style('opacity', 0)
-        d3.select(".country." + d.properties.ADM0_A3_US)
+        d3.selectAll("." + d.properties.ADM0_A3_US)
                 .style('stroke', 'white')
-                .style('stroke-width', '1')
-        d3.select(".bar." + d.properties.ADM0_A3_US)
-            .style('stroke-width', '0')
-        }
-
-
+                .style('stroke-width', '0.5')
+    }
 
     //attribute panel text
     d3.select('.card-header')
@@ -490,4 +396,39 @@ function rerender(giNew, yearNew) {
         .attr("href", govAttributeMap.get(giSelection).infoCardLinkURL)
     d3.select('.sourceLink')
         .text(govAttributeMap.get(giSelection).infoCardLinkTitle)
+}
+
+// function to change opacity of countries based on PI
+function perfrender(piNew) {
+    // initialize global
+    piSelection = piNew
+
+    if (piSelection != none) { // if user has selected a PI
+        piCurrent = piSelection + "_" + yearSelection
+
+        colorScalePI.domain(d3.extent(cData, d=>d[piCurrent]))
+
+        d3.selectAll(".country")
+            .style("opacity", d => colorScalePI(d[piCurrent]))
+    } else { // if user selects none
+        piCurrent = none
+
+        d3.selectAll(".country")
+            .style("opacity", 1)
+    }
+
+}
+
+// function to disable PI dropdown button
+function disablePI() {
+    d3.select('#navbarDropdownMenuLink2')
+        .classed('disabled', true)
+        .style('color', 'grey')
+}
+
+// function to enable PI dropdown button
+function enablePI() {
+    d3.select('#navbarDropdownMenuLink2')
+        .classed('disabled', false)
+        .style('color', '#f7ca45')
 }
