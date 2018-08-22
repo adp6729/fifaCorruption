@@ -482,11 +482,11 @@ function rerender(giNew, yearNew) {
 
     //attribute panel text
     d3.select('.card-header')
-        .text(govAttributeMap.get(giCurrent).name)
+        .text(govAttributeMap.get(giSelection).name)
     d3.select('.card-text')
-        .text(govAttributeMap.get(giCurrent).infoCardText)
+        .text(govAttributeMap.get(giSelection).infoCardText)
     d3.select('.card .card-body a')
-        .attr("href", govAttributeMap.get(giCurrent).infoCardLinkURL)
+        .attr("href", govAttributeMap.get(giSelection).infoCardLinkURL)
     d3.select('.sourceLink')
-        .text(govAttributeMap.get(giCurrent).infoCardLinkTitle)
+        .text(govAttributeMap.get(giSelection).infoCardLinkTitle)
 }
