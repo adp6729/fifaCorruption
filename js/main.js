@@ -127,18 +127,15 @@ const govAttributes = [ {"indicator": "gi1",
 
 const govAttributeMap = d3.map(govAttributes, d => d.indicator)
 
-<<<<<<< HEAD
-=======
-// d3.select("#dropdownDiv1")
-//   .data(govAttributes)
-//   .enter()
-//      .append("a")                    
-//         .attr("class", "dropdown-item")
-//         .attr("href", "#")
-//         .attr("data-toggle", "collapse")
-//         .on("click", d => "rerender(" + d.indicator + "_" + yearSelection + ")")
-//         .html(d => d.name);
->>>>>>> bebd37a1d2e1684c411a749592d5cc750e3d84b6
+/*d3.select("#dropdownDiv1")
+     .data(govAttributes)
+     .enter()
+     .append("a")
+        .attr("class", "dropdown-item")
+        .attr("href", "#")
+        .attr("data-toggle", "collapse")
+        .on("click", d => "rerender(" + d.indicator + "_" + yearSelection + ")")
+        .html(d => d.name);*/
 
 // Handle data initialization of performance indicators
 const perfAttributes = [ {"indicator": "pi1",
