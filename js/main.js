@@ -409,8 +409,6 @@ function rerender(giNew, yearNew) {
         piCurrent = piSelection + "_" + yearSelection
     }
     giCurrent = giSelection + "_" + yearSelection
-    
-    const dataString = "d.properties.stat." + giSelection;
     const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
 //    const tickFormat = d3.format(govAttributeMap.get(giSelection).formatScale)
 //    if (govAttributeMap.get(giSelection).formatText.includes('$')) {
@@ -442,22 +440,18 @@ function rerender(giNew, yearNew) {
             .duration(transitionDuration)
             .style("fill", d => {
                 outColor = "#808080"
-                console.log(dataString);
-                if (eval(dataString)) {
-//                    if (moneyFlag) {
-//                        outColor = colorScaleMoney(eval(dataString))
-//                    } else {
-//                        outColor = colorScale(eval(dataString))
-//                    }
-                    outColor = colorScale(eval(dataString));
+                if (d.properties.hasOwnProperty('stat')) {
+                    if (d.properties.stat[giCurrent]) {
+                        outColor = colorScale(d.properties.stat[giCurrent]);
+                    }
                 }
                 return outColor
             })
 
     function moveToolTip(d) {
-        if (eval(dataString)) {
+        if (d.properties.stat[giCurrent]) {
             tooltip.html(`
-                <p>${d.properties.ADMIN}<span class="number"> ${cPFormat(eval(dataString))}</span></p>
+                <p>${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
             `)
             tooltip.style('opacity', 1)
             let mouseX = d3.event.pageX
