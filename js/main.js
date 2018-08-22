@@ -85,6 +85,8 @@ const countriesG = svg.append('g')
 let giSelection = "gi1"
 let piSelection = "pi3"
 let yearSelection = "1996"
+let giCurrent = giSelection + "_" + yearSelection
+let piCurrent = piSelection + "_" + yearSelection
 
 // Handle data initialization of governance indicators
 const govAttributes = [ {"indicator": "gi1",
@@ -127,6 +129,7 @@ const govAttributes = [ {"indicator": "gi1",
 
 const govAttributeMap = d3.map(govAttributes, d => d.indicator)
 
+// dynamically set drop down 1 for governance indicators
 d3.select("#dropdownDiv1").selectAll("a")
      .data(govAttributes)
      .enter()
@@ -135,7 +138,7 @@ d3.select("#dropdownDiv1").selectAll("a")
         .attr("href", "#")
         .attr("data-toggle", "collapse")
         .attr("data-target", "#navbarNavDropdown.show")
-        .on("click", d => rerender(d.indicator + "_" + yearSelection))
+        .on("click", d => rerender(d.indicator, null))
         .text(d => d.name);
 
 // Handle data initialization of performance indicators
@@ -161,9 +164,17 @@ const perfAttributes = [ {"indicator": "pi1",
 
 const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
 
-
-// const giSelection = "gi1_1996"
-// const piSelection = "pi3_1996"
+// dynamically set drop down 2 for performance metrics
+d3.select("#dropdownDiv2").selectAll("a")
+     .data(perfAttributes)
+     .enter()
+     .append("a")
+        .attr("class", "dropdown-item")
+        .attr("href", "#")
+        .attr("data-toggle", "collapse")
+        .attr("data-target", "#navbarNavDropdown.show")
+        .on("click", d => perfrender(d.indicator + "_" + yearSelection))
+        .text(d => d.name);
 
 const transitionDuration = 1000
 
@@ -291,112 +302,113 @@ function processData(results) {
         if (feature.properties.CONTINENT != "Antarctica") {
             for (const stat of cData) {
                 if (feature.properties.ADM0_A3_US == stat.WBCode) {
-                    feature.properties.gi1_1996 = stat.gi1_1996
-                    feature.properties.gi2_1996 = stat.gi2_1996
-                    feature.properties.gi3_1996 = stat.gi3_1996
-                    feature.properties.gi4_1996 = stat.gi4_1996
-                    feature.properties.gi5_1996 = stat.gi5_1996
-                    feature.properties.gi6_1996 = stat.gi6_1996
-                    feature.properties.pi1_1996 = stat.pi1_1996
-                    feature.properties.pi2_1996 = stat.pi2_1996
-                    feature.properties.pi3_1996 = stat.pi3_1996
-                    feature.properties.gi1_1998 = stat.gi1_1998
-                    feature.properties.gi2_1998 = stat.gi2_1998
-                    feature.properties.gi3_1998 = stat.gi3_1998
-                    feature.properties.gi4_1998 = stat.gi4_1998
-                    feature.properties.gi5_1998 = stat.gi5_1998
-                    feature.properties.gi6_1998 = stat.gi6_1998
-                    feature.properties.pi1_1998 = stat.pi1_1998
-                    feature.properties.pi2_1998 = stat.pi2_1998
-                    feature.properties.pi3_1998 = stat.pi3_1998
-                    feature.properties.gi1_2000 = stat.gi1_2000
-                    feature.properties.gi2_2000 = stat.gi2_2000
-                    feature.properties.gi3_2000 = stat.gi3_2000
-                    feature.properties.gi4_2000 = stat.gi4_2000
-                    feature.properties.gi5_2000 = stat.gi5_2000
-                    feature.properties.gi6_2000 = stat.gi6_2000
-                    feature.properties.pi1_2000 = stat.pi1_2000
-                    feature.properties.pi2_2000 = stat.pi2_2000
-                    feature.properties.pi3_2000 = stat.pi3_2000
-                    feature.properties.gi1_2002 = stat.gi1_2002
-                    feature.properties.gi2_2002 = stat.gi2_2002
-                    feature.properties.gi3_2002 = stat.gi3_2002
-                    feature.properties.gi4_2002 = stat.gi4_2002
-                    feature.properties.gi5_2002 = stat.gi5_2002
-                    feature.properties.gi6_2002 = stat.gi6_2002
-                    feature.properties.pi1_2002 = stat.pi1_2002
-                    feature.properties.pi2_2002 = stat.pi2_2002
-                    feature.properties.pi3_2002 = stat.pi3_2002
-                    feature.properties.gi1_2004 = stat.gi1_2004
-                    feature.properties.gi2_2004 = stat.gi2_2004
-                    feature.properties.gi3_2004 = stat.gi3_2004
-                    feature.properties.gi4_2004 = stat.gi4_2004
-                    feature.properties.gi5_2004 = stat.gi5_2004
-                    feature.properties.gi6_2004 = stat.gi6_2004
-                    feature.properties.pi1_2004 = stat.pi1_2004
-                    feature.properties.pi2_2004 = stat.pi2_2004
-                    feature.properties.pi3_2004 = stat.pi3_2004
-                    feature.properties.gi1_2006 = stat.gi1_2006
-                    feature.properties.gi2_2006 = stat.gi2_2006
-                    feature.properties.gi3_2006 = stat.gi3_2006
-                    feature.properties.gi4_2006 = stat.gi4_2006
-                    feature.properties.gi5_2006 = stat.gi5_2006
-                    feature.properties.gi6_2006 = stat.gi6_2006
-                    feature.properties.pi1_2006 = stat.pi1_2006
-                    feature.properties.pi2_2006 = stat.pi2_2006
-                    feature.properties.pi3_2006 = stat.pi3_2006
-                    feature.properties.gi1_2008 = stat.gi1_2008
-                    feature.properties.gi2_2008 = stat.gi2_2008
-                    feature.properties.gi3_2008 = stat.gi3_2008
-                    feature.properties.gi4_2008 = stat.gi4_2008
-                    feature.properties.gi5_2008 = stat.gi5_2008
-                    feature.properties.gi6_2008 = stat.gi6_2008
-                    feature.properties.pi1_2008 = stat.pi1_2008
-                    feature.properties.pi2_2008 = stat.pi2_2008
-                    feature.properties.pi3_2008 = stat.pi3_2008
-                    feature.properties.gi1_2010 = stat.gi1_2010
-                    feature.properties.gi2_2010 = stat.gi2_2010
-                    feature.properties.gi3_2010 = stat.gi3_2010
-                    feature.properties.gi4_2010 = stat.gi4_2010
-                    feature.properties.gi5_2010 = stat.gi5_2010
-                    feature.properties.gi6_2010 = stat.gi6_2010
-                    feature.properties.pi1_2010 = stat.pi1_2010
-                    feature.properties.pi2_2010 = stat.pi2_2010
-                    feature.properties.pi3_2010 = stat.pi3_2010
-                    feature.properties.gi1_2012 = stat.gi1_2012
-                    feature.properties.gi2_2012 = stat.gi2_2012
-                    feature.properties.gi3_2012 = stat.gi3_2012
-                    feature.properties.gi4_2012 = stat.gi4_2012
-                    feature.properties.gi5_2012 = stat.gi5_2012
-                    feature.properties.gi6_2012 = stat.gi6_2012
-                    feature.properties.pi1_2012 = stat.pi1_2012
-                    feature.properties.pi2_2012 = stat.pi2_2012
-                    feature.properties.pi3_2012 = stat.pi3_2012
-                    feature.properties.gi1_2014 = stat.gi1_2014
-                    feature.properties.gi2_2014 = stat.gi2_2014
-                    feature.properties.gi3_2014 = stat.gi3_2014
-                    feature.properties.gi4_2014 = stat.gi4_2014
-                    feature.properties.gi5_2014 = stat.gi5_2014
-                    feature.properties.gi6_2014 = stat.gi6_2014
-                    feature.properties.pi1_2014 = stat.pi1_2014
-                    feature.properties.pi2_2014 = stat.pi2_2014
-                    feature.properties.pi3_2014 = stat.pi3_2014
-                    feature.properties.gi1_2016 = stat.gi1_2016
-                    feature.properties.gi2_2016 = stat.gi2_2016
-                    feature.properties.gi3_2016 = stat.gi3_2016
-                    feature.properties.gi4_2016 = stat.gi4_2016
-                    feature.properties.gi5_2016 = stat.gi5_2016
-                    feature.properties.gi6_2016 = stat.gi6_2016
-                    feature.properties.pi1_2016 = stat.pi1_2016
-                    feature.properties.pi2_2016 = stat.pi2_2016
-                    feature.properties.pi3_2016 = stat.pi3_2016
+//                     feature.properties.stat = stat
+//                     feature.properties.gi1_1996 = stat.gi1_1996
+//                     feature.properties.gi2_1996 = stat.gi2_1996
+//                     feature.properties.gi3_1996 = stat.gi3_1996
+//                     feature.properties.gi4_1996 = stat.gi4_1996
+//                     feature.properties.gi5_1996 = stat.gi5_1996
+//                     feature.properties.gi6_1996 = stat.gi6_1996
+//                     feature.properties.pi1_1996 = stat.pi1_1996
+//                     feature.properties.pi2_1996 = stat.pi2_1996
+//                     feature.properties.pi3_1996 = stat.pi3_1996
+//                     feature.properties.gi1_1998 = stat.gi1_1998
+//                     feature.properties.gi2_1998 = stat.gi2_1998
+//                     feature.properties.gi3_1998 = stat.gi3_1998
+//                     feature.properties.gi4_1998 = stat.gi4_1998
+//                     feature.properties.gi5_1998 = stat.gi5_1998
+//                     feature.properties.gi6_1998 = stat.gi6_1998
+//                     feature.properties.pi1_1998 = stat.pi1_1998
+//                     feature.properties.pi2_1998 = stat.pi2_1998
+//                     feature.properties.pi3_1998 = stat.pi3_1998
+//                     feature.properties.gi1_2000 = stat.gi1_2000
+//                     feature.properties.gi2_2000 = stat.gi2_2000
+//                     feature.properties.gi3_2000 = stat.gi3_2000
+//                     feature.properties.gi4_2000 = stat.gi4_2000
+//                     feature.properties.gi5_2000 = stat.gi5_2000
+//                     feature.properties.gi6_2000 = stat.gi6_2000
+//                     feature.properties.pi1_2000 = stat.pi1_2000
+//                     feature.properties.pi2_2000 = stat.pi2_2000
+//                     feature.properties.pi3_2000 = stat.pi3_2000
+//                     feature.properties.gi1_2002 = stat.gi1_2002
+//                     feature.properties.gi2_2002 = stat.gi2_2002
+//                     feature.properties.gi3_2002 = stat.gi3_2002
+//                     feature.properties.gi4_2002 = stat.gi4_2002
+//                     feature.properties.gi5_2002 = stat.gi5_2002
+//                     feature.properties.gi6_2002 = stat.gi6_2002
+//                     feature.properties.pi1_2002 = stat.pi1_2002
+//                     feature.properties.pi2_2002 = stat.pi2_2002
+//                     feature.properties.pi3_2002 = stat.pi3_2002
+//                     feature.properties.gi1_2004 = stat.gi1_2004
+//                     feature.properties.gi2_2004 = stat.gi2_2004
+//                     feature.properties.gi3_2004 = stat.gi3_2004
+//                     feature.properties.gi4_2004 = stat.gi4_2004
+//                     feature.properties.gi5_2004 = stat.gi5_2004
+//                     feature.properties.gi6_2004 = stat.gi6_2004
+//                     feature.properties.pi1_2004 = stat.pi1_2004
+//                     feature.properties.pi2_2004 = stat.pi2_2004
+//                     feature.properties.pi3_2004 = stat.pi3_2004
+//                     feature.properties.gi1_2006 = stat.gi1_2006
+//                     feature.properties.gi2_2006 = stat.gi2_2006
+//                     feature.properties.gi3_2006 = stat.gi3_2006
+//                     feature.properties.gi4_2006 = stat.gi4_2006
+//                     feature.properties.gi5_2006 = stat.gi5_2006
+//                     feature.properties.gi6_2006 = stat.gi6_2006
+//                     feature.properties.pi1_2006 = stat.pi1_2006
+//                     feature.properties.pi2_2006 = stat.pi2_2006
+//                     feature.properties.pi3_2006 = stat.pi3_2006
+//                     feature.properties.gi1_2008 = stat.gi1_2008
+//                     feature.properties.gi2_2008 = stat.gi2_2008
+//                     feature.properties.gi3_2008 = stat.gi3_2008
+//                     feature.properties.gi4_2008 = stat.gi4_2008
+//                     feature.properties.gi5_2008 = stat.gi5_2008
+//                     feature.properties.gi6_2008 = stat.gi6_2008
+//                     feature.properties.pi1_2008 = stat.pi1_2008
+//                     feature.properties.pi2_2008 = stat.pi2_2008
+//                     feature.properties.pi3_2008 = stat.pi3_2008
+//                     feature.properties.gi1_2010 = stat.gi1_2010
+//                     feature.properties.gi2_2010 = stat.gi2_2010
+//                     feature.properties.gi3_2010 = stat.gi3_2010
+//                     feature.properties.gi4_2010 = stat.gi4_2010
+//                     feature.properties.gi5_2010 = stat.gi5_2010
+//                     feature.properties.gi6_2010 = stat.gi6_2010
+//                     feature.properties.pi1_2010 = stat.pi1_2010
+//                     feature.properties.pi2_2010 = stat.pi2_2010
+//                     feature.properties.pi3_2010 = stat.pi3_2010
+//                     feature.properties.gi1_2012 = stat.gi1_2012
+//                     feature.properties.gi2_2012 = stat.gi2_2012
+//                     feature.properties.gi3_2012 = stat.gi3_2012
+//                     feature.properties.gi4_2012 = stat.gi4_2012
+//                     feature.properties.gi5_2012 = stat.gi5_2012
+//                     feature.properties.gi6_2012 = stat.gi6_2012
+//                     feature.properties.pi1_2012 = stat.pi1_2012
+//                     feature.properties.pi2_2012 = stat.pi2_2012
+//                     feature.properties.pi3_2012 = stat.pi3_2012
+//                     feature.properties.gi1_2014 = stat.gi1_2014
+//                     feature.properties.gi2_2014 = stat.gi2_2014
+//                     feature.properties.gi3_2014 = stat.gi3_2014
+//                     feature.properties.gi4_2014 = stat.gi4_2014
+//                     feature.properties.gi5_2014 = stat.gi5_2014
+//                     feature.properties.gi6_2014 = stat.gi6_2014
+//                     feature.properties.pi1_2014 = stat.pi1_2014
+//                     feature.properties.pi2_2014 = stat.pi2_2014
+//                     feature.properties.pi3_2014 = stat.pi3_2014
+//                     feature.properties.gi1_2016 = stat.gi1_2016
+//                     feature.properties.gi2_2016 = stat.gi2_2016
+//                     feature.properties.gi3_2016 = stat.gi3_2016
+//                     feature.properties.gi4_2016 = stat.gi4_2016
+//                     feature.properties.gi5_2016 = stat.gi5_2016
+//                     feature.properties.gi6_2016 = stat.gi6_2016
+//                     feature.properties.pi1_2016 = stat.pi1_2016
+//                     feature.properties.pi2_2016 = stat.pi2_2016
+//                     feature.properties.pi3_2016 = stat.pi3_2016
                     break
                 }
             }
             countryArray.push(feature)
         }
     }
-    colorScale.domain(d3.extent(cData, d=>d[giSelection]))
+    colorScale.domain(d3.extent(cData, d=>d[giCurrent]))
     window.cData = cData // globalize
     window.countryArray = countryArray // globalize
     return countryArray
@@ -412,8 +424,8 @@ function createMap(countryArray) {
              .attr('class', d => 'country ' + d.properties.ADM0_A3_US)
              .attr('d', pathGenerator)
              .style('fill', d => {
-                if (d.properties[giSelection]) {
-                   return colorScale(d.properties[giSelection])
+                if (d.properties[giCurrent]) {
+                   return colorScale(d.properties[giCurrent])
                 }
              })
              .on("mousemove", moveToolTip)
@@ -424,11 +436,10 @@ function createMap(countryArray) {
 
 
  function moveToolTip(d) {
-     //console.log(d.properties[giSelection])
-    if (d.properties[giSelection]) {
-       const cPFormat = d3.format(govAttributeMap.get(giSelection.slice(0,3)).formatText)
+    if (d.properties.stat[giCurrent]) {
+       const cPFormat = d3.format(govAttributeMap.get(giCurrent).formatText)
        tooltip.html(`
-          <p>${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties[giSelection])}</span></p>
+          <p>${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
        `)
        tooltip.style('opacity', 1)
        let mouseX = d3.event.pageX
@@ -447,7 +458,7 @@ function createMap(countryArray) {
  }
 
  function hideToolTip(d) {
-    if (d.properties[giSelection]) {
+    if (d.properties.stat[giCurrent]) {
         tooltip.style('opacity', 0)
         d3.select(".country." + d.properties.ADM0_A3_US)
             .style('stroke', 'white')
@@ -459,10 +470,10 @@ function createMap(countryArray) {
 
     //attribute panel text
     d3.select('.card-header')
-       .text(govAttributeMap.get(giSelection.slice(0,3)).name)
+       .text(govAttributeMap.get(giCurrent).name)
        .style('font-weight', 700)
     d3.select('.card-text')
-       .text(govAttributeMap.get(giSelection.slice(0,3)).infoCardText)
+       .text(govAttributeMap.get(giCurrent).infoCardText)
 
  /*d3.select('.infocard')
     .style('left', 0 + 'px')
@@ -483,9 +494,17 @@ function createMap(countryArray) {
  d3.select('.sourceLink')
     .text(govAttributeMap.get(giSelection).infoCardLinkTitle)*/
 
-function rerender(giSelection) {
-    const dataString = "d.properties." + giSelection;
-    const cPFormat = d3.format(govAttributeMap.get(giSelection.slice(0,3)).formatText)
+function rerender(giNew, yearNew) {
+    if (giNew != null) {
+        giSelection = giNew
+    } else if (yearNew != null) {
+        yearSelection = yearNew
+        piCurrent = piSelection + "_" + yearSelection
+    }
+    giCurrent = giSelection + "_" + yearSelection
+    
+    const dataString = "d.properties.stat." + giSelection;
+    const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
 //    const tickFormat = d3.format(govAttributeMap.get(giSelection).formatScale)
 //    if (govAttributeMap.get(giSelection).formatText.includes('$')) {
 //        colorScaleMoney.domain(govAttributeMap.get(giSelection).domainData)
@@ -562,11 +581,11 @@ function rerender(giSelection) {
 
     //attribute panel text
     d3.select('.card-header')
-        .text(govAttributeMap.get(giSelection).name)
+        .text(govAttributeMap.get(giCurrent).name)
     d3.select('.card-text')
-        .text(govAttributeMap.get(giSelection).infoCardText)
+        .text(govAttributeMap.get(giCurrent).infoCardText)
     d3.select('.card .card-body a')
-        .attr("href", govAttributeMap.get(giSelection).infoCardLinkURL)
+        .attr("href", govAttributeMap.get(giCurrent).infoCardLinkURL)
     d3.select('.sourceLink')
-        .text(govAttributeMap.get(giSelection).infoCardLinkTitle)
+        .text(govAttributeMap.get(giCurrent).infoCardLinkTitle)
 }
