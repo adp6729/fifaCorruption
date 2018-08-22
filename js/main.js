@@ -124,6 +124,7 @@ const govAttributes = [ {"indicator": "gi1",
 
 const govAttributeMap = d3.map(govAttributes, d => d.indicator)
 
+
 // Handle data initialization of performance indicators
 const perfAttributes = [ {"indicator": "pi1",
                         "name": "Total Points",
@@ -146,6 +147,7 @@ const perfAttributes = [ {"indicator": "pi1",
                     ]
 
 const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
+
 
 const giSelection = "gi1_1996"
 const piSelection = "pi3_1996"
@@ -263,6 +265,7 @@ Promise.all([
        d.pi3_2016 = +d.pi3_2016
        return d
     })]
+
 )
     .then(processData)
     .then(createMap)
@@ -426,7 +429,7 @@ function createMap(countryArray) {
 
        d3.selectAll("." + d.properties.ADM0_A3_US)
           .style('stroke', '#fff')
-          .style('stroke-width', '2.5')
+          .style('stroke-width', '2')
           .raise()
     }
  }
@@ -436,7 +439,7 @@ function createMap(countryArray) {
         tooltip.style('opacity', 0)
         d3.select(".country." + d.properties.ADM0_A3_US)
             .style('stroke', 'white')
-            .style('stroke-width', '1')
+            .style('stroke-width', '0.5')
     }
  }
 

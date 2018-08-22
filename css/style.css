@@ -396,6 +396,8 @@ g .tick text{
 .map-container path.country {
   fill: #e8e8e8;
   stroke: white;
+  stroke-width:0.5;
+  stroke-linecap: round;
 }
 
 .infocard {
