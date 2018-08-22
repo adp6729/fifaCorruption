@@ -67,7 +67,8 @@ const countriesG = svg.append('g')
         .tickValues(dataSlider)
         .on('onchange', val => {
           d3.select("p#value").text((val));
-        });
+        })
+        .on('onchange', d => rerender(d.indicator, null))
 
       var g = d3.select("#slider")
         .append("div")
