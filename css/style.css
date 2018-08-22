@@ -393,20 +393,11 @@ g .tick text{
 }
 @media only screen and (max-width: 25em) {
   #play{
-      margin-top: -20%;
+      margin-top: -18%;
     }
 }
 }
-@media only screen and (max-width: 20em) {
-  #play{
-      margin-top: -22%;
-    }
-}
-@media only screen and (max-width: 15em) {
-  #play{
-      margin-top: -23%;
-    }
-}
+
 /*end temporal slider*/
 
 
