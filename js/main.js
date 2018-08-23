@@ -6,9 +6,8 @@ const body = d3.select("body")
 const container = d3.select(".map-container")
 const chart = d3.select(".bar-chart")
 const tooltip = d3.select(".main-tooltip")
-
+const dataSlider = [1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016]
 const widthBody = parseInt(body.style("width"))
-
 const width = parseInt(container.style("width")) - 30
 const height = width / 2.05
 
@@ -53,34 +52,6 @@ var svg = d3.select("#Map")
 
 const countriesG = svg.append('g')
     //.attr('class', 'countries')
-
-
-    //create slider
-    var dataSlider = [1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016];
-
-      var slider = d3.sliderHorizontal()
-        .min(d3.min(dataSlider))
-        .max(d3.max(dataSlider))
-        .step(2)
-        .width(800)
-        .tickFormat(d3.format('.0f'))
-        .tickValues(dataSlider)
-        .on('onchange', val => {
-          d3.select("p#value").text((val));
-        });
-
-      var g = d3.select("#slider")
-        .append("div")
-        .append("svg")
-        .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "-55 20 1300 90")
-        .append("g")
-        .attr("transform", "translate(30,30)");
-
-      g.call(slider);
-
-      d3.select("p#value").text(slider.value());
-      d3.select("a#setValue").on("click", () => slider.value(data));
 
 let giSelection = "gi1"
 let piSelection = "pi3"
@@ -130,7 +101,7 @@ const govAttributes = [ {"indicator": "gi1",
 const govAttributeMap = d3.map(govAttributes, d => d.indicator)
 
 // dynamically set drop down 1 for governance indicators
-d3.select("#dropdownDiv1").selectAll("a")
+a=d3.select("#dropdownDiv1").selectAll("a")
      .data(govAttributes)
      .enter()
      .append("a")
@@ -204,7 +175,7 @@ Promise.all([
             if (isNaN(+d[key])) {
                 d[key] = d[key]
             } else {
-                d[key] = +d[key]                
+                d[key] = +d[key]
             }
         }
         return d
@@ -253,7 +224,7 @@ function createMap(countryArray) {
              })
              .on("mousemove", moveToolTip)
              .on("mouseout", hideToolTip)
-
+    createSlider();
     return countryArray
 }
 
@@ -316,6 +287,35 @@ d3.select('.card-text')
     .attr("href", govAttributeMap.get(giSelection).infoCardLinkURL)
  d3.select('.sourceLink')
     .text(govAttributeMap.get(giSelection).infoCardLinkTitle)*/
+    //create slider
+
+function createSlider(giNew){
+      var slider = d3.sliderHorizontal()
+        .min(d3.min(dataSlider))
+        .max(d3.max(dataSlider))
+        .step(2)
+        .width(800)
+        .tickFormat(d3.format('.0f'))
+        .tickValues(dataSlider)
+        .on('onchange', function(val){
+          d3.select("p#value").text((val));
+          //console.log(val)
+          rerender(giNew,val)
+        })
+
+      var g = d3.select("#slider")
+        .append("div")
+        .append("svg")
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "-55 20 1300 90")
+        .append("g")
+        .attr("transform", "translate(30,30)")
+
+      g.call(slider);
+      //d3.select("p#value").text(slider.value());
+      //d3.select("a#setValue").on("click", () => slider.value(data));
+}
+
 
 function rerender(giNew, yearNew) {
     if (giNew != null) {
