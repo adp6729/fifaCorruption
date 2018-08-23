@@ -15,7 +15,7 @@
 	</head>
 
 	<body class="text-center body">
-		<nav class="navbar navbar-expand-xl fixed-top navbar-light">
+		<nav class="navbar navbar-expand-xl fixed-top navbar-dark">
 			<a class="navbar-brand" href="." id="navbar-brand">
 				<img src="img/soccer_favicon2.png" width="30" height="30" class="d-inline-block align-top" alt="">
 				FIFA Corruption & Success
@@ -24,42 +24,51 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNavDropdown">
-			<ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <i class="fas fa-filter"></i>
-                </li>
-                <li class="nav-item">
-                    <h2 id="filter-indexes">Indicators:</h2>
-                </li>
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Select Corruption Attribute
-					</a>
-					<div class="dropdown-menu" id="dropdownDiv1" aria-labelledby="navbarDropdownMenuLink">
-					</div>
-				</li>
+                <ul class="navbar-nav mr-auto">
+<!--                    <li class="nav-item dropdown">test</li>-->
+                    <li class="nav-item">
+                        <i class="fas fa-filter"></i>
+                    </li>
+                    <li class="nav-item">
+                        <h2 id="filter-indexes">Indicators:</h2>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Select Governance Indicator
+                        </a>
+                        <div class="dropdown-menu" id="dropdownDiv1" aria-labelledby="navbarDropdownMenuLink">
+                        </div>
+                    </li>
 
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Select Performance Attribute
-					</a>
-					<div class="dropdown-menu" id="dropdownDiv2" aria-labelledby="navbarDropdownMenuLink">
-					</div>
-				</li>
-			</ul>
-				<!-- <li class="nav-item active">
-				<a class="nav-link" href="." id="nav-link-reset">Reset Map<span class="sr-only">(current)</span></a>
-				</li> -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Select Performance Indicator
+                        </a>
+                        <div class="dropdown-menu" id="dropdownDiv2" aria-labelledby="navbarDropdownMenuLink">
+                        </div>
+                    </li>
 
-				<div>
-					<!--slide out attribute description section-->
-					<i class="toggle_attribute" data-toggle="collapse" data-target="#navbarNavDropdown">Attribute Description</i>
-				</div>
+                    <!-- <li class="nav-item active">
+                    <a class="nav-link" href="." id="nav-link-reset">Reset Map<span class="sr-only">(current)</span></a>
+                    </li> -->
 
-				<div id="toggle-border">
-					<!--slide out about section-->
-					<i class="toggle_about" data-toggle="collapse" data-target="#navbarNavDropdown">About</i>
-				</div>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li>
+                        <div>
+<!--                            slide out attribute description section-->
+                            <i class="toggle_attribute" data-toggle="collapse" data-target="#navbarNavDropdown">Attribute Description</i>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div id="toggle-border">
+<!--                            slide out about section-->
+                            <i class="toggle_about" data-toggle="collapse" data-target="#navbarNavDropdown">About</i>
+                        </div>
+                    </li>
+
+                </ul>
 			</div>
 
 		</nav>
