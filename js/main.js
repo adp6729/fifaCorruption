@@ -156,8 +156,8 @@ d3.select("#dropdownDiv2").selectAll("a")
 const transitionDuration = 1000
 
 // GI color scale for countries who didn't make it into the world cup
-const colorScaleGIOut = d3.scaleLinear()
-    .range(['#a50f15', '#fee5d9']) // this needs tweaking
+const colorScaleGIOut = d3.scaleSequential(d3.interpolateViridis)
+    // .range(['#a50f15', '#fee5d9']) // this needs tweaking
 
 // GI color scale for countries who make it into the world cup
 const colorScaleGIIn = d3.scaleLinear()
@@ -358,23 +358,25 @@ function rerender(giNew, yearNew) {
             })
 
     function moveToolTip(d) {
-        if (d.properties.stat[giCurrent]) {
-            tooltip.html(`
-                <p>${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-            `)
-            tooltip.style('opacity', 1)
-            let mouseX = d3.event.pageX
-            const tooltipWidth = parseInt(tooltip.style('width'))
-            if ((mouseX + tooltipWidth + 20) >= widthBody - 17) {
-                mouseX = (widthBody - tooltipWidth - 20 - 17)
-            }
-            tooltip.style('left', (mouseX + 10) + 'px')
-            tooltip.style('top', d3.event.pageY + 20 + 'px')
+        if (d.properties.hasOwnProperty('stat')) {
+            if (d.properties.stat[giCurrent]) {
+                tooltip.html(`
+                    <p>${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                `)
+                tooltip.style('opacity', 1)
+                let mouseX = d3.event.pageX
+                const tooltipWidth = parseInt(tooltip.style('width'))
+                if ((mouseX + tooltipWidth + 20) >= widthBody - 17) {
+                    mouseX = (widthBody - tooltipWidth - 20 - 17)
+                }
+                tooltip.style('left', (mouseX + 10) + 'px')
+                tooltip.style('top', d3.event.pageY + 20 + 'px')
 
-            d3.selectAll("." + d.properties.ADM0_A3_US)
-                .style('stroke', '#fff')
-                .style('stroke-width', '2.5')
-                .raise()
+                d3.selectAll("." + d.properties.ADM0_A3_US)
+                    .style('stroke', '#fff')
+                    .style('stroke-width', '2.5')
+                    .raise()
+            }
         }
     }
 
