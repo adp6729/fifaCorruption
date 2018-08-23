@@ -209,7 +209,6 @@ Promise.all([
         }
         return d
     })]
-
 )
     .then(processData)
     .then(createMap)
