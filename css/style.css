@@ -39,14 +39,19 @@ li {
 }
 
 .navbar{
-  background: rgba(0, 0, 0, .85);
+  background: rgba(0, 0, 0, .7);
   opacity: 1;
 /*  height: 56px;*/
 }
 
+.navbar-brand {
+    padding: 0px;
+}
+
+
 #navbar-brand{
     color:white;
-    margin-right: 60px;
+    margin-right: 10px;
 }
 
 .fa-filter{
@@ -54,6 +59,7 @@ li {
   color: #f7ca45;
   margin-top:15px;
   margin-right: 5px;
+    margin-left: 20px;
   opacity: 0.8;
 /*  cursor:pointer;*/
 /*  transition: all 0.3s ease-in-out;*/
@@ -386,6 +392,15 @@ g .tick text{
   #play{
       margin-top: -18%;
     }
+    
+  .navbar-brand>img {
+      height: 100%;
+      padding: 5px;
+    }
+    .navbar-brand {
+        font-size: 15px;
+    }
+
 }
 
 /*end temporal slider*/
