@@ -125,13 +125,15 @@ const perfAttributes = [ {"indicator": "pi1",
                         "infoCardText": "The total number of points scored by a nation divided by the number of games played during the World Cup. Ranges from 0 points",
                         "infoCardLinkURL": "www.wikipedia.org",
                         "infoCardLinkTitle": "Wikipedia",
-                        "formatText": ".2f"},
+                        "formatText": ".2f",
+                        "inputID": "pi2-trigger"},
                     {"indicator": "pi3",
                         "name": "Average Goal Differential",
                         "infoCardText": "The total number of goals scored against a nation subtracted from the total goals scored by that nation, then divided by the number of games played during the World Cup. Minimum and maximum values vary.",
                         "infoCardLinkURL": "www.wikipedia.org",
                         "infoCardLinkTitle": "Wikipedia",
-                        "formatText": ".1f"}
+                        "formatText": ".1f",
+                        "inputID": "pi3-trigger"}
                     ]
 
 const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
@@ -163,7 +165,7 @@ buttonDivs.append("input")
     .attr("data-on", "Shown")
     .attr("data-off", "Hidden")
     .attr("data-offstyle", "info")
-    .attr("class", "float-left")
+    .attr("onchange", d => "perfrender(['" + d.indicator + "', '" + d.inputID + "'])" )
 
 buttonDivs.append("button")
     .attr("type", "checkbox")
@@ -184,14 +186,14 @@ const colorScaleGIIn = d3.scaleLinear()
 
 // PI opacity scale
 const colorScalePI = d3.scaleLinear()
-    .range([0.05, 1])
+    .range([0.3, 1])
 
 Promise.all([
     d3.json('data/worldMap50mSimplified.json', function(error, world) {
         if (error) return console.error(error)}),
     d3.csv('data/fifaData.csv', d => {
         for (var key in d) {
-            if (isNaN(+d[key])) {
+            if (isNaN(+d[key]) || d[key] === '') {
                 d[key] = d[key]
             } else {
                 d[key] = +d[key]
@@ -335,12 +337,25 @@ function createSlider(giNew){
       //d3.select("a#setValue").on("click", () => slider.value(data));
 }
 
+
 function toggleFunc(ind) {
+    console.log(ind)
     switch (ind) {
         case 'pi1':
             $('#pi1-trigger').bootstrapToggle('toggle')
+            $('#pi2-trigger').bootstrapToggle('off')
+            $('#pi3-trigger').bootstrapToggle('off')
+            break
         case 'pi2':
+            $('#pi1-trigger').bootstrapToggle('off')
+            $('#pi2-trigger').bootstrapToggle('toggle')
+            $('#pi3-trigger').bootstrapToggle('off')
+            break
         case 'pi3':
+            $('#pi1-trigger').bootstrapToggle('off')
+            $('#pi2-trigger').bootstrapToggle('off')
+            $('#pi3-trigger').bootstrapToggle('toggle')
+            break
     }
 }
 
@@ -427,20 +442,47 @@ function rerender(giNew, yearNew) {
 }
 
 // function to change opacity of countries based on PI
-function perfrender(piNew) {
-    // initialize global
-    piSelection = piNew
+function perfrender(inputs) {
+    // initialize globals
+    piSelection = inputs[0]
+    var checkBool = document.getElementById(inputs[1]).checked
 
-    if (piSelection != none) { // if user has selected a PI
+    if (checkBool) { // if user has selected a PI
+
+        switch (piSelection) { // turn off other toggles
+            case 'pi1':
+                $('#pi2-trigger').bootstrapToggle('off')
+                $('#pi3-trigger').bootstrapToggle('off')                
+                break
+            case 'pi2':
+                $('#pi1-trigger').bootstrapToggle('off')
+                $('#pi3-trigger').bootstrapToggle('off')
+                break
+            case 'pi3':
+                $('#pi1-trigger').bootstrapToggle('off')
+                $('#pi2-trigger').bootstrapToggle('off')
+                break
+        }
+
         piCurrent = piSelection + "_" + yearSelection
 
         colorScalePI.domain(d3.extent(cData, d=>d[piCurrent]))
 
         d3.selectAll(".country")
-            .style("opacity", d => colorScalePI(d[piCurrent]))
-    } else { // if user selects none
-        piCurrent = none
+            .style("opacity", d => {
+                if (d.properties.hasOwnProperty('stat')) {
+                    if (d.properties.stat[piCurrent] !== ''){
+                        return colorScalePI(d.properties.stat[piCurrent])
+                    } else {
+                        return 0.15
+                    }
+                }
+            })
+    } 
 
+    var anyCheckBool = !document.getElementById("pi1-trigger").checked && !document.getElementById("pi2-trigger").checked && !document.getElementById("pi3-trigger").checked
+
+    if (anyCheckBool) { // if user detoggles all PI
         d3.selectAll(".country")
             .style("opacity", 1)
     }
