@@ -67,7 +67,7 @@ const govAttributes = [ {"indicator": "gi1",
                         "infoCardLinkTitle": "The World Bank",
                         "formatText": ".1f"},
                     {"indicator": "gi2",
-                        "name": "Political Stability and Absence of Violence/Terrorism",
+                        "name": "Political Stability and No Violence/Terrorism",
                         "infoCardText": "Political Stability and Absence of Violence/Terrorism measures perceptions of the likelihood of political instability and/or politically-motivated violence, including terrorism. Attribute ranges from -2.5 (weak) to 2.5 (strong) governance performance.",
                         "infoCardLinkURL": "www.govindicators.org",
                         "infoCardLinkTitle": "The World Bank",
@@ -157,7 +157,7 @@ const transitionDuration = 1000
 
 // GI color scale for countries who didn't make it into the world cup
 const colorScaleGIOut = d3.scaleLinear()
-    .range(['#a50f15', '#fee5d9']) // this needs tweaking
+    .range(['#f1eef6', '#bd0026']) // this needs tweaking
 
 // GI color scale for countries who make it into the world cup
 const colorScaleGIIn = d3.scaleLinear()
