@@ -67,7 +67,7 @@ const govAttributes = [ {"indicator": "gi1",
                         "infoCardLinkTitle": "The World Bank",
                         "formatText": ".1f"},
                     {"indicator": "gi2",
-                        "name": "Political Stability and Absence of Violence/Terrorism",
+                        "name": "Political Stability and No Violence/Terrorism",
                         "infoCardText": "Political Stability and Absence of Violence/Terrorism measures perceptions of the likelihood of political instability and/or politically-motivated violence, including terrorism. Attribute ranges from -2.5 (weak) to 2.5 (strong) governance performance.",
                         "infoCardLinkURL": "www.govindicators.org",
                         "infoCardLinkTitle": "The World Bank",
@@ -118,46 +118,67 @@ const perfAttributes = [ {"indicator": "pi1",
                         "infoCardText": "Points scored by a nation during the world cup. Ranges from 0 points to 21 points possible.",
                         "infoCardLinkURL": "www.wikipedia.org",
                         "infoCardLinkTitle": "Wikipedia",
-                        "formatText": ".0f"},
+                        "formatText": ".0f",
+                        "inputID": "pi1-trigger"},
                     {"indicator": "pi2",
                         "name": "Average Points",
                         "infoCardText": "The total number of points scored by a nation divided by the number of games played during the World Cup. Ranges from 0 points",
                         "infoCardLinkURL": "www.wikipedia.org",
                         "infoCardLinkTitle": "Wikipedia",
-                        "formatText": ".2f"},
+                        "formatText": ".2f",
+                        "inputID": "pi2-trigger"},
                     {"indicator": "pi3",
                         "name": "Average Goal Differential",
                         "infoCardText": "The total number of goals scored against a nation subtracted from the total goals scored by that nation, then divided by the number of games played during the World Cup. Minimum and maximum values vary.",
                         "infoCardLinkURL": "www.wikipedia.org",
                         "infoCardLinkTitle": "Wikipedia",
-                        "formatText": ".1f"}
-                    // {"indicator": "none",
-                    //     "name": "None",
-                    //     "infoCardText": "",
-                    //     "infoCardLinkURL": "",
-                    //     "infoCardLinkTitle": "",
-                    //     "formatText": ""}
+                        "formatText": ".1f",
+                        "inputID": "pi3-trigger"}
                     ]
 
 const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
 
 // dynamically set drop down 2 for performance metrics
-d3.select("#dropdownDiv2").selectAll("a")
-     .data(perfAttributes)
-     .enter()
-     .append("a")
-        .attr("class", "dropdown-item")
-        .attr("href", "#")
-        .attr("data-toggle", "collapse")
-        .attr("data-target", "#navbarNavDropdown.show")
-        .on("click", d => perfrender(d.indicator))
-        .text(d => d.name);
+// d3.select("#dropdownDiv2").selectAll("a")
+//      .data(perfAttributes)
+//      .enter()
+//      .append("a")
+//         .attr("class", "dropdown-item")
+//         .attr("href", "#")
+//         .attr("data-toggle", "collapse")
+//         .attr("data-target", "#navbarNavDropdown.show")
+//         .on("click", d => perfrender(d.indicator))
+//         .text(d => d.name);
+
+var buttonDivs = d3.select("#perfButtonDiv").selectAll("div")
+    .data(perfAttributes)
+    .enter()
+    .append("div")
+        // .attr("class", "toggle-group")
+        .attr("align", "left")
+        .style("padding-top", "8px")
+
+buttonDivs.append("input")
+    .attr("id", d => d.inputID)
+    .attr("type", "checkbox")
+    .attr("data-toggle", "toggle")
+    .attr("data-on", "Shown")
+    .attr("data-off", "Hidden")
+    .attr("data-offstyle", "info")
+    .attr("onchange", d => "perfrender(['" + d.indicator + "', '" + d.inputID + "'])" )
+
+buttonDivs.append("button")
+    .attr("type", "checkbox")
+    .attr("class", "btn btn-success")
+    .on("click", d => toggleFunc(d.indicator))
+    .text(d => d.name)    
+    .style("margin-left", "5px")
 
 const transitionDuration = 1000
 
 // GI color scale for countries who didn't make it into the world cup
-const colorScaleGIOut = d3.scaleLinear()
-    .range(['#a50f15', '#fee5d9']) // this needs tweaking
+const colorScaleGIOut = d3.scaleSequential(d3.interpolateViridis)
+    // .range(['#a50f15', '#fee5d9']) // this needs tweaking
 
 // GI color scale for countries who make it into the world cup
 const colorScaleGIIn = d3.scaleLinear()
@@ -165,14 +186,14 @@ const colorScaleGIIn = d3.scaleLinear()
 
 // PI opacity scale
 const colorScalePI = d3.scaleLinear()
-    .range([0.05, 1])
+    .range([0.3, 1])
 
 Promise.all([
     d3.json('data/worldMap50mSimplified.json', function(error, world) {
         if (error) return console.error(error)}),
     d3.csv('data/fifaData.csv', d => {
         for (var key in d) {
-            if (isNaN(+d[key])) {
+            if (isNaN(+d[key]) || d[key] === '') {
                 d[key] = d[key]
             } else {
                 d[key] = +d[key]
@@ -180,7 +201,6 @@ Promise.all([
         }
         return d
     })]
-
 )
     .then(processData)
     .then(createMap)
@@ -318,6 +338,27 @@ function createSlider(giNew){
 }
 
 
+function toggleFunc(ind) {
+    switch (ind) {
+        case 'pi1':
+            $('#pi1-trigger').bootstrapToggle('toggle')
+            $('#pi2-trigger').bootstrapToggle('off')
+            $('#pi3-trigger').bootstrapToggle('off')
+            break
+        case 'pi2':
+            $('#pi1-trigger').bootstrapToggle('off')
+            $('#pi2-trigger').bootstrapToggle('toggle')
+            $('#pi3-trigger').bootstrapToggle('off')
+            break
+        case 'pi3':
+            $('#pi1-trigger').bootstrapToggle('off')
+            $('#pi2-trigger').bootstrapToggle('off')
+            $('#pi3-trigger').bootstrapToggle('toggle')
+            break
+    }
+}
+
+
 function rerender(giNew, yearNew) {
     if (giNew != null) {
         giSelection = giNew
@@ -359,23 +400,25 @@ function rerender(giNew, yearNew) {
             })
 
     function moveToolTip(d) {
-        if (d.properties.stat[giCurrent]) {
-            tooltip.html(`
-                <p>${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-            `)
-            tooltip.style('opacity', 1)
-            let mouseX = d3.event.pageX
-            const tooltipWidth = parseInt(tooltip.style('width'))
-            if ((mouseX + tooltipWidth + 20) >= widthBody - 17) {
-                mouseX = (widthBody - tooltipWidth - 20 - 17)
-            }
-            tooltip.style('left', (mouseX + 10) + 'px')
-            tooltip.style('top', d3.event.pageY + 20 + 'px')
+        if (d.properties.hasOwnProperty('stat')) {
+            if (d.properties.stat[giCurrent]) {
+                tooltip.html(`
+                    <p>${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                `)
+                tooltip.style('opacity', 1)
+                let mouseX = d3.event.pageX
+                const tooltipWidth = parseInt(tooltip.style('width'))
+                if ((mouseX + tooltipWidth + 20) >= widthBody - 17) {
+                    mouseX = (widthBody - tooltipWidth - 20 - 17)
+                }
+                tooltip.style('left', (mouseX + 10) + 'px')
+                tooltip.style('top', d3.event.pageY + 20 + 'px')
 
-            d3.selectAll("." + d.properties.ADM0_A3_US)
-                .style('stroke', '#fff')
-                .style('stroke-width', '2.5')
-                .raise()
+                d3.selectAll("." + d.properties.ADM0_A3_US)
+                    .style('stroke', '#fff')
+                    .style('stroke-width', '2.5')
+                    .raise()
+            }
         }
     }
 
@@ -398,20 +441,47 @@ function rerender(giNew, yearNew) {
 }
 
 // function to change opacity of countries based on PI
-function perfrender(piNew) {
-    // initialize global
-    piSelection = piNew
+function perfrender(inputs) {
+    // initialize globals
+    piSelection = inputs[0]
+    var checkBool = document.getElementById(inputs[1]).checked
 
-    if (piSelection != none) { // if user has selected a PI
+    if (checkBool) { // if user has selected a PI
+
+        switch (piSelection) { // turn off other toggles
+            case 'pi1':
+                $('#pi2-trigger').bootstrapToggle('off')
+                $('#pi3-trigger').bootstrapToggle('off')                
+                break
+            case 'pi2':
+                $('#pi1-trigger').bootstrapToggle('off')
+                $('#pi3-trigger').bootstrapToggle('off')
+                break
+            case 'pi3':
+                $('#pi1-trigger').bootstrapToggle('off')
+                $('#pi2-trigger').bootstrapToggle('off')
+                break
+        }
+
         piCurrent = piSelection + "_" + yearSelection
 
         colorScalePI.domain(d3.extent(cData, d=>d[piCurrent]))
 
         d3.selectAll(".country")
-            .style("opacity", d => colorScalePI(d[piCurrent]))
-    } else { // if user selects none
-        piCurrent = none
+            .style("opacity", d => {
+                if (d.properties.hasOwnProperty('stat')) {
+                    if (d.properties.stat[piCurrent] !== ''){
+                        return colorScalePI(d.properties.stat[piCurrent])
+                    } else {
+                        return 0.15
+                    }
+                }
+            })
+    } 
 
+    var anyCheckBool = !document.getElementById("pi1-trigger").checked && !document.getElementById("pi2-trigger").checked && !document.getElementById("pi3-trigger").checked
+
+    if (anyCheckBool) { // if user detoggles all PI
         d3.selectAll(".country")
             .style("opacity", 1)
     }
