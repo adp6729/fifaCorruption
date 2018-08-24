@@ -225,7 +225,7 @@ function createMap(countryArray) {
              })
              .on("mousemove", moveToolTip)
              .on("mouseout", hideToolTip)
-    createSlider();
+             createSlider();
     return countryArray
 }
 
@@ -288,8 +288,8 @@ d3.select('.card-text')
     .attr("href", govAttributeMap.get(giSelection).infoCardLinkURL)
  d3.select('.sourceLink')
     .text(govAttributeMap.get(giSelection).infoCardLinkTitle)*/
-    //create slider
 
+//create slider
 function createSlider(giNew){
       var slider = d3.sliderHorizontal()
         .min(d3.min(dataSlider))
