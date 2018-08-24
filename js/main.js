@@ -67,7 +67,7 @@ const govAttributes = [ {"indicator": "gi1",
                         "infoCardLinkTitle": "The World Bank",
                         "formatText": ".1f"},
                     {"indicator": "gi2",
-                        "name": "Political Stability and Absence of Violence/Terrorism",
+                        "name": "Political Stability and No Violence/Terrorism",
                         "infoCardText": "Political Stability and Absence of Violence/Terrorism measures perceptions of the likelihood of political instability and/or politically-motivated violence, including terrorism. Attribute ranges from -2.5 (weak) to 2.5 (strong) governance performance.",
                         "infoCardLinkURL": "www.govindicators.org",
                         "infoCardLinkTitle": "The World Bank",
@@ -139,16 +139,16 @@ const perfAttributes = [ {"indicator": "pi1",
 const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
 
 // dynamically set drop down 2 for performance metrics
-d3.select("#dropdownDiv2").selectAll("a")
-     .data(perfAttributes)
-     .enter()
-     .append("a")
-        .attr("class", "dropdown-item")
-        .attr("href", "#")
-        .attr("data-toggle", "collapse")
-        .attr("data-target", "#navbarNavDropdown.show")
-        .on("click", d => perfrender(d.indicator))
-        .text(d => d.name);
+// d3.select("#dropdownDiv2").selectAll("a")
+//      .data(perfAttributes)
+//      .enter()
+//      .append("a")
+//         .attr("class", "dropdown-item")
+//         .attr("href", "#")
+//         .attr("data-toggle", "collapse")
+//         .attr("data-target", "#navbarNavDropdown.show")
+//         .on("click", d => perfrender(d.indicator))
+//         .text(d => d.name);
 
 var buttonDivs = d3.select("#perfButtonDiv").selectAll("div")
     .data(perfAttributes)
@@ -339,7 +339,6 @@ function createSlider(giNew){
 
 
 function toggleFunc(ind) {
-    console.log(ind)
     switch (ind) {
         case 'pi1':
             $('#pi1-trigger').bootstrapToggle('toggle')
