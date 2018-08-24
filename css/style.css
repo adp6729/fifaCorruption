@@ -292,9 +292,9 @@ li {
   color:#85b4dc;
 }
 
-.btn{
+/* .btn{
   background-color:#67a1d3;
-}
+} */
 
 
 /*temporal slider*/
@@ -483,38 +483,22 @@ g .tick text{
   white-space: nowrap;
 }
 
-/* bar chart css */
-
-.bar-chart {
-  height: auto;
+/* position performance buttons */
+#perfButtonDiv{
+  position: absolute;
+  top: 35vw;
+  left: 2vw;
 }
 
-.bar-char-interior {
-  background-color: aqua;
+/* Bootstrap Toggle v2.2.2 corrections for Bootsrtap 4*/
+.toggle-off {
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+}
+.toggle.off {
+  border-color: rgba(0, 0, 0, .25);
 }
 
-.bar-chart path.bar {
-  fill: gray;
-  /* stroke: #fff; */
-}
-
-.bar-chart text.data {
-  fill: white;
-  /* stroke: black; */
-  /* stroke-width: 0.7; */
-  font-family: sans-serif;
-  font-size: 0.85em;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: black;
-  stroke-width: 2px;
-  shape-rendering: crispEdges;
-}
-
-.axis text {
-  font-family: sans-serif;
-  font-size: 1.2em;
+.toggle-handle {
+  background-color: white;
+  border: thin rgba(0, 0, 0, .25) solid;
 }

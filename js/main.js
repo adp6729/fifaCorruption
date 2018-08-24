@@ -118,7 +118,8 @@ const perfAttributes = [ {"indicator": "pi1",
                         "infoCardText": "Points scored by a nation during the world cup. Ranges from 0 points to 21 points possible.",
                         "infoCardLinkURL": "www.wikipedia.org",
                         "infoCardLinkTitle": "Wikipedia",
-                        "formatText": ".0f"},
+                        "formatText": ".0f",
+                        "inputID": "pi1-trigger"},
                     {"indicator": "pi2",
                         "name": "Average Points",
                         "infoCardText": "The total number of points scored by a nation divided by the number of games played during the World Cup. Ranges from 0 points",
@@ -131,12 +132,6 @@ const perfAttributes = [ {"indicator": "pi1",
                         "infoCardLinkURL": "www.wikipedia.org",
                         "infoCardLinkTitle": "Wikipedia",
                         "formatText": ".1f"}
-                    // {"indicator": "none",
-                    //     "name": "None",
-                    //     "infoCardText": "",
-                    //     "infoCardLinkURL": "",
-                    //     "infoCardLinkTitle": "",
-                    //     "formatText": ""}
                     ]
 
 const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
@@ -152,6 +147,30 @@ d3.select("#dropdownDiv2").selectAll("a")
         .attr("data-target", "#navbarNavDropdown.show")
         .on("click", d => perfrender(d.indicator))
         .text(d => d.name);
+
+var buttonDivs = d3.select("#perfButtonDiv").selectAll("div")
+    .data(perfAttributes)
+    .enter()
+    .append("div")
+        // .attr("class", "toggle-group")
+        .attr("align", "left")
+        .style("padding-top", "8px")
+
+buttonDivs.append("input")
+    .attr("id", d => d.inputID)
+    .attr("type", "checkbox")
+    .attr("data-toggle", "toggle")
+    .attr("data-on", "Shown")
+    .attr("data-off", "Hidden")
+    .attr("data-offstyle", "info")
+    .attr("class", "float-left")
+
+buttonDivs.append("button")
+    .attr("type", "checkbox")
+    .attr("class", "btn btn-success")
+    .on("click", d => toggleFunc(d.indicator))
+    .text(d => d.name)    
+    .style("margin-left", "5px")
 
 const transitionDuration = 1000
 
@@ -314,6 +333,15 @@ function createSlider(giNew){
       g.call(slider);
       //d3.select("p#value").text(slider.value());
       //d3.select("a#setValue").on("click", () => slider.value(data));
+}
+
+function toggleFunc(ind) {
+    switch (ind) {
+        case 'pi1':
+            $('#pi1-trigger').bootstrapToggle('toggle')
+        case 'pi2':
+        case 'pi3':
+    }
 }
 
 
