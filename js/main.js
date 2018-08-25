@@ -11,6 +11,18 @@ const widthBody = parseInt(body.style("width"))
 const width = parseInt(container.style("width")) - 30
 const height = width / 2.05
 
+var moving = false;
+var currentValue = 0;
+var targetValue = width;
+
+var playButton = d3.select("#play-button");
+
+var x = d3.scaleLinear()
+    .domain([1996, 2016])
+
+    .range([0, 800])
+    .clamp(true);
+
 const projection = d3.geoNaturalEarth1() // projection used for the mercator projection
     .center([10, 0])
     .scale(160)
@@ -171,13 +183,13 @@ buttonDivs.append("button")
     .attr("type", "checkbox")
     .attr("class", "btn btn-success")
     .on("click", d => toggleFunc(d.indicator))
-    .text(d => d.name)    
+    .text(d => d.name)
     .style("margin-left", "5px")
 
 const transitionDuration = 1000
 
 // GI color scale for countries who didn't make it into the world cup
-const colorScaleGIOut = d3.scaleSequential(d3.interpolateViridis)
+const colorScaleGIOut = d3.scaleSequential(d3.interpolateRdYlGn)
     // .range(['#a50f15', '#fee5d9']) // this needs tweaking
 
 // GI color scale for countries who make it into the world cup
@@ -451,7 +463,7 @@ function perfrender(inputs) {
         switch (piSelection) { // turn off other toggles
             case 'pi1':
                 $('#pi2-trigger').bootstrapToggle('off')
-                $('#pi3-trigger').bootstrapToggle('off')                
+                $('#pi3-trigger').bootstrapToggle('off')
                 break
             case 'pi2':
                 $('#pi1-trigger').bootstrapToggle('off')
@@ -477,7 +489,7 @@ function perfrender(inputs) {
                     }
                 }
             })
-    } 
+    }
 
     var anyCheckBool = !document.getElementById("pi1-trigger").checked && !document.getElementById("pi2-trigger").checked && !document.getElementById("pi3-trigger").checked
 
