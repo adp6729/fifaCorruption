@@ -413,11 +413,11 @@ function toggleFunc(ind) {
     }
 }
 
-
+// function to handle changes to the gi's or years
 function rerender(giNew, yearNew) {
-    if (giNew != null) {
+    if (giNew != null) { // if gi change
         giSelection = giNew
-    } else if (yearNew != null) {
+    } else if (yearNew != null) { // if year change
         yearSelection = yearNew
         piCurrent = piSelection + "_" + yearSelection
 
@@ -427,16 +427,16 @@ function rerender(giNew, yearNew) {
         } else {
             disablePI()
         }
+        // regardless of year or gi change, return all pi toggles to off
+        $('#pi1-trigger').bootstrapToggle('off')
+        $('#pi2-trigger').bootstrapToggle('off')
+        $('#pi3-trigger').bootstrapToggle('off')
 
         // change country opacity back to full on year change
         d3.selectAll('.country')
             .style("opacity", 1)
     }
 
-    // regardless of year or gi change, return all pi toggles to off
-    $('#pi1-trigger').bootstrapToggle('off')
-    $('#pi2-trigger').bootstrapToggle('off')
-    $('#pi3-trigger').bootstrapToggle('off')
 
     // set globals
     giCurrent = giSelection + "_" + yearSelection
