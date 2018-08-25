@@ -20,7 +20,7 @@ $(".sidebar_attribute").css('display', 'none');
     $(".sidebar_attribute").hide();
     $(".toggle_attribute").addClass("opacity_one");
   });
-    
+
   //hide attribute panel when click on hamburger icon
   $("#navbarButton").click(function(){
     $(".sidebar_attribute").hide();
@@ -53,5 +53,5 @@ $(".sidebar_attribute").css('display', 'none');
         $(".sidebar_about").hide();
         $(".toggle_about").addClass("opacity_one");
     });
-    
+
 });

@@ -190,11 +190,7 @@ buttonDivs.append("button")
 const transitionDuration = 1000
 
 // GI color scale for countries who didn't make it into the world cup
-<<<<<<< HEAD
 const colorScaleGIOut = d3.scaleSequential(d3.interpolateRdYlGn)
-=======
-const colorScaleGIOut = d3.scaleSequential(d3.interpolateRdBu)
->>>>>>> 60477eca3b725d66e884a07c24c718c0b8d97c48
     // .range(['#a50f15', '#fee5d9']) // this needs tweaking
 
 // GI color scale for countries who make it into the world cup
@@ -338,7 +334,9 @@ function createSlider(giNew){
         .on('onchange', function(val){
           d3.select("p#value").text((val));
           //console.log(val)
+          worldCupYearColor(val)
           rerender(giNew,val)
+
         })
 
       var g = d3.select("#slider")
@@ -352,6 +350,43 @@ function createSlider(giNew){
       g.call(slider);
       //d3.select("p#value").text(slider.value());
       //d3.select("a#setValue").on("click", () => slider.value(data));
+}
+
+//adds image to world cup years and changes style
+function worldCupYearColor(val){
+    if (val == 1998 || val == 2002 || val == 2006 || val == 2010 || val == 2014){
+
+    d3.select(".display-value")
+      .attr("fill","#ce4d3b")
+      .attr("font-size","28")
+      .attr("dy", "0.6em");
+
+    var width = 200,
+        height = 200;
+
+    var svg = d3.select(".parameter-value").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("x", -17)
+        .attr("y", 20);
+
+    var img = svg.append("svg:image")
+        .attr("class", "soccer-ball")
+        .attr("xlink:href", "img/soccer_favicon2.png")
+        .attr("width", 36)
+        .attr("height", 36)
+        .attr("x", 0)
+        .attr("y",25);
+
+    } else if (val == 1996 || val == 2000 || val == 2004 || val == 2008 || val == 2012 || val == 2016)
+              {d3.select(".display-value")
+                  .attr("fill","white")
+                  .attr("font-size", 28)
+                  .attr("y", 20)
+                  .attr("dy", "0.65em");
+
+      d3.select(".soccer-ball").remove();
+      }
 }
 
 
@@ -386,11 +421,11 @@ function rerender(giNew, yearNew) {
         // disable/enable PI toggles appropriately
         if (worldCupYears.includes(+yearSelection)) {
             enablePI()
-        } else { 
+        } else {
             $('#pi1-trigger').bootstrapToggle('off')
             $('#pi2-trigger').bootstrapToggle('off')
-            $('#pi3-trigger').bootstrapToggle('off') 
-            disablePI() 
+            $('#pi3-trigger').bootstrapToggle('off')
+            disablePI()
         }
     }
     giCurrent = giSelection + "_" + yearSelection
@@ -521,7 +556,7 @@ function disablePI() {
         .classed('disabled', true)
         .property('disabled', true)
         // .style('color', 'grey')
-    
+
     $('.perfToggles').bootstrapToggle('disable')
 
 }
@@ -531,6 +566,6 @@ function enablePI() {
     d3.selectAll('.perfButtons')
         .classed('disabled', false)
         .property('disabled', false)
-    
+
     $('.perfToggles').bootstrapToggle('enable')
 }
