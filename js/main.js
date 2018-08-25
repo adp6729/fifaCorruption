@@ -367,9 +367,15 @@ function rerender(giNew, yearNew) {
         yearSelection = yearNew
         piCurrent = piSelection + "_" + yearSelection
 
+        // disable/enable PI toggles appropriately
         if (worldCupYears.includes(+yearSelection)) {
             enablePI()
-        } else { disablePI() }
+        } else { 
+            $('#pi1-trigger').bootstrapToggle('off')
+            $('#pi2-trigger').bootstrapToggle('off')
+            $('#pi3-trigger').bootstrapToggle('off') 
+            disablePI() 
+        }
     }
     giCurrent = giSelection + "_" + yearSelection
 
@@ -488,7 +494,7 @@ function perfrender(inputs) {
 
     if (anyCheckBool) { // if user detoggles all PI
         d3.selectAll(".country")
-            .style("opacity", 0.5)
+            .style("opacity", 1)
     }
 
 }
