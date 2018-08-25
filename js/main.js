@@ -177,7 +177,7 @@ buttonDivs.append("input")
     .attr("data-toggle", "toggle")
     .attr("data-on", "Shown")
     .attr("data-off", "Hidden")
-    .attr("data-onstyle", "info")
+    .attr("data-onstyle", "warning")
     .attr("data-offstyle", "secondary")
     .attr("onchange", d => "perfrender(['" + d.indicator + "', '" + d.inputID + "'])" )
 
@@ -357,6 +357,8 @@ function createSlider(giNew){
 function worldCupYearColor(val){
     if (worldCupYears.includes(val)) {
 
+        wcLogoFile = "world-cup-" + val.toString() + ".png"
+
         d3.select(".display-value")
         .attr("fill","#ce4d3b")
         .attr("font-size","28")
@@ -373,7 +375,7 @@ function worldCupYearColor(val){
 
         var img = svg.append("svg:image")
             .attr("class", "soccer-ball")
-            .attr("xlink:href", "img/soccer_favicon2.png")
+            .attr("xlink:href", "img/" + wcLogoFile)
             .attr("width", 36)
             .attr("height", 36)
             .attr("x", 0)
@@ -423,14 +425,23 @@ function rerender(giNew, yearNew) {
         if (worldCupYears.includes(+yearSelection)) {
             enablePI()
         } else {
-            $('#pi1-trigger').bootstrapToggle('off')
-            $('#pi2-trigger').bootstrapToggle('off')
-            $('#pi3-trigger').bootstrapToggle('off')
             disablePI()
         }
+
+        // change country opacity back to full on year change
+        d3.selectAll('.country')
+            .style("opacity", 1)
     }
+
+    // regardless of year or gi change, return all pi toggles to off
+    $('#pi1-trigger').bootstrapToggle('off')
+    $('#pi2-trigger').bootstrapToggle('off')
+    $('#pi3-trigger').bootstrapToggle('off')
+
+    // set globals
     giCurrent = giSelection + "_" + yearSelection
 
+    // get format for gi
     const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
 
     // Reset indicator text on nav bar
@@ -461,7 +472,6 @@ function rerender(giNew, yearNew) {
                 }
                 return outColor
             })
-            .style("opacity", 1)
 
     function moveToolTip(d) {
         if (d.properties.hasOwnProperty('stat')) {
