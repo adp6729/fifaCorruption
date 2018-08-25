@@ -177,12 +177,13 @@ buttonDivs.append("input")
     .attr("data-toggle", "toggle")
     .attr("data-on", "Shown")
     .attr("data-off", "Hidden")
-    .attr("data-offstyle", "info")
+    .attr("data-onstyle", "info")
+    .attr("data-offstyle", "secondary")
     .attr("onchange", d => "perfrender(['" + d.indicator + "', '" + d.inputID + "'])" )
 
 buttonDivs.append("button")
     .attr("type", "checkbox")
-    .attr("class", "btn btn-success perfButtons")
+    .attr("class", "btn btn-dark perfButtons")
     .on("click", d => toggleFunc(d.indicator))
     .text(d => d.name)
     .style("margin-left", "5px")
@@ -354,39 +355,39 @@ function createSlider(giNew){
 
 //adds image to world cup years and changes style
 function worldCupYearColor(val){
-    if (val == 1998 || val == 2002 || val == 2006 || val == 2010 || val == 2014){
+    if (worldCupYears.includes(val)) {
 
-    d3.select(".display-value")
-      .attr("fill","#ce4d3b")
-      .attr("font-size","28")
-      .attr("dy", "0.6em");
+        d3.select(".display-value")
+        .attr("fill","#ce4d3b")
+        .attr("font-size","28")
+        .attr("dy", "0.6em");
 
-    var width = 200,
-        height = 200;
+        var width = 200,
+            height = 200;
 
-    var svg = d3.select(".parameter-value").append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .attr("x", -17)
-        .attr("y", 20);
+        var svg = d3.select(".parameter-value").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("x", -17)
+            .attr("y", 20);
 
-    var img = svg.append("svg:image")
-        .attr("class", "soccer-ball")
-        .attr("xlink:href", "img/soccer_favicon2.png")
-        .attr("width", 36)
-        .attr("height", 36)
-        .attr("x", 0)
-        .attr("y",25);
+        var img = svg.append("svg:image")
+            .attr("class", "soccer-ball")
+            .attr("xlink:href", "img/soccer_favicon2.png")
+            .attr("width", 36)
+            .attr("height", 36)
+            .attr("x", 0)
+            .attr("y",25);
 
-    } else if (val == 1996 || val == 2000 || val == 2004 || val == 2008 || val == 2012 || val == 2016)
-              {d3.select(".display-value")
-                  .attr("fill","white")
-                  .attr("font-size", 28)
-                  .attr("y", 20)
-                  .attr("dy", "0.65em");
+    } else if (!worldCupYears.includes(val)) {
+        d3.select(".display-value")
+            .attr("fill","white")
+            .attr("font-size", 28)
+            .attr("y", 20)
+            .attr("dy", "0.65em")
 
-      d3.select(".soccer-ball").remove();
-      }
+        d3.select(".soccer-ball").remove()
+    }
 }
 
 
@@ -460,6 +461,7 @@ function rerender(giNew, yearNew) {
                 }
                 return outColor
             })
+            .style("opacity", 1)
 
     function moveToolTip(d) {
         if (d.properties.hasOwnProperty('stat')) {
@@ -555,7 +557,6 @@ function disablePI() {
     d3.selectAll('.perfButtons')
         .classed('disabled', true)
         .property('disabled', true)
-        // .style('color', 'grey')
 
     $('.perfToggles').bootstrapToggle('disable')
 
