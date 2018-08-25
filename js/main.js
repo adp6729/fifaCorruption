@@ -7,6 +7,7 @@ const container = d3.select(".map-container")
 const chart = d3.select(".bar-chart")
 const tooltip = d3.select(".main-tooltip")
 const dataSlider = [1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016]
+const worldCupYears = [1998,2002,2006,2010,2014]
 const widthBody = parseInt(body.style("width"))
 const width = parseInt(container.style("width")) - 30
 const height = width / 2.05
@@ -154,12 +155,12 @@ var buttonDivs = d3.select("#perfButtonDiv").selectAll("div")
     .data(perfAttributes)
     .enter()
     .append("div")
-        // .attr("class", "toggle-group")
         .attr("align", "left")
         .style("padding-top", "8px")
 
 buttonDivs.append("input")
     .attr("id", d => d.inputID)
+    .attr("class", "perfToggles")
     .attr("type", "checkbox")
     .attr("data-toggle", "toggle")
     .attr("data-on", "Shown")
@@ -169,7 +170,7 @@ buttonDivs.append("input")
 
 buttonDivs.append("button")
     .attr("type", "checkbox")
-    .attr("class", "btn btn-success")
+    .attr("class", "btn btn-success perfButtons")
     .on("click", d => toggleFunc(d.indicator))
     .text(d => d.name)    
     .style("margin-left", "5px")
@@ -177,7 +178,7 @@ buttonDivs.append("button")
 const transitionDuration = 1000
 
 // GI color scale for countries who didn't make it into the world cup
-const colorScaleGIOut = d3.scaleSequential(d3.interpolateViridis)
+const colorScaleGIOut = d3.scaleSequential(d3.interpolateInferno)
     // .range(['#a50f15', '#fee5d9']) // this needs tweaking
 
 // GI color scale for countries who make it into the world cup
@@ -365,6 +366,10 @@ function rerender(giNew, yearNew) {
     } else if (yearNew != null) {
         yearSelection = yearNew
         piCurrent = piSelection + "_" + yearSelection
+
+        if (worldCupYears.includes(+yearSelection)) {
+            enablePI()
+        } else { disablePI() }
     }
     giCurrent = giSelection + "_" + yearSelection
 
@@ -483,21 +488,27 @@ function perfrender(inputs) {
 
     if (anyCheckBool) { // if user detoggles all PI
         d3.selectAll(".country")
-            .style("opacity", 1)
+            .style("opacity", 0.5)
     }
 
 }
 
-// function to disable PI dropdown button
+// function to disable PI button
 function disablePI() {
-    d3.select('#navbarDropdownMenuLink2')
+    d3.selectAll('.perfButtons')
         .classed('disabled', true)
-        .style('color', 'grey')
+        .property('disabled', true)
+        // .style('color', 'grey')
+    
+    $('.perfToggles').bootstrapToggle('disable')
+
 }
 
-// function to enable PI dropdown button
+// function to enable PI button
 function enablePI() {
-    d3.select('#navbarDropdownMenuLink2')
+    d3.selectAll('.perfButtons')
         .classed('disabled', false)
-        .style('color', '#f7ca45')
+        .property('disabled', false)
+    
+    $('.perfToggles').bootstrapToggle('enable')
 }
