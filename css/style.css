@@ -48,6 +48,10 @@ li {
 @media screen and (min-width: 75em) {
     .navbar{
         padding: 6px;
+        height: 56px;
+    }
+    #navbarNavDropdown {
+        height: 56px;
     }
 }
 
