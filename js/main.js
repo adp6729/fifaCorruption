@@ -427,7 +427,7 @@ function rerender(giNew, yearNew) {
         } else {
             disablePI()
         }
-        // regardless of year or gi change, return all pi toggles to off
+        // on year change, return all pi toggles to off
         $('#pi1-trigger').bootstrapToggle('off')
         $('#pi2-trigger').bootstrapToggle('off')
         $('#pi3-trigger').bootstrapToggle('off')
@@ -565,8 +565,10 @@ function perfrender(inputs) {
 // function to disable PI button
 function disablePI() {
     d3.selectAll('.perfButtons')
-        .classed('disabled', true)
         .property('disabled', true)
+    
+    buttonDivs.selectAll('div')
+        .classed("disabled", true)
 
     $('.perfToggles').bootstrapToggle('disable')
 
@@ -575,8 +577,10 @@ function disablePI() {
 // function to enable PI button
 function enablePI() {
     d3.selectAll('.perfButtons')
-        .classed('disabled', false)
         .property('disabled', false)
+    
+    buttonDivs.selectAll('div')
+        .classed("disabled", false)
 
     $('.perfToggles').bootstrapToggle('enable')
 }
