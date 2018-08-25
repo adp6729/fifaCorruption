@@ -125,8 +125,8 @@ li {
   color:white;
   cursor:pointer;
   font-style: normal;
-  margin-left: 15px;
-  padding-right:15px;
+  margin-left: 5px;
+  padding-right:7px;
   z-index: 100000;
 }
 @media only screen and (max-width: 25em) {
@@ -251,7 +251,7 @@ li {
   cursor:pointer;
   font-style: normal;
   margin-left: 15px;
-  margin-right: 20px;
+  margin-right: 10px;
   z-index: 100000;
 }
 
