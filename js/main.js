@@ -177,7 +177,7 @@ buttonDivs.append("button")
 const transitionDuration = 1000
 
 // GI color scale for countries who didn't make it into the world cup
-const colorScaleGIOut = d3.scaleSequential(d3.interpolateViridis)
+const colorScaleGIOut = d3.scaleSequential(d3.interpolateRdGy)
     // .range(['#a50f15', '#fee5d9']) // this needs tweaking
 
 // GI color scale for countries who make it into the world cup
