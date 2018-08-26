@@ -358,6 +358,7 @@ function worldCupYearColor(val){
     if (worldCupYears.includes(val)) {
 
         wcLogoFile = "world-cup-" + val.toString() + ".png"
+        soccerBall = "soccer_favicon.png"
 
         d3.select(".display-value")
         .attr("fill","#ce4d3b")
@@ -371,11 +372,11 @@ function worldCupYearColor(val){
             .attr("width", width)
             .attr("height", height)
             .attr("x", -17)
-            .attr("y", 20);
+            .attr("y", 20)
 
         var img = svg.append("svg:image")
             .attr("class", "soccer-ball")
-            .attr("xlink:href", "img/" + wcLogoFile)
+            .attr("xlink:href", "img/" + soccerBall)
             .attr("width", 36)
             .attr("height", 36)
             .attr("x", 0)
@@ -421,22 +422,22 @@ function rerender(giNew, yearNew) {
         yearSelection = yearNew
         piCurrent = piSelection + "_" + yearSelection
 
+        // on year change, return all pi toggles to off
+        $('#pi1-trigger').bootstrapToggle('off')
+        $('#pi2-trigger').bootstrapToggle('off')
+        $('#pi3-trigger').bootstrapToggle('off')
+
+        // year change sets opacity to 1
+        d3.selectAll(".country")
+            .style("opacity", 1)
+
         // disable/enable PI toggles appropriately
         if (worldCupYears.includes(+yearSelection)) {
             enablePI()
         } else {
             disablePI()
         }
-        // on year change, return all pi toggles to off
-        $('#pi1-trigger').bootstrapToggle('off')
-        $('#pi2-trigger').bootstrapToggle('off')
-        $('#pi3-trigger').bootstrapToggle('off')
-
-        // change country opacity back to full on year change
-        d3.selectAll('.country')
-            .style("opacity", 1)
     }
-
 
     // set globals
     giCurrent = giSelection + "_" + yearSelection
