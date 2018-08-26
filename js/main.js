@@ -153,13 +153,13 @@ console.log(perfAttributeMap)
 // create svg to hold the world cup logo above the pi section
 var wclogoSVG = d3.select('#wclogo')
     .append('svg')
-        .attr("width", "11vw")
-        .attr("height", "11vw")
+        .attr("width", window.innerWidth * 0.11 + 'px')
+        .attr("height", window.innerWidth * 0.11 + 'px')
 
 var wclogoSVG_panel = d3.select('#wclogo-panel')
     .append('svg')
-        .attr("width", "11vw")
-        .attr("height", "11vw")
+        .attr("width", window.innerWidth * 0.11 + 'px')
+        .attr("height", window.innerWidth * 0.11 + 'px')
 
 var buttonDivs = d3.select("#perfButtonDiv").selectAll("div")
     .data(perfAttributes)
@@ -503,14 +503,14 @@ function rerender(giNew, yearNew) {
             wclogoSVG.append("svg:image")
                 .attr("class", "wclogoImage")
                 .attr("xlink:href", "img/" + wcLogoFile)
-                .attr("width", "10vw")
-                .attr("height", "10vw")
+                .attr("width", window.innerWidth * 0.10 + 'px')
+                .attr("height", window.innerWidth * 0.10 + 'px')
 
             wclogoSVG_panel.append("svg:image")
                 .attr("class", "wclogoImage-attr")
                 .attr("xlink:href", "img/" + wcLogoFile)
-                .attr("width", "10vw")
-                .attr("height", "10vw")
+                .attr("width", window.innerWidth * 0.10 + 'px')
+                .attr("height", window.innerWidth * 0.10 + 'px')
             $("#wclogo-panel").css("background-color", "rgba(255,255,255,0.7)");
         } else {
             disablePI()
