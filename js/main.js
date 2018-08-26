@@ -435,19 +435,13 @@ function toggleFunc(ind) {
     switch (ind) {
         case 'pi1':
             $('#pi1-trigger').bootstrapToggle('toggle')
-            $('#pi2-trigger').bootstrapToggle('off')
-            $('#pi3-trigger').bootstrapToggle('off')
             togglePICard(1)
             break
         case 'pi2':
-            $('#pi1-trigger').bootstrapToggle('off')
             $('#pi2-trigger').bootstrapToggle('toggle')
-            $('#pi3-trigger').bootstrapToggle('off')
             togglePICard(2)
             break
         case 'pi3':
-            $('#pi1-trigger').bootstrapToggle('off')
-            $('#pi2-trigger').bootstrapToggle('off')
             $('#pi3-trigger').bootstrapToggle('toggle')
             togglePICard(3)
             break
@@ -602,10 +596,22 @@ function rerender(giNew, yearNew) {
 
 // function to change opacity of countries based on PI
 function perfrender(inputs) {
-    // initialize globals
-    piSelection = inputs[0]
+
+    // true if user detoggles all PI
+    var anyCheckBool = !document.getElementById("pi1-trigger").checked && !document.getElementById("pi2-trigger").checked && !document.getElementById("pi3-trigger").checked
+    
+    if (anyCheckBool) { // if all PI are detoggled, exit perfrender immediately
+        return
+    }
+
+    // true if current call to perfrender is by toggled that is toggled to 'shown'
     var checkBool = document.getElementById(inputs[1]).checked
-    if (checkBool) { // if user has selected a PI
+
+    if (checkBool) { // if user has selected the current PI (as opposed to deselected it)
+        
+        // initialize globals piSelection, otherwise this perfrender call is a deselect, so don't set
+        piSelection = inputs[0]
+
         switch (piSelection) { // turn off other toggles
             case 'pi1':
                 addPICard(piSelection)
@@ -627,6 +633,7 @@ function perfrender(inputs) {
                 break
         }
 
+        // initialize global piCurrent
         piCurrent = piSelection + "_" + yearSelection
 
         // get format for pi
@@ -635,61 +642,58 @@ function perfrender(inputs) {
         colorScalePI.domain(d3.extent(cData, d=>d[piCurrent]))
 
         d3.selectAll(".country")
-        .on("mousemove", moveToolTip)
-        .on("mouseout", hideToolTip)
-            .style("opacity", d => {
-                if (d.properties.hasOwnProperty('stat')) {
-                    if (d.properties.stat[piCurrent] !== ''){
-                        return colorScalePI(d.properties.stat[piCurrent])
-                    } else {
-                        return 0.15
-                    }
-                }
-            })
-
-            function moveToolTip(d) {
-              if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
-                  tooltip.html(`
-                    <p id="tooltip-country">${d.properties.ADMIN}</p><br>
-                    <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
-                    <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-                  `)} else {
-                    tooltip.html(`
-                      <p class="tooltip-country-gi">${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-                        `)}
-
-                        tooltip.style('opacity', 1)
-                        let mouseX = d3.event.pageX
-                        const tooltipWidth = parseInt(tooltip.style('width'))
-                        if ((mouseX + tooltipWidth + 20) >= widthBody - 17) {
-                            mouseX = (widthBody - tooltipWidth - 20 - 17)
+            .on("mousemove", moveToolTip)
+            .on("mouseout", hideToolTip)
+                .style("opacity", d => {
+                    if (d.properties.hasOwnProperty('stat')) {
+                        if (d.properties.stat[piCurrent] !== ''){
+                            return colorScalePI(d.properties.stat[piCurrent])
+                        } else {
+                            return 0.15
                         }
-                        tooltip.style('left', (mouseX + 10) + 'px')
-                        tooltip.style('top', d3.event.pageY + 20 + 'px')
-
-                        d3.selectAll("." + d.properties.ADM0_A3_US)
-                            .style('stroke', '#fff')
-                            .style('stroke-width', '2.5')
-                            .raise()
                     }
+                })
 
+        function moveToolTip(d) {
+            if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
+                tooltip.html(`
+                <p id="tooltip-country">${d.properties.ADMIN}</p><br>
+                <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
+                <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                `)} else {
+                tooltip.html(`
+                    <p class="tooltip-country-gi">${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                    `)}
 
+                    tooltip.style('opacity', 1)
+                    let mouseX = d3.event.pageX
+                    const tooltipWidth = parseInt(tooltip.style('width'))
+                    if ((mouseX + tooltipWidth + 20) >= widthBody - 17) {
+                        mouseX = (widthBody - tooltipWidth - 20 - 17)
+                    }
+                    tooltip.style('left', (mouseX + 10) + 'px')
+                    tooltip.style('top', d3.event.pageY + 20 + 'px')
 
-            function hideToolTip(d) {
-                tooltip.style('opacity', 0)
-                d3.selectAll("." + d.properties.ADM0_A3_US)
-                        .style('stroke', 'white')
-                        .style('stroke-width', '0.5')
-            }
+                    d3.selectAll("." + d.properties.ADM0_A3_US)
+                        .style('stroke', '#fff')
+                        .style('stroke-width', '2.5')
+                        .raise()
+        }
 
-  }
+        function hideToolTip(d) {
+            tooltip.style('opacity', 0)
+            d3.selectAll("." + d.properties.ADM0_A3_US)
+                    .style('stroke', 'white')
+                    .style('stroke-width', '0.5')
+        }
 
-    var anyCheckBool = !document.getElementById("pi1-trigger").checked && !document.getElementById("pi2-trigger").checked && !document.getElementById("pi3-trigger").checked
-
+    }
+    
     if (anyCheckBool && rerenderInd > 0 ) { // if user detoggles all PI and after the initial page render
         d3.selectAll(".country")
             .style("opacity", 1)
         hidePICard()
+        return
     }
 
   }
