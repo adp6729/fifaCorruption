@@ -621,6 +621,10 @@ function disablePI() {
     d3.selectAll('.perfButtons')
         .property('disabled', true)
     
+    $("#pi1-trigger").bootstrapToggle('off');
+    $("#pi2-trigger").bootstrapToggle('off');
+    $("#pi2-trigger").bootstrapToggle('off');
+    
     buttonDivs.selectAll('div')
         .classed("disabled", true)
 
