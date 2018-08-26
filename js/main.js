@@ -163,12 +163,17 @@ const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
 //         .on("click", d => perfrender(d.indicator))
 //         .text(d => d.name);
 
+var wclogoSVG = d3.select('#wclogo')
+    .append('svg')
+        .attr("width", "11vw")
+        .attr("height", "11vw")
+
 var buttonDivs = d3.select("#perfButtonDiv").selectAll("div")
     .data(perfAttributes)
     .enter()
     .append("div")
         .attr("align", "left")
-        .style("padding-top", "8px")
+        .style("padding-top", "6px")
 
 buttonDivs.append("input")
     .attr("id", d => d.inputID)
@@ -359,6 +364,7 @@ function worldCupYearColor(val){
     if (worldCupYears.includes(val)) {
 
         wcLogoFile = "world-cup-" + val.toString() + ".png"
+        soccerBall = "soccer_favicon.png"
 
         d3.select(".display-value")
         .attr("fill","#ce4d3b")
@@ -372,11 +378,11 @@ function worldCupYearColor(val){
             .attr("width", width)
             .attr("height", height)
             .attr("x", -17)
-            .attr("y", 20);
+            .attr("y", 20)
 
         var img = svg.append("svg:image")
             .attr("class", "soccer-ball")
-            .attr("xlink:href", "img/" + wcLogoFile)
+            .attr("xlink:href", "img/" + soccerBall)
             .attr("width", 36)
             .attr("height", 36)
             .attr("x", 0)
@@ -447,6 +453,7 @@ function rerender(giNew, yearNew) {
         yearSelection = yearNew
         piCurrent = piSelection + "_" + yearSelection
 
+<<<<<<< HEAD
         // disable/enable PI toggles appropriately
         if (worldCupYears.includes(+yearSelection)) {
             enablePI()
@@ -454,16 +461,33 @@ function rerender(giNew, yearNew) {
             disablePI()
             hidePICard()
         }
+=======
+>>>>>>> f2487cfb413a6b7423178fb0452cb5b6e1fc4d45
         // on year change, return all pi toggles to off
         $('#pi1-trigger').bootstrapToggle('off')
         $('#pi2-trigger').bootstrapToggle('off')
         $('#pi3-trigger').bootstrapToggle('off')
 
-        // change country opacity back to full on year change
-        d3.selectAll('.country')
+        // year change sets opacity to 1
+        d3.selectAll(".country")
             .style("opacity", 1)
-    }
 
+        // disable/enable PI toggles appropriately, show wc logo
+        if (worldCupYears.includes(+yearSelection)) {
+            enablePI()
+
+            // add wc logo img
+            wcLogoFile = "world-cup-" + yearSelection + ".png"
+            wclogoSVG.append("svg:image")
+                .attr("class", "wclogoImage")
+                .attr("xlink:href", "img/" + wcLogoFile)
+                .attr("width", "10vw")
+                .attr("height", "10vw")
+        } else {
+            disablePI()
+            d3.select(".wclogoImage").remove()
+        }
+    }
 
     // set globals
     giCurrent = giSelection + "_" + yearSelection
