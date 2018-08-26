@@ -492,11 +492,6 @@ function rerender(giNew, yearNew) {
         }
     } else if (yearNew != null) { // if year change
 
-        // on year change, return all pi toggles to off
-        $('#pi1-trigger').bootstrapToggle('off')
-        $('#pi2-trigger').bootstrapToggle('off')
-        $('#pi3-trigger').bootstrapToggle('off')
-
         // set globals
         yearSelection = yearNew
         piCurrent = piSelection + "_" + yearSelection
@@ -505,14 +500,21 @@ function rerender(giNew, yearNew) {
         // disable/enable PI toggles appropriately
         if (worldCupYears.includes(+yearSelection)) {
             enablePI()
+
+            perfrender([piSelection, perfAttributeMap.get(piSelection).inputID])
         } else {
-            disablePI()
+            // on year change to non world cup year, return all pi toggles to off
+            $('#pi1-trigger').bootstrapToggle('off')
+            $('#pi2-trigger').bootstrapToggle('off')
+            $('#pi3-trigger').bootstrapToggle('off')
+
+            // year change sets opacity to 1
+            d3.selectAll(".country")
+            .style("opacity", 1)
+
+            // disablePI()
             hidePICard()
         }
-
-        // year change sets opacity to 1
-        d3.selectAll(".country")
-            .style("opacity", 1)
 
         // remove old world cup year logo
         d3.select(".wclogoImage").remove()
@@ -578,33 +580,32 @@ function rerender(giNew, yearNew) {
                 return outColor
             })
 
-    function moveToolTip(d) {
-        if (d.properties.hasOwnProperty('stat')) {
-            if(typeof d.properties.stat[giCurrent] === 'string'){
-                if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
-                    tooltip.html(`
-                      <p id="tooltip-country">${d.properties.ADMIN}</p><br>
-                      <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
-                      <p class="performance-attribute"><span class="number">No Data</span></p>
-                `)} else {
-                      tooltip.html(`
-                        <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
-                        <p class="performance-attribute"><span class="number">No Data</span></p>
-                `)}
-            }else{
+            function moveToolTip(d) {
+                if (d.properties.hasOwnProperty('stat')) {
+                    if(typeof d.properties.stat[giCurrent] === 'string'){
+                        if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
+                            tooltip.html(`
+                              <p id="tooltip-country">${d.properties.ADMIN}</p><br>
+                              <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
+                              <p class="performance-attribute"><span class="number">No Data</span></p>
+                        `)} else {
+                              tooltip.html(`
+                                <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+                                <p class="performance-attribute"><span class="number">No Data</span></p>
+                        `)}
+                    }else{
 
-                if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
-                    tooltip.html(`
-                      <p id="tooltip-country">${d.properties.ADMIN}</p><br>
-                      <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
-                      <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-                `)} else {
-                      tooltip.html(`
-                        <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
-                        <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-                `)}
-            }
-
+                        if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
+                            tooltip.html(`
+                              <p id="tooltip-country">${d.properties.ADMIN}</p><br>
+                              <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
+                              <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                        `)} else {
+                              tooltip.html(`
+                                <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+                                <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                        `)}
+                    }
                 tooltip.style('opacity', 1)
                 let mouseX = d3.event.pageX
                 const tooltipWidth = parseInt(tooltip.style('width'))
