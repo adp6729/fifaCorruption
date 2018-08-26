@@ -151,18 +151,7 @@ const perfAttributes = [ {"indicator": "pi1",
 
 const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
 
-// dynamically set drop down 2 for performance metrics
-// d3.select("#dropdownDiv2").selectAll("a")
-//      .data(perfAttributes)
-//      .enter()
-//      .append("a")
-//         .attr("class", "dropdown-item")
-//         .attr("href", "#")
-//         .attr("data-toggle", "collapse")
-//         .attr("data-target", "#navbarNavDropdown.show")
-//         .on("click", d => perfrender(d.indicator))
-//         .text(d => d.name);
-
+// create svg to hold the world cup logo above the pi section
 var wclogoSVG = d3.select('#wclogo')
     .append('svg')
         .attr("width", "11vw")
@@ -197,7 +186,8 @@ const transitionDuration = 1000
 
 // GI color scale for countries who didn't make it into the world cup
 const colorScaleGIOut = d3.scaleSequential(d3.interpolateRdYlGn)
-    // .range(['#a50f15', '#fee5d9']) // this needs tweaking
+// const colorScaleGIOut = d3.scaleLinear()
+//     .range(['#ff8000', '#2db300']) // this needs tweaking
 
 // GI color scale for countries who make it into the world cup
 const colorScaleGIIn = d3.scaleLinear()
@@ -450,10 +440,18 @@ function toggleFunc(ind) {
     }
 }
 
+var rerenderInd = 0 // track calls to worldCupYearColor for soccerBall removal
+
 // function to handle changes to the gi's or years
 function rerender(giNew, yearNew) {
     if (giNew != null) { // if gi change
         giSelection = giNew
+
+        // if the rerender function has been called before remove .soccer-ball
+        if (rerenderInd == 0) {
+            d3.selectAll(".country")
+                .style("opacity", 1)  
+        }
     } else if (yearNew != null) { // if year change
 
         // on year change, return all pi toggles to off
@@ -499,6 +497,7 @@ function rerender(giNew, yearNew) {
 
     // set globals
     giCurrent = giSelection + "_" + yearSelection
+    rerenderInd += 1
 
     // get format for gi
     const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
@@ -618,7 +617,7 @@ function perfrender(inputs) {
 
     var anyCheckBool = !document.getElementById("pi1-trigger").checked && !document.getElementById("pi2-trigger").checked && !document.getElementById("pi3-trigger").checked
 
-    if (anyCheckBool) { // if user detoggles all PI
+    if (anyCheckBool && rerenderInd > 0 ) { // if user detoggles all PI and after the initial page render
         d3.selectAll(".country")
             .style("opacity", 1)
         hidePICard()
