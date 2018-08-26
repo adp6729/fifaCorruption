@@ -149,7 +149,7 @@ const perfAttributes = [ {"indicator": "pi1",
                     ]
 
 const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
-console.log(perfAttributeMap)
+
 // create svg to hold the world cup logo above the pi section
 var wclogoSVG = d3.select('#wclogo')
     .append('svg')
@@ -270,7 +270,8 @@ function moveToolTip(d) {
         if (d.properties.stat[giCurrent]) {
             const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
             tooltip.html(`
-                <p class="tooltip-country-gi">${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+              <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+              <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
             `)
             tooltip.style('opacity', 1)
             let mouseX = d3.event.pageX
@@ -565,7 +566,8 @@ function rerender(giNew, yearNew) {
                   <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
                 `)} else {
                   tooltip.html(`
-                    <p class="tooltip-country-gi">${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                    <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+                    <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
                       `)}
                 tooltip.style('opacity', 1)
                 let mouseX = d3.event.pageX
@@ -657,7 +659,8 @@ function perfrender(inputs) {
                     <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
                   `)} else {
                     tooltip.html(`
-                      <p class="tooltip-country-gi">${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                      <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+                      <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
                         `)}
 
                         tooltip.style('opacity', 1)
