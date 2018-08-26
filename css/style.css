@@ -278,6 +278,25 @@ li {
   padding:5px 25px;
 }
 
+.pi-header{
+   color:white;
+   font-family:'lato';
+   font-weight: 400;
+   font-size:17px;
+   text-align:center;
+   padding:10px 0;
+}
+
+.pi-text{
+  color:white;
+  opacity:0.8;
+  font-family:'lato';
+  font-weight: 400;
+  font-size:14px;
+  text-align:left;
+  padding:5px 25px;
+}
+
 .hide_attribute{
   margin-right: -250px;
 }
@@ -330,6 +349,9 @@ li {
   color:#85b4dc;
 }
 
+#piCard{
+    margin-top: 50px;
+}
 /* .btn{
   background-color:#67a1d3;
 } */
@@ -525,6 +547,15 @@ g .tick text{
   color: white;
   display: inline;
   white-space: nowrap;
+}
+
+/* position wc logo */
+#wclogo{
+  position: absolute;
+  top: 25vw;
+  left: 4vw;
+  height: 11vw;
+  width: 11vw;
 }
 
 /* position performance buttons */

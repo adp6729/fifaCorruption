@@ -163,12 +163,17 @@ const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
 //         .on("click", d => perfrender(d.indicator))
 //         .text(d => d.name);
 
+var wclogoSVG = d3.select('#wclogo')
+    .append('svg')
+        .attr("width", "11vw")
+        .attr("height", "11vw")
+
 var buttonDivs = d3.select("#perfButtonDiv").selectAll("div")
     .data(perfAttributes)
     .enter()
     .append("div")
         .attr("align", "left")
-        .style("padding-top", "8px")
+        .style("padding-top", "6px")
 
 buttonDivs.append("input")
     .attr("id", d => d.inputID)
@@ -177,12 +182,13 @@ buttonDivs.append("input")
     .attr("data-toggle", "toggle")
     .attr("data-on", "Shown")
     .attr("data-off", "Hidden")
-    .attr("data-offstyle", "info")
+    .attr("data-onstyle", "warning")
+    .attr("data-offstyle", "secondary")
     .attr("onchange", d => "perfrender(['" + d.indicator + "', '" + d.inputID + "'])" )
 
 buttonDivs.append("button")
     .attr("type", "checkbox")
-    .attr("class", "btn btn-success perfButtons")
+    .attr("class", "btn btn-dark perfButtons")
     .on("click", d => toggleFunc(d.indicator))
     .text(d => d.name)
     .style("margin-left", "5px")
@@ -303,6 +309,7 @@ d3.select('.card-header')
 d3.select('.card-text')
     .text(govAttributeMap.get(giSelection).infoCardText)
 
+
  /*d3.select('.infocard')
     .style('left', 0 + 'px')
     .style('height',100 + 'vh')
@@ -354,82 +361,136 @@ function createSlider(giNew){
 
 //adds image to world cup years and changes style
 function worldCupYearColor(val){
-    if (val === 1998 || val === 2002 || val === 2006 || val === 2010 || val === 2014){
+    if (worldCupYears.includes(val)) {
 
-    d3.select(".display-value")
-      .attr("fill","#ce4d3b")
-      .attr("font-size","28")
-      .attr("dy", "0.6em");
+        wcLogoFile = "world-cup-" + val.toString() + ".png"
+        soccerBall = "soccer_favicon.png"
 
-    var width = 200,
-        height = 200;
+        d3.select(".display-value")
+        .attr("fill","#ce4d3b")
+        .attr("font-size","28")
+        .attr("dy", "0.6em");
 
-    var svg = d3.select(".parameter-value").append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .attr("x", -17)
-        .attr("y", 20);
+        var width = 200,
+            height = 200;
 
-    var img = svg.append("svg:image")
-        .attr("class", "soccer-ball")
-        .attr("xlink:href", "img/soccer_favicon2.png")
-        .attr("width", 36)
-        .attr("height", 36)
-        .attr("x", 0)
-        .attr("y",25);
+        var svg = d3.select(".parameter-value").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("x", -17)
+            .attr("y", 20)
 
-    } else if (val === 1996 || val === 2000 || val === 2004 || val === 2008 || val === 2012 || val === 2016)
-              {d3.select(".display-value")
-                  .attr("fill","white")
-                  .attr("font-size", 28)
-                  .attr("y", 20)
-                  .attr("dy", "0.65em");
+        var img = svg.append("svg:image")
+            .attr("class", "soccer-ball")
+            .attr("xlink:href", "img/" + soccerBall)
+            .attr("width", 36)
+            .attr("height", 36)
+            .attr("x", 0)
+            .attr("y",25);
 
-      d3.select(".soccer-ball").remove();
-      }
+    } else if (!worldCupYears.includes(val)) {
+        d3.select(".display-value")
+            .attr("fill","white")
+            .attr("font-size", 28)
+            .attr("y", 20)
+            .attr("dy", "0.65em")
+
+        d3.select(".soccer-ball").remove()
+    }
 }
 
+//function to update PI info card based on active pi
+function addPICard(ind){
+    d3.select('.pi-header')
+      .text(perfAttributeMap.get(ind).name)
+    d3.select('.pi-text')
+      .text(perfAttributeMap.get(ind).infoCardText)
+}
+//function to toggle the PI info card show/hide
+function togglePICard(piNum){
+    if(document.getElementById("pi" + piNum + "-trigger").checked) {
+        $('#piCard').css('display', 'block');
+    } else {
+        $('#piCard').css('display', 'none');;
+    }
+}
+function hidePICard(){
+    if ($("#piCard").css('display') == 'block'){
+        $('#piCard').css('display', 'none');;
+    }
+}
 
 function toggleFunc(ind) {
+    addPICard(ind)
     switch (ind) {
         case 'pi1':
             $('#pi1-trigger').bootstrapToggle('toggle')
             $('#pi2-trigger').bootstrapToggle('off')
             $('#pi3-trigger').bootstrapToggle('off')
+            togglePICard(1)
             break
         case 'pi2':
             $('#pi1-trigger').bootstrapToggle('off')
             $('#pi2-trigger').bootstrapToggle('toggle')
             $('#pi3-trigger').bootstrapToggle('off')
+            togglePICard(2)
             break
         case 'pi3':
             $('#pi1-trigger').bootstrapToggle('off')
             $('#pi2-trigger').bootstrapToggle('off')
             $('#pi3-trigger').bootstrapToggle('toggle')
+            togglePICard(3)
             break
     }
 }
 
-
+// function to handle changes to the gi's or years
 function rerender(giNew, yearNew) {
-    if (giNew != null) {
+    if (giNew != null) { // if gi change
         giSelection = giNew
-    } else if (yearNew != null) {
+    } else if (yearNew != null) { // if year change
         yearSelection = yearNew
         piCurrent = piSelection + "_" + yearSelection
+
 
         // disable/enable PI toggles appropriately
         if (worldCupYears.includes(+yearSelection)) {
             enablePI()
         } else {
-            $('#pi1-trigger').bootstrapToggle('off')
-            $('#pi2-trigger').bootstrapToggle('off')
-            $('#pi3-trigger').bootstrapToggle('off')
             disablePI()
+            hidePICard()
+        }
+
+        // on year change, return all pi toggles to off
+        $('#pi1-trigger').bootstrapToggle('off')
+        $('#pi2-trigger').bootstrapToggle('off')
+        $('#pi3-trigger').bootstrapToggle('off')
+
+        // year change sets opacity to 1
+        d3.selectAll(".country")
+            .style("opacity", 1)
+
+        // disable/enable PI toggles appropriately, show wc logo
+        if (worldCupYears.includes(+yearSelection)) {
+            enablePI()
+
+            // add wc logo img
+            wcLogoFile = "world-cup-" + yearSelection + ".png"
+            wclogoSVG.append("svg:image")
+                .attr("class", "wclogoImage")
+                .attr("xlink:href", "img/" + wcLogoFile)
+                .attr("width", "10vw")
+                .attr("height", "10vw")
+        } else {
+            disablePI()
+            d3.select(".wclogoImage").remove()
         }
     }
+
+    // set globals
     giCurrent = giSelection + "_" + yearSelection
 
+    // get format for gi
     const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
 
     // Reset indicator text on nav bar
@@ -507,21 +568,25 @@ function perfrender(inputs) {
     // initialize globals
     piSelection = inputs[0]
     var checkBool = document.getElementById(inputs[1]).checked
-
     if (checkBool) { // if user has selected a PI
-
         switch (piSelection) { // turn off other toggles
             case 'pi1':
+                addPICard(piSelection)
                 $('#pi2-trigger').bootstrapToggle('off')
                 $('#pi3-trigger').bootstrapToggle('off')
+                togglePICard(1)
                 break
             case 'pi2':
+                addPICard(piSelection)
                 $('#pi1-trigger').bootstrapToggle('off')
                 $('#pi3-trigger').bootstrapToggle('off')
+                togglePICard(2)
                 break
             case 'pi3':
+                addPICard(piSelection)
                 $('#pi1-trigger').bootstrapToggle('off')
                 $('#pi2-trigger').bootstrapToggle('off')
+                togglePICard(3)
                 break
         }
 
@@ -546,6 +611,7 @@ function perfrender(inputs) {
     if (anyCheckBool) { // if user detoggles all PI
         d3.selectAll(".country")
             .style("opacity", 1)
+        hidePICard()
     }
 
 }
@@ -553,19 +619,25 @@ function perfrender(inputs) {
 // function to disable PI button
 function disablePI() {
     d3.selectAll('.perfButtons')
-        .classed('disabled', true)
         .property('disabled', true)
-        // .style('color', 'grey')
+
+    $("#pi1-trigger").bootstrapToggle('off');
+    $("#pi2-trigger").bootstrapToggle('off');
+    $("#pi2-trigger").bootstrapToggle('off');
+
+    buttonDivs.selectAll('div')
+        .classed("disabled", true)
 
     $('.perfToggles').bootstrapToggle('disable')
-
 }
 
 // function to enable PI button
 function enablePI() {
     d3.selectAll('.perfButtons')
-        .classed('disabled', false)
         .property('disabled', false)
+
+    buttonDivs.selectAll('div')
+        .classed("disabled", false)
 
     $('.perfToggles').bootstrapToggle('enable')
 }
