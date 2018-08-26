@@ -603,7 +603,11 @@ function perfrender(inputs) {
 
     // true if user detoggles all PI
     var anyCheckBool = !document.getElementById("pi1-trigger").checked && !document.getElementById("pi2-trigger").checked && !document.getElementById("pi3-trigger").checked
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 5fc22e38892c19c6969870a0ec5f015643a78d9b
     if (anyCheckBool && rerenderInd > 0 ) { // if user detoggles all PI and after the initial page render
         d3.selectAll(".country")
             .style("opacity", 1)
@@ -615,7 +619,11 @@ function perfrender(inputs) {
     var checkBool = document.getElementById(inputs[1]).checked
 
     if (checkBool) { // if user has selected the current PI (as opposed to deselected it)
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 5fc22e38892c19c6969870a0ec5f015643a78d9b
         // initialize globals piSelection, otherwise this perfrender call is a deselect, so don't set
         piSelection = inputs[0]
 
