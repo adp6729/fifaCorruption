@@ -422,7 +422,7 @@ function togglePICard(piNum){
     if(document.getElementById("pi" + piNum + "-trigger").checked) {
         $('#piCard').css('display', 'block');
     } else {
-        $('#piCard').css('display', 'none');;                
+        $('#piCard').css('display', 'none');;
     }
 }
 function hidePICard(){
@@ -450,7 +450,7 @@ function toggleFunc(ind) {
             $('#pi1-trigger').bootstrapToggle('off')
             $('#pi2-trigger').bootstrapToggle('off')
             $('#pi3-trigger').bootstrapToggle('toggle')
-            togglePICard(3)          
+            togglePICard(3)
             break
     }
 }
@@ -642,11 +642,11 @@ function perfrender(inputs) {
 function disablePI() {
     d3.selectAll('.perfButtons')
         .property('disabled', true)
-    
+
     $("#pi1-trigger").bootstrapToggle('off');
     $("#pi2-trigger").bootstrapToggle('off');
     $("#pi2-trigger").bootstrapToggle('off');
-    
+
     buttonDivs.selectAll('div')
         .classed("disabled", true)
 
@@ -657,9 +657,9 @@ function disablePI() {
 function enablePI() {
     d3.selectAll('.perfButtons')
         .property('disabled', false)
-    
+
     buttonDivs.selectAll('div')
         .classed("disabled", false)
 
-    $('.perfToggles').bootstrapToggle('enable') 
+    $('.perfToggles').bootstrapToggle('enable')
 }
