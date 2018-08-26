@@ -696,9 +696,11 @@ function perfrender(inputs) {
                     if (d.properties.hasOwnProperty('stat')) {
                         if (d.properties.stat[piCurrent] !== ''){
                             return colorScalePI(d.properties.stat[piCurrent])
-                        } else {
+                        } else { 
                             return 0.15
                         }
+                    } else { 
+                        return 0.15
                     }
                 })
 
