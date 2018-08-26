@@ -556,6 +556,7 @@ g .tick text{
   left: 4vw;
   height: 11vw;
   width: 11vw;
+  /* pointer-events: none; */
 }
 
 /* position performance buttons */

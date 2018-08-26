@@ -359,17 +359,23 @@ function createSlider(giNew){
       //d3.select("a#setValue").on("click", () => slider.value(data));
 }
 
+var worldCupYearColorInd = 0 // track calls to worldCupYearColor for soccerBall removal
 //adds image to world cup years and changes style
 function worldCupYearColor(val){
+
+    // if the function has been called before remove .soccer-ball
+    if (worldCupYearColorInd > 0) {
+        d3.select(".soccer-ball").remove()        
+    }
     if (worldCupYears.includes(val)) {
 
         wcLogoFile = "world-cup-" + val.toString() + ".png"
         soccerBall = "soccer_favicon.png"
 
         d3.select(".display-value")
-        .attr("fill","#ce4d3b")
-        .attr("font-size","28")
-        .attr("dy", "0.6em");
+            .attr("fill","#ce4d3b")
+            .attr("font-size","28")
+            .attr("dy", "0.6em");
 
         var width = 200,
             height = 200;
@@ -386,7 +392,9 @@ function worldCupYearColor(val){
             .attr("width", 36)
             .attr("height", 36)
             .attr("x", 0)
-            .attr("y",25);
+            .attr("y",25)
+        
+        worldCupYearColorInd += 1 // increment call counter for this function
 
     } else if (!worldCupYears.includes(val)) {
         d3.select(".display-value")
@@ -394,8 +402,6 @@ function worldCupYearColor(val){
             .attr("font-size", 28)
             .attr("y", 20)
             .attr("dy", "0.65em")
-
-        d3.select(".soccer-ball").remove()
     }
 }
 
@@ -470,6 +476,9 @@ function rerender(giNew, yearNew) {
         d3.selectAll(".country")
             .style("opacity", 1)
 
+        // remove old world cup year logo
+        d3.select(".wclogoImage").remove()
+
         // disable/enable PI toggles appropriately, show wc logo
         if (worldCupYears.includes(+yearSelection)) {
             enablePI()
@@ -483,7 +492,6 @@ function rerender(giNew, yearNew) {
                 .attr("height", "10vw")
         } else {
             disablePI()
-            d3.select(".wclogoImage").remove()
         }
     }
 
