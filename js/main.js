@@ -416,7 +416,6 @@ function togglePICard(piNum){
 }
 function hidePICard(){
     if ($("#piCard").css('display') == 'block'){
-        console.log("hide")
         $('#piCard').css('display', 'none');;
     }
 }
@@ -569,23 +568,25 @@ function perfrender(inputs) {
     // initialize globals
     piSelection = inputs[0]
     var checkBool = document.getElementById(inputs[1]).checked
-    
     if (checkBool) { // if user has selected a PI
         switch (piSelection) { // turn off other toggles
             case 'pi1':
+                addPICard(piSelection)
                 $('#pi2-trigger').bootstrapToggle('off')
                 $('#pi3-trigger').bootstrapToggle('off')
-            togglePICard(1)
+                togglePICard(1)
                 break
             case 'pi2':
+                addPICard(piSelection)
                 $('#pi1-trigger').bootstrapToggle('off')
                 $('#pi3-trigger').bootstrapToggle('off')
-            togglePICard(2)
+                togglePICard(2)
                 break
             case 'pi3':
+                addPICard(piSelection)
                 $('#pi1-trigger').bootstrapToggle('off')
                 $('#pi2-trigger').bootstrapToggle('off')
-            togglePICard(3)
+                togglePICard(3)
                 break
         }
 
