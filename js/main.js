@@ -550,7 +550,7 @@ function rerender(giNew, yearNew) {
 
     // get format for gi
     const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
-    
+
     // Reset indicator text on nav bar
     if (giSelection.startsWith('g')){
         d3.select("#navbarDropdownMenuLink1")
@@ -583,26 +583,25 @@ function rerender(giNew, yearNew) {
     function moveToolTip(d) {
         if (d.properties.hasOwnProperty('stat')) {
             if(typeof d.properties.stat[giCurrent] === 'string'){
-                if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
-                    tooltip.html(`
-                      <p id="tooltip-country">${d.properties.ADMIN}</p><br>
-                      <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
-                      <p class="performance-attribute"><span class="number">No Data</span></p>
-                `)} else {
+            if (d.properties.stat[giCurrent]) {
                       tooltip.html(`
                         <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
                         <p class="performance-attribute"><span class="number">No Data</span></p>
-                `)}
+                `)} else if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
+                        tooltip.html(`
+                          <p id="tooltip-country">${d.properties.ADMIN}</p><br>
+                          <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
+                          <p class="performance-attribute"><span class="number">No Data</span></p>
+                    `)}
             }else{
-            
-                if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
-                    tooltip.html(`
-                      <p id="tooltip-country">${d.properties.ADMIN}</p><br>
-                      <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
-                      <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-                `)} else {
+                if (d.properties.stat[giCurrent]) {
                       tooltip.html(`
                         <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+                        <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                `)} else if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
+                      tooltip.html(`
+                        <p id="tooltip-country">${d.properties.ADMIN}</p><br>
+                        <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
                         <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
                 `)}
             }
@@ -698,10 +697,10 @@ function perfrender(inputs) {
                     if (d.properties.hasOwnProperty('stat')) {
                         if (d.properties.stat[piCurrent] !== ''){
                             return colorScalePI(d.properties.stat[piCurrent])
-                        } else { 
+                        } else {
                             return 0.15
                         }
-                    } else { 
+                    } else {
                         return 0.15
                     }
                 })
