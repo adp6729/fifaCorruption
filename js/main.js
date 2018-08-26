@@ -492,11 +492,6 @@ function rerender(giNew, yearNew) {
         }
     } else if (yearNew != null) { // if year change
 
-        // on year change, return all pi toggles to off
-        $('#pi1-trigger').bootstrapToggle('off')
-        $('#pi2-trigger').bootstrapToggle('off')
-        $('#pi3-trigger').bootstrapToggle('off')
-
         // set globals
         yearSelection = yearNew
         piCurrent = piSelection + "_" + yearSelection
@@ -505,14 +500,21 @@ function rerender(giNew, yearNew) {
         // disable/enable PI toggles appropriately
         if (worldCupYears.includes(+yearSelection)) {
             enablePI()
+
+            perfrender([piSelection, perfAttributeMap.get(piSelection).inputID])
         } else {
-            disablePI()
+            // on year change to non world cup year, return all pi toggles to off
+            $('#pi1-trigger').bootstrapToggle('off')
+            $('#pi2-trigger').bootstrapToggle('off')
+            $('#pi3-trigger').bootstrapToggle('off')
+
+            // year change sets opacity to 1
+            d3.selectAll(".country")
+            .style("opacity", 1)
+
+            // disablePI()
             hidePICard()
         }
-
-        // year change sets opacity to 1
-        d3.selectAll(".country")
-            .style("opacity", 1)
 
         // remove old world cup year logo
         d3.select(".wclogoImage").remove()
