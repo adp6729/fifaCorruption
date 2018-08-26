@@ -2,6 +2,7 @@ $(document).ready(function(){
 //sidebar attribute panel
 //doesn't show on page load
 $(".sidebar_attribute").css('display', 'none');
+$('#piCard').css('display', 'none');
 
   $(".toggle_attribute").click(function(){
   if ($(".sidebar_attribute").css('display') == 'none') {
