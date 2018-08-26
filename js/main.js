@@ -163,12 +163,17 @@ const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
 //         .on("click", d => perfrender(d.indicator))
 //         .text(d => d.name);
 
+var wclogoSVG = d3.select('#wclogo')
+    .append('svg')
+        .attr("width", "11vw")
+        .attr("height", "11vw")
+
 var buttonDivs = d3.select("#perfButtonDiv").selectAll("div")
     .data(perfAttributes)
     .enter()
     .append("div")
         .attr("align", "left")
-        .style("padding-top", "8px")
+        .style("padding-top", "6px")
 
 buttonDivs.append("input")
     .attr("id", d => d.inputID)
@@ -431,11 +436,20 @@ function rerender(giNew, yearNew) {
         d3.selectAll(".country")
             .style("opacity", 1)
 
-        // disable/enable PI toggles appropriately
+        // disable/enable PI toggles appropriately, show wc logo
         if (worldCupYears.includes(+yearSelection)) {
             enablePI()
+
+            // add wc logo img
+            wcLogoFile = "world-cup-" + yearSelection + ".png"
+            wclogoSVG.append("svg:image")
+                .attr("class", "wclogoImage")
+                .attr("xlink:href", "img/" + wcLogoFile)
+                .attr("width", "10vw")
+                .attr("height", "10vw")
         } else {
             disablePI()
+            d3.select(".wclogoImage").remove()
         }
     }
 

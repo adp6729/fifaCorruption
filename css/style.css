@@ -527,6 +527,15 @@ g .tick text{
   white-space: nowrap;
 }
 
+/* position wc logo */
+#wclogo{
+  position: absolute;
+  top: 25vw;
+  left: 4vw;
+  height: 11vw;
+  width: 11vw;
+}
+
 /* position performance buttons */
 #perfButtonDiv{
   position: absolute;
