@@ -155,6 +155,7 @@ var wclogoSVG = d3.select('#wclogo')
     .append('svg')
         .attr("width", window.innerWidth * 0.11 + 'px')
         .attr("height", window.innerWidth * 0.11 + 'px')
+        .call(responsivefy);
 
 var wclogoSVG_panel = d3.select('#wclogo-panel')
     .append('svg')
