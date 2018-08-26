@@ -149,17 +149,19 @@ const perfAttributes = [ {"indicator": "pi1",
                     ]
 
 const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
-console.log(perfAttributeMap)
+
 // create svg to hold the world cup logo above the pi section
 var wclogoSVG = d3.select('#wclogo')
     .append('svg')
         .attr("width", window.innerWidth * 0.11 + 'px')
         .attr("height", window.innerWidth * 0.11 + 'px')
+        .call(responsivefy);
 
 var wclogoSVG_panel = d3.select('#wclogo-panel')
     .append('svg')
         .attr("width", window.innerWidth * 0.11 + 'px')
         .attr("height", window.innerWidth * 0.11 + 'px')
+        .call(responsivefy);
 
 var buttonDivs = d3.select("#perfButtonDiv").selectAll("div")
     .data(perfAttributes)
@@ -268,7 +270,8 @@ function moveToolTip(d) {
         if (d.properties.stat[giCurrent]) {
             const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
             tooltip.html(`
-                <p class="tooltip-country-gi">${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+              <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+              <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
             `)
             tooltip.style('opacity', 1)
             let mouseX = d3.event.pageX
@@ -557,7 +560,8 @@ function rerender(giNew, yearNew) {
                   <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
                 `)} else {
                   tooltip.html(`
-                    <p class="tooltip-country-gi">${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                    <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+                    <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
                       `)}
                 tooltip.style('opacity', 1)
                 let mouseX = d3.event.pageX
@@ -662,22 +666,23 @@ function perfrender(inputs) {
                 <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
                 `)} else {
                 tooltip.html(`
-                    <p class="tooltip-country-gi">${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                    <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+                    <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
                     `)}
 
-                    tooltip.style('opacity', 1)
-                    let mouseX = d3.event.pageX
-                    const tooltipWidth = parseInt(tooltip.style('width'))
-                    if ((mouseX + tooltipWidth + 20) >= widthBody - 17) {
-                        mouseX = (widthBody - tooltipWidth - 20 - 17)
-                    }
-                    tooltip.style('left', (mouseX + 10) + 'px')
-                    tooltip.style('top', d3.event.pageY + 20 + 'px')
+                tooltip.style('opacity', 1)
+                let mouseX = d3.event.pageX
+                const tooltipWidth = parseInt(tooltip.style('width'))
+                if ((mouseX + tooltipWidth + 20) >= widthBody - 17) {
+                    mouseX = (widthBody - tooltipWidth - 20 - 17)
+                }
+                tooltip.style('left', (mouseX + 10) + 'px')
+                tooltip.style('top', d3.event.pageY + 20 + 'px')
 
-                    d3.selectAll("." + d.properties.ADM0_A3_US)
-                        .style('stroke', '#fff')
-                        .style('stroke-width', '2.5')
-                        .raise()
+                d3.selectAll("." + d.properties.ADM0_A3_US)
+                    .style('stroke', '#fff')
+                    .style('stroke-width', '2.5')
+                    .raise()
         }
 
         function hideToolTip(d) {
