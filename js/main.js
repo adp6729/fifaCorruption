@@ -66,7 +66,7 @@ const countriesG = svg.append('g')
     //.attr('class', 'countries')
 
 let giSelection = "gi1"
-let piSelection = "pi3"
+let piSelection = "pi2"
 let yearSelection = "1996"
 let giCurrent = giSelection + "_" + yearSelection
 let piCurrent = piSelection + "_" + yearSelection
@@ -149,7 +149,7 @@ const perfAttributes = [ {"indicator": "pi1",
                     ]
 
 const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
-
+console.log(perfAttributeMap)
 // create svg to hold the world cup logo above the pi section
 var wclogoSVG = d3.select('#wclogo')
     .append('svg')
@@ -181,7 +181,7 @@ buttonDivs.append("input")
 
 buttonDivs.append("button")
     .attr("type", "checkbox")
-    .attr("class", "btn btn-dark perfButtons")
+    .attr("class", "btn btn-dark perfButtons btn-responsive")
     .on("click", d => toggleFunc(d.indicator))
     .text(d => d.name)
     .style("margin-left", "5px")
@@ -268,7 +268,7 @@ function moveToolTip(d) {
         if (d.properties.stat[giCurrent]) {
             const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
             tooltip.html(`
-                <p>${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                <p class="tooltip-country-gi">${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
             `)
             tooltip.style('opacity', 1)
             let mouseX = d3.event.pageX
@@ -335,6 +335,7 @@ function createSlider(giNew){
         .on('onchange', function(val){
           d3.select("p#value").text((val));
           //console.log(val)
+          worldCupYearPanel(val)
           worldCupYearColor(val)
           rerender(giNew,val)
 
@@ -353,6 +354,15 @@ function createSlider(giNew){
       //d3.select("a#setValue").on("click", () => slider.value(data));
 }
 
+//updates color of the year container within the slide out panel
+function worldCupYearPanel(val){
+    if (worldCupYears.includes(val)) {
+      $("#value").css('color', '#ce4d3b');
+    } else if (!worldCupYears.includes(val)) {
+      $("#value").css('color', 'white');
+    }
+}
+
 var worldCupYearColorInd = 0 // track calls to worldCupYearColor for soccerBall removal
 //adds image to world cup years and changes style
 function worldCupYearColor(val){
@@ -367,7 +377,7 @@ function worldCupYearColor(val){
         soccerBall = "soccer_favicon.png"
 
         d3.select(".display-value")
-            .attr("fill","#ce4d3b")
+            .attr("fill","#ce4d3b") //#ce4d3b #dc3839 #ec7254
             .attr("font-size","28")
             .attr("dy", "0.6em");
 
@@ -454,7 +464,7 @@ function rerender(giNew, yearNew) {
         // if the rerender function has been called before remove .soccer-ball
         if (rerenderInd == 0) {
             d3.selectAll(".country")
-                .style("opacity", 1)  
+                .style("opacity", 1)
         }
     } else if (yearNew != null) { // if year change
 
@@ -495,7 +505,7 @@ function rerender(giNew, yearNew) {
                 .attr("xlink:href", "img/" + wcLogoFile)
                 .attr("width", "10vw")
                 .attr("height", "10vw")
-            
+
             wclogoSVG_panel.append("svg:image")
                 .attr("class", "wclogoImage-attr")
                 .attr("xlink:href", "img/" + wcLogoFile)
@@ -546,10 +556,15 @@ function rerender(giNew, yearNew) {
 
     function moveToolTip(d) {
         if (d.properties.hasOwnProperty('stat')) {
-            if (d.properties.stat[giCurrent]) {
+            if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
                 tooltip.html(`
-                    <p>${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-                `)
+                  <p id="tooltip-country">${d.properties.ADMIN}</p><br>
+                  <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
+                  <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                `)} else {
+                  tooltip.html(`
+                    <p class="tooltip-country-gi">${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                      `)}
                 tooltip.style('opacity', 1)
                 let mouseX = d3.event.pageX
                 const tooltipWidth = parseInt(tooltip.style('width'))
@@ -563,7 +578,7 @@ function rerender(giNew, yearNew) {
                     .style('stroke', '#fff')
                     .style('stroke-width', '2.5')
                     .raise()
-            }
+
         }
     }
 
@@ -614,9 +629,14 @@ function perfrender(inputs) {
 
         piCurrent = piSelection + "_" + yearSelection
 
+        // get format for pi
+        const cPFormat = d3.format(perfAttributeMap.get(piSelection).formatText)
+
         colorScalePI.domain(d3.extent(cData, d=>d[piCurrent]))
 
         d3.selectAll(".country")
+        .on("mousemove", moveToolTip)
+        .on("mouseout", hideToolTip)
             .style("opacity", d => {
                 if (d.properties.hasOwnProperty('stat')) {
                     if (d.properties.stat[piCurrent] !== ''){
@@ -626,7 +646,43 @@ function perfrender(inputs) {
                     }
                 }
             })
-    }
+
+            function moveToolTip(d) {
+              if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
+                  tooltip.html(`
+                    <p id="tooltip-country">${d.properties.ADMIN}</p><br>
+                    <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
+                    <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                  `)} else {
+                    tooltip.html(`
+                      <p class="tooltip-country-gi">${d.properties.ADMIN}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                        `)}
+
+                        tooltip.style('opacity', 1)
+                        let mouseX = d3.event.pageX
+                        const tooltipWidth = parseInt(tooltip.style('width'))
+                        if ((mouseX + tooltipWidth + 20) >= widthBody - 17) {
+                            mouseX = (widthBody - tooltipWidth - 20 - 17)
+                        }
+                        tooltip.style('left', (mouseX + 10) + 'px')
+                        tooltip.style('top', d3.event.pageY + 20 + 'px')
+
+                        d3.selectAll("." + d.properties.ADM0_A3_US)
+                            .style('stroke', '#fff')
+                            .style('stroke-width', '2.5')
+                            .raise()
+                    }
+
+
+
+            function hideToolTip(d) {
+                tooltip.style('opacity', 0)
+                d3.selectAll("." + d.properties.ADM0_A3_US)
+                        .style('stroke', 'white')
+                        .style('stroke-width', '0.5')
+            }
+
+  }
 
     var anyCheckBool = !document.getElementById("pi1-trigger").checked && !document.getElementById("pi2-trigger").checked && !document.getElementById("pi3-trigger").checked
 
@@ -636,7 +692,8 @@ function perfrender(inputs) {
         hidePICard()
     }
 
-}
+  }
+
 
 // function to disable PI button
 function disablePI() {

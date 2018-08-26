@@ -530,14 +530,14 @@ g .tick text{
   pointer-events: none;
   border: 2px black hsla(210, 10%, 23%, 0.9);
   padding: 2px;
-  border-radius: 3px;
-  box-shadow: 2px 2px 2px black;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px #2e2e2e;
 }
 
 .body .main-tooltip .number {
   font-family: monospace;
   text-align: right;
-  font-size: 1.3em;
+  font-size: 1.5em;
   font-weight: 900;
   color: white;
 }
@@ -547,6 +547,27 @@ g .tick text{
   color: white;
   display: inline;
   white-space: nowrap;
+}
+.tooltip-country-gi{
+  color:#ec7254;
+  font-family: 'lato';
+  font-size: 0.9em;
+  font-weight: 800;
+}
+
+#tooltip-country{
+  color:#ec7254;
+  font-family: 'lato';
+  font-size: 1.2em;
+  font-weight: 800;
+}
+
+.performance-attribute{
+  color:white;
+  font-family: 'lato';
+  font-size: 0.8em;
+  font-weight: 500;
+  float:left;
 }
 
 /* position wc logo */
