@@ -453,7 +453,7 @@ function rerender(giNew, yearNew) {
         yearSelection = yearNew
         piCurrent = piSelection + "_" + yearSelection
 
-<<<<<<< HEAD
+
         // disable/enable PI toggles appropriately
         if (worldCupYears.includes(+yearSelection)) {
             enablePI()
@@ -461,8 +461,7 @@ function rerender(giNew, yearNew) {
             disablePI()
             hidePICard()
         }
-=======
->>>>>>> f2487cfb413a6b7423178fb0452cb5b6e1fc4d45
+
         // on year change, return all pi toggles to off
         $('#pi1-trigger').bootstrapToggle('off')
         $('#pi2-trigger').bootstrapToggle('off')
