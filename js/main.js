@@ -20,12 +20,11 @@ var playButton = d3.select("#play-button");
 
 var x = d3.scaleLinear()
     .domain([1996, 2016])
-
     .range([0, 800])
     .clamp(true);
 
 const projection = d3.geoNaturalEarth1() // projection used for the mercator projection
-    .center([10, 0])
+    .center([10, -4])
     .scale(160)
 
 const pathGenerator = d3.geoPath()
@@ -153,6 +152,11 @@ const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
 
 // create svg to hold the world cup logo above the pi section
 var wclogoSVG = d3.select('#wclogo')
+    .append('svg')
+        .attr("width", "11vw")
+        .attr("height", "11vw")
+
+var wclogoSVG_panel = d3.select('#wclogo-panel')
     .append('svg')
         .attr("width", "11vw")
         .attr("height", "11vw")
@@ -355,7 +359,7 @@ function worldCupYearColor(val){
 
     // if the function has been called before remove .soccer-ball
     if (worldCupYearColorInd > 0) {
-        d3.select(".soccer-ball").remove()        
+        d3.select(".soccer-ball").remove()
     }
     if (worldCupYears.includes(val)) {
 
@@ -383,7 +387,7 @@ function worldCupYearColor(val){
             .attr("height", 36)
             .attr("x", 0)
             .attr("y",25)
-        
+
         worldCupYearColorInd += 1 // increment call counter for this function
 
     } else if (!worldCupYears.includes(val)) {
@@ -407,7 +411,7 @@ function togglePICard(piNum){
     if(document.getElementById("pi" + piNum + "-trigger").checked) {
         $('#piCard').css('display', 'block');
     } else {
-        $('#piCard').css('display', 'none');;                
+        $('#piCard').css('display', 'none');;
     }
 }
 function hidePICard(){
@@ -435,7 +439,7 @@ function toggleFunc(ind) {
             $('#pi1-trigger').bootstrapToggle('off')
             $('#pi2-trigger').bootstrapToggle('off')
             $('#pi3-trigger').bootstrapToggle('toggle')
-            togglePICard(3)          
+            togglePICard(3)
             break
     }
 }
@@ -478,6 +482,7 @@ function rerender(giNew, yearNew) {
 
         // remove old world cup year logo
         d3.select(".wclogoImage").remove()
+        d3.select(".wclogoImage-attr").remove()
 
         // disable/enable PI toggles appropriately, show wc logo
         if (worldCupYears.includes(+yearSelection)) {
@@ -490,8 +495,16 @@ function rerender(giNew, yearNew) {
                 .attr("xlink:href", "img/" + wcLogoFile)
                 .attr("width", "10vw")
                 .attr("height", "10vw")
+            
+            wclogoSVG_panel.append("svg:image")
+                .attr("class", "wclogoImage-attr")
+                .attr("xlink:href", "img/" + wcLogoFile)
+                .attr("width", "10vw")
+                .attr("height", "10vw")
+            $("#wclogo-panel").css("background-color", "rgba(255,255,255,0.7)");
         } else {
             disablePI()
+            $("#wclogo-panel").css("background-color", "rgba(255,255,255,0)");
         }
     }
 
@@ -629,11 +642,11 @@ function perfrender(inputs) {
 function disablePI() {
     d3.selectAll('.perfButtons')
         .property('disabled', true)
-    
+
     $("#pi1-trigger").bootstrapToggle('off');
     $("#pi2-trigger").bootstrapToggle('off');
     $("#pi2-trigger").bootstrapToggle('off');
-    
+
     buttonDivs.selectAll('div')
         .classed("disabled", true)
 
@@ -644,9 +657,9 @@ function disablePI() {
 function enablePI() {
     d3.selectAll('.perfButtons')
         .property('disabled', false)
-    
+
     buttonDivs.selectAll('div')
         .classed("disabled", false)
 
-    $('.perfToggles').bootstrapToggle('enable') 
+    $('.perfToggles').bootstrapToggle('enable')
 }
