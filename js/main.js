@@ -20,12 +20,11 @@ var playButton = d3.select("#play-button");
 
 var x = d3.scaleLinear()
     .domain([1996, 2016])
-
     .range([0, 800])
     .clamp(true);
 
 const projection = d3.geoNaturalEarth1() // projection used for the mercator projection
-    .center([10, 0])
+    .center([10, -4])
     .scale(160)
 
 const pathGenerator = d3.geoPath()
@@ -365,7 +364,7 @@ function worldCupYearColor(val){
 
     // if the function has been called before remove .soccer-ball
     if (worldCupYearColorInd > 0) {
-        d3.select(".soccer-ball").remove()        
+        d3.select(".soccer-ball").remove()
     }
     if (worldCupYears.includes(val)) {
 
@@ -393,7 +392,7 @@ function worldCupYearColor(val){
             .attr("height", 36)
             .attr("x", 0)
             .attr("y",25)
-        
+
         worldCupYearColorInd += 1 // increment call counter for this function
 
     } else if (!worldCupYears.includes(val)) {
