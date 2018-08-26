@@ -181,7 +181,7 @@ buttonDivs.append("input")
 
 buttonDivs.append("button")
     .attr("type", "checkbox")
-    .attr("class", "btn btn-dark perfButtons")
+    .attr("class", "btn btn-dark perfButtons btn-responsive")
     .on("click", d => toggleFunc(d.indicator))
     .text(d => d.name)
     .style("margin-left", "5px")
