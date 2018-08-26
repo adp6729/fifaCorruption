@@ -278,6 +278,25 @@ li {
   padding:5px 25px;
 }
 
+.pi-header{
+   color:white;
+   font-family:'lato';
+   font-weight: 400;
+   font-size:17px;
+   text-align:center;
+   padding:10px 0;
+}
+
+.pi-text{
+  color:white;
+  opacity:0.8;
+  font-family:'lato';
+  font-weight: 400;
+  font-size:14px;
+  text-align:left;
+  padding:5px 25px;
+}
+
 .hide_attribute{
   margin-right: -250px;
 }

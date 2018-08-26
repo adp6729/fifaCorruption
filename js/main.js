@@ -304,6 +304,7 @@ d3.select('.card-header')
 d3.select('.card-text')
     .text(govAttributeMap.get(giSelection).infoCardText)
 
+
  /*d3.select('.infocard')
     .style('left', 0 + 'px')
     .style('height',100 + 'vh')
@@ -392,23 +393,48 @@ function worldCupYearColor(val){
     }
 }
 
+//function to update PI info card based on active pi
+function addPICard(ind){
+    d3.select('.pi-header')
+      .text(perfAttributeMap.get(ind).name)
+    d3.select('.pi-text')
+      .text(perfAttributeMap.get(ind).infoCardText)
+}
+//function to toggle the PI info card show/hide
+function togglePICard(piNum){
+    if(document.getElementById("pi" + piNum + "-trigger").checked) {
+        $('#piCard').css('display', 'block');
+    } else {
+        $('#piCard').css('display', 'none');;                
+    }
+}
+function hidePICard(){
+    if ($("#piCard").css('display') == 'block'){
+        console.log("hide")
+        $('#piCard').css('display', 'none');;
+    }
+}
 
 function toggleFunc(ind) {
+    addPICard(ind)
     switch (ind) {
         case 'pi1':
             $('#pi1-trigger').bootstrapToggle('toggle')
             $('#pi2-trigger').bootstrapToggle('off')
             $('#pi3-trigger').bootstrapToggle('off')
+            togglePICard(1)
             break
         case 'pi2':
             $('#pi1-trigger').bootstrapToggle('off')
             $('#pi2-trigger').bootstrapToggle('toggle')
             $('#pi3-trigger').bootstrapToggle('off')
+            togglePICard(2)
             break
         case 'pi3':
             $('#pi1-trigger').bootstrapToggle('off')
             $('#pi2-trigger').bootstrapToggle('off')
             $('#pi3-trigger').bootstrapToggle('toggle')
+            togglePICard(3)          
             break
     }
 }
@@ -426,6 +452,7 @@ function rerender(giNew, yearNew) {
             enablePI()
         } else {
             disablePI()
+            hidePICard()
         }
         // on year change, return all pi toggles to off
         $('#pi1-trigger').bootstrapToggle('off')
@@ -519,21 +546,23 @@ function perfrender(inputs) {
     // initialize globals
     piSelection = inputs[0]
     var checkBool = document.getElementById(inputs[1]).checked
-
+    
     if (checkBool) { // if user has selected a PI
-
         switch (piSelection) { // turn off other toggles
             case 'pi1':
                 $('#pi2-trigger').bootstrapToggle('off')
                 $('#pi3-trigger').bootstrapToggle('off')
+            togglePICard(1)
                 break
             case 'pi2':
                 $('#pi1-trigger').bootstrapToggle('off')
                 $('#pi3-trigger').bootstrapToggle('off')
+            togglePICard(2)
                 break
             case 'pi3':
                 $('#pi1-trigger').bootstrapToggle('off')
                 $('#pi2-trigger').bootstrapToggle('off')
+            togglePICard(3)
                 break
         }
 
@@ -558,6 +587,7 @@ function perfrender(inputs) {
     if (anyCheckBool) { // if user detoggles all PI
         d3.selectAll(".country")
             .style("opacity", 1)
+        hidePICard()
     }
 
 }
@@ -571,7 +601,6 @@ function disablePI() {
         .classed("disabled", true)
 
     $('.perfToggles').bootstrapToggle('disable')
-
 }
 
 // function to enable PI button
@@ -582,5 +611,5 @@ function enablePI() {
     buttonDivs.selectAll('div')
         .classed("disabled", false)
 
-    $('.perfToggles').bootstrapToggle('enable')
+    $('.perfToggles').bootstrapToggle('enable') 
 }
