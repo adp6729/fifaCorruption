@@ -508,7 +508,7 @@ function rerender(giNew, yearNew) {
                 .attr("xlink:href", "img/" + wcLogoFile)
                 .attr("width", window.innerWidth * 0.10 + 'px')
                 .attr("height", window.innerWidth * 0.10 + 'px')
-            $("#wclogo-panel").css("background-color", "rgba(255,255,255,0.7)");
+            $("#wclogo-panel").css("background-color", "rgba(255,255,255,0.9)");
         } else {
             disablePI()
             $("#wclogo-panel").css("background-color", "rgba(255,255,255,0)");
@@ -521,7 +521,7 @@ function rerender(giNew, yearNew) {
 
     // get format for gi
     const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
-
+    
     // Reset indicator text on nav bar
     if (giSelection.startsWith('g')){
         d3.select("#navbarDropdownMenuLink1")
@@ -544,7 +544,7 @@ function rerender(giNew, yearNew) {
             .style("fill", d => {
                 outColor = "#808080"
                 if (d.properties.hasOwnProperty('stat')) {
-                    if (d.properties.stat[giCurrent]) {
+                    if (typeof d.properties.stat[giCurrent] === 'number') {
                         outColor = colorScaleGIOut(d.properties.stat[giCurrent]);
                     }
                 }
@@ -553,16 +553,30 @@ function rerender(giNew, yearNew) {
 
     function moveToolTip(d) {
         if (d.properties.hasOwnProperty('stat')) {
-            if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
-                tooltip.html(`
-                  <p id="tooltip-country">${d.properties.ADMIN}</p><br>
-                  <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
-                  <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+            if(typeof d.properties.stat[giCurrent] === 'string'){
+                if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
+                    tooltip.html(`
+                      <p id="tooltip-country">${d.properties.ADMIN}</p><br>
+                      <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
+                      <p class="performance-attribute"><span class="number">No Data</span></p>
                 `)} else {
-                  tooltip.html(`
-                    <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
-                    <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-                      `)}
+                      tooltip.html(`
+                        <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+                        <p class="performance-attribute"><span class="number">No Data</span></p>
+                `)}
+            }else{
+            
+                if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
+                    tooltip.html(`
+                      <p id="tooltip-country">${d.properties.ADMIN}</p><br>
+                      <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
+                      <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                `)} else {
+                      tooltip.html(`
+                        <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+                        <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                `)}
+            }
                 tooltip.style('opacity', 1)
                 let mouseX = d3.event.pageX
                 const tooltipWidth = parseInt(tooltip.style('width'))
