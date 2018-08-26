@@ -30,29 +30,47 @@ const projection = d3.geoNaturalEarth1() // projection used for the mercator pro
 const pathGenerator = d3.geoPath()
     .projection(projection)
 
-    //responsive map
-    function responsivefy(svg) {
-        // get container + svg aspect ratio
-        var container = d3.select(svg.node().parentNode),
-            width = parseInt(svg.style("width")),
-            height = parseInt(svg.style("height")),
-            aspect = width / height;
+var responsivefyInd = 0
+//responsive map
+function responsivefy(svg) {
+    // get container + svg aspect ratio
+    var container = d3.select(svg.node().parentNode),
+        width = parseInt(svg.style("width")),
+        height = parseInt(svg.style("height")),
+        aspect = width / height;
 
-        // add viewBox and preserveAspectRatio properties,
-        // and call resize so that svg resizes on inital page load
-        svg.attr("viewBox", "0 0 " + width + " " + height)
-            .attr("perserveAspectRatio", "xMinYMid")
-            .call(resize);
+    // add viewBox and preserveAspectRatio properties,
+    // and call resize so that svg resizes on inital page load
+    svg.attr("viewBox", "0 0 " + width + " " + height)
+        .attr("perserveAspectRatio", "xMinYMid")
+        .call(resize);
 
-        d3.select(window).on("resize." + container.attr("id"), resize);
+    d3.select(window).on("resize." + container.attr("id"), resize);
 
-        // get width of container and resize svg to fit it
-        function resize() {
-            var targetWidth = parseInt(container.style("width"));
-            svg.attr("width", targetWidth);
-            svg.attr("height", Math.round(targetWidth / aspect));
+    // get width of container and resize svg to fit it
+    function resize() {
+        var targetWidth = parseInt(container.style("width"))
+        svg.attr("width", targetWidth)
+        svg.attr("height", Math.round(targetWidth / aspect))
+
+        // resize toggles after initial load
+        if (responsivefyInd > 3) {
+            console.log($(window).width())
+            if ($(window).width() < 970) {
+                $("[data-toggle='toggle']").bootstrapToggle('destroy')
+                $("[data-toggle='toggle']").bootstrapToggle({size: "mini"})
+            } else if ( ($(window).width() > 970) && ($(window).width() < 1050) ) {
+                $("[data-toggle='toggle']").bootstrapToggle('destroy')
+                $("[data-toggle='toggle']").bootstrapToggle({size: "small"})
+            } else {
+                // toggleInputs.attr("data-height", "50")
+                $("[data-toggle='toggle']").bootstrapToggle('destroy')
+                $("[data-toggle='toggle']").bootstrapToggle({size: "normal"})
+            }
         }
+        responsivefyInd += 1
     }
+}
 
 //create new svg container for the map
 var svg = d3.select("#Map")
@@ -170,7 +188,7 @@ var buttonDivs = d3.select("#perfButtonDiv").selectAll("div")
         .attr("align", "left")
         .style("padding-top", "6px")
 
-buttonDivs.append("input")
+var toggleInputs = buttonDivs.append("input")
     .attr("id", d => d.inputID)
     .attr("class", "perfToggles")
     .attr("type", "checkbox")
@@ -180,6 +198,15 @@ buttonDivs.append("input")
     .attr("data-onstyle", "warning")
     .attr("data-offstyle", "secondary")
     .attr("onchange", d => "perfrender(['" + d.indicator + "', '" + d.inputID + "'])" )
+    .attr("data-size", function() {
+        if ($(window).width() < 970) {
+            return "mini"
+        } else if ( ($(window).width() > 970) && ($(window).width() < 1050) ) {
+            return "small"
+        } else {
+            return "normal"
+        }
+    })
 
 buttonDivs.append("button")
     .attr("type", "checkbox")
