@@ -135,7 +135,7 @@ const perfAttributes = [ {"indicator": "pi1",
                         "inputID": "pi1-trigger"},
                     {"indicator": "pi2",
                         "name": "Average Points",
-                        "infoCardText": "The total number of points scored by a nation divided by the number of games played during the World Cup. Ranges from 0 points",
+                        "infoCardText": "The total number of points scored by a nation divided by the number of games played during the World Cup. Ranges from 0 points to 3 points.",
                         "infoCardLinkURL": "www.wikipedia.org",
                         "infoCardLinkTitle": "Wikipedia",
                         "formatText": ".2f",
@@ -455,6 +455,13 @@ function rerender(giNew, yearNew) {
     if (giNew != null) { // if gi change
         giSelection = giNew
     } else if (yearNew != null) { // if year change
+
+        // on year change, return all pi toggles to off
+        $('#pi1-trigger').bootstrapToggle('off')
+        $('#pi2-trigger').bootstrapToggle('off')
+        $('#pi3-trigger').bootstrapToggle('off')
+
+        // set globals
         yearSelection = yearNew
         piCurrent = piSelection + "_" + yearSelection
 
@@ -466,11 +473,6 @@ function rerender(giNew, yearNew) {
             disablePI()
             hidePICard()
         }
-
-        // on year change, return all pi toggles to off
-        $('#pi1-trigger').bootstrapToggle('off')
-        $('#pi2-trigger').bootstrapToggle('off')
-        $('#pi3-trigger').bootstrapToggle('off')
 
         // year change sets opacity to 1
         d3.selectAll(".country")
