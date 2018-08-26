@@ -604,7 +604,10 @@ function perfrender(inputs) {
     // true if user detoggles all PI
     var anyCheckBool = !document.getElementById("pi1-trigger").checked && !document.getElementById("pi2-trigger").checked && !document.getElementById("pi3-trigger").checked
     
-    if (anyCheckBool) { // if all PI are detoggled, exit perfrender immediately
+    if (anyCheckBool && rerenderInd > 0 ) { // if user detoggles all PI and after the initial page render
+        d3.selectAll(".country")
+            .style("opacity", 1)
+        hidePICard()
         return
     }
 
@@ -691,17 +694,8 @@ function perfrender(inputs) {
                     .style('stroke', 'white')
                     .style('stroke-width', '0.5')
         }
-
     }
-    
-    if (anyCheckBool && rerenderInd > 0 ) { // if user detoggles all PI and after the initial page render
-        d3.selectAll(".country")
-            .style("opacity", 1)
-        hidePICard()
-        return
-    }
-
-  }
+}
 
 
 // function to disable PI button
