@@ -161,6 +161,7 @@ var wclogoSVG_panel = d3.select('#wclogo-panel')
     .append('svg')
         .attr("width", window.innerWidth * 0.11 + 'px')
         .attr("height", window.innerWidth * 0.11 + 'px')
+        .call(responsivefy);
 
 var buttonDivs = d3.select("#perfButtonDiv").selectAll("div")
     .data(perfAttributes)
