@@ -30,29 +30,47 @@ const projection = d3.geoNaturalEarth1() // projection used for the mercator pro
 const pathGenerator = d3.geoPath()
     .projection(projection)
 
-    //responsive map
-    function responsivefy(svg) {
-        // get container + svg aspect ratio
-        var container = d3.select(svg.node().parentNode),
-            width = parseInt(svg.style("width")),
-            height = parseInt(svg.style("height")),
-            aspect = width / height;
+var responsivefyInd = 0
+//responsive map
+function responsivefy(svg) {
+    // get container + svg aspect ratio
+    var container = d3.select(svg.node().parentNode),
+        width = parseInt(svg.style("width")),
+        height = parseInt(svg.style("height")),
+        aspect = width / height;
 
-        // add viewBox and preserveAspectRatio properties,
-        // and call resize so that svg resizes on inital page load
-        svg.attr("viewBox", "0 0 " + width + " " + height)
-            .attr("perserveAspectRatio", "xMinYMid")
-            .call(resize);
+    // add viewBox and preserveAspectRatio properties,
+    // and call resize so that svg resizes on inital page load
+    svg.attr("viewBox", "0 0 " + width + " " + height)
+        .attr("perserveAspectRatio", "xMinYMid")
+        .call(resize);
 
-        d3.select(window).on("resize." + container.attr("id"), resize);
+    d3.select(window).on("resize." + container.attr("id"), resize);
 
-        // get width of container and resize svg to fit it
-        function resize() {
-            var targetWidth = parseInt(container.style("width"));
-            svg.attr("width", targetWidth);
-            svg.attr("height", Math.round(targetWidth / aspect));
+    // get width of container and resize svg to fit it
+    function resize() {
+        var targetWidth = parseInt(container.style("width"))
+        svg.attr("width", targetWidth)
+        svg.attr("height", Math.round(targetWidth / aspect))
+
+        // resize toggles after initial load
+        if (responsivefyInd > 3) {
+            console.log($(window).width())
+            if ($(window).width() < 970) {
+                $("[data-toggle='toggle']").bootstrapToggle('destroy')
+                $("[data-toggle='toggle']").bootstrapToggle({size: "mini"})
+            } else if ( ($(window).width() > 970) && ($(window).width() < 1050) ) {
+                $("[data-toggle='toggle']").bootstrapToggle('destroy')
+                $("[data-toggle='toggle']").bootstrapToggle({size: "small"})
+            } else {
+                // toggleInputs.attr("data-height", "50")
+                $("[data-toggle='toggle']").bootstrapToggle('destroy')
+                $("[data-toggle='toggle']").bootstrapToggle({size: "normal"})
+            }
         }
+        responsivefyInd += 1
     }
+}
 
 //create new svg container for the map
 var svg = d3.select("#Map")
@@ -170,7 +188,7 @@ var buttonDivs = d3.select("#perfButtonDiv").selectAll("div")
         .attr("align", "left")
         .style("padding-top", "6px")
 
-buttonDivs.append("input")
+var toggleInputs = buttonDivs.append("input")
     .attr("id", d => d.inputID)
     .attr("class", "perfToggles")
     .attr("type", "checkbox")
@@ -180,6 +198,15 @@ buttonDivs.append("input")
     .attr("data-onstyle", "warning")
     .attr("data-offstyle", "secondary")
     .attr("onchange", d => "perfrender(['" + d.indicator + "', '" + d.inputID + "'])" )
+    .attr("data-size", function() {
+        if ($(window).width() < 970) {
+            return "mini"
+        } else if ( ($(window).width() > 970) && ($(window).width() < 1050) ) {
+            return "small"
+        } else {
+            return "normal"
+        }
+    })
 
 buttonDivs.append("button")
     .attr("type", "checkbox")
@@ -508,7 +535,7 @@ function rerender(giNew, yearNew) {
                 .attr("xlink:href", "img/" + wcLogoFile)
                 .attr("width", window.innerWidth * 0.10 + 'px')
                 .attr("height", window.innerWidth * 0.10 + 'px')
-            $("#wclogo-panel").css("background-color", "rgba(255,255,255,0.7)");
+            $("#wclogo-panel").css("background-color", "rgba(255,255,255,0.9)");
         } else {
             disablePI()
             $("#wclogo-panel").css("background-color", "rgba(255,255,255,0)");
@@ -544,7 +571,7 @@ function rerender(giNew, yearNew) {
             .style("fill", d => {
                 outColor = "#808080"
                 if (d.properties.hasOwnProperty('stat')) {
-                    if (d.properties.stat[giCurrent]) {
+                    if (typeof d.properties.stat[giCurrent] === 'number') {
                         outColor = colorScaleGIOut(d.properties.stat[giCurrent]);
                     }
                 }
@@ -553,16 +580,29 @@ function rerender(giNew, yearNew) {
 
     function moveToolTip(d) {
         if (d.properties.hasOwnProperty('stat')) {
+            if(typeof d.properties.stat[giCurrent] === 'string'){
             if (d.properties.stat[giCurrent]) {
-              tooltip.html(`
-                <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
-                <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-                  `)} else if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
-                tooltip.html(`
-                  <p id="tooltip-country">${d.properties.ADMIN}</p><br>
-                  <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
-                  <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                      tooltip.html(`
+                        <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+                        <p class="performance-attribute"><span class="number">No Data</span></p>
+                `)} else if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
+                        tooltip.html(`
+                          <p id="tooltip-country">${d.properties.ADMIN}</p><br>
+                          <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
+                          <p class="performance-attribute"><span class="number">No Data</span></p>
+                    `)}
+            }else{
+                if (d.properties.stat[giCurrent]) {
+                      tooltip.html(`
+                        <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+                        <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                `)} else if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
+                      tooltip.html(`
+                        <p id="tooltip-country">${d.properties.ADMIN}</p><br>
+                        <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
+                        <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
                 `)}
+            }
                 tooltip.style('opacity', 1)
                 let mouseX = d3.event.pageX
                 const tooltipWidth = parseInt(tooltip.style('width'))
@@ -658,6 +698,8 @@ function perfrender(inputs) {
                         } else {
                             return 0.15
                         }
+                    } else {
+                        return 0.15
                     }
                 })
 

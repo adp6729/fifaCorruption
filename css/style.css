@@ -614,12 +614,6 @@ g .tick text{
     line-height: 1;
     border-radius:3px;
   }
-  .toggle-responsive {
-    padding:2px 4px;
-    font-size:80%;
-    line-height: 1;
-    border-radius:3px;
-  }
 }
 
 @media (min-width: 970px) and (max-width: 1050px) {
@@ -628,9 +622,12 @@ g .tick text{
     font-size:90%;
     line-height: 1.2;
   }
-  .toggle-responsive {
-    padding:4px 9px;
-    font-size:90%;
-    line-height: 1.2;
-  }
+}
+
+/* recreate xs buttons for bs v4 */
+.btn-group-xs > .btn, .btn-xs {
+  padding  : .45rem .4rem;
+  font-size  : .825rem;
+  line-height  : .4;
+  border-radius : .2rem;
 }
