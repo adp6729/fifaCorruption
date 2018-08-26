@@ -553,16 +553,16 @@ function rerender(giNew, yearNew) {
 
     function moveToolTip(d) {
         if (d.properties.hasOwnProperty('stat')) {
-            if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
+            if (d.properties.stat[giCurrent]) {
+              tooltip.html(`
+                <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+                <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                  `)} else if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
                 tooltip.html(`
                   <p id="tooltip-country">${d.properties.ADMIN}</p><br>
                   <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
                   <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-                `)} else {
-                  tooltip.html(`
-                    <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
-                    <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-                      `)}
+                `)}
                 tooltip.style('opacity', 1)
                 let mouseX = d3.event.pageX
                 const tooltipWidth = parseInt(tooltip.style('width'))
