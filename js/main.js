@@ -354,7 +354,7 @@ function createSlider(giNew){
 
 //adds image to world cup years and changes style
 function worldCupYearColor(val){
-    if (val == 1998 || val == 2002 || val == 2006 || val == 2010 || val == 2014){
+    if (val === 1998 || val === 2002 || val === 2006 || val === 2010 || val === 2014){
 
     d3.select(".display-value")
       .attr("fill","#ce4d3b")
@@ -378,7 +378,7 @@ function worldCupYearColor(val){
         .attr("x", 0)
         .attr("y",25);
 
-    } else if (val == 1996 || val == 2000 || val == 2004 || val == 2008 || val == 2012 || val == 2016)
+    } else if (val === 1996 || val === 2000 || val === 2004 || val === 2008 || val === 2012 || val === 2016)
               {d3.select(".display-value")
                   .attr("fill","white")
                   .attr("font-size", 28)
