@@ -167,6 +167,11 @@ var wclogoSVG = d3.select('#wclogo')
         .attr("width", "11vw")
         .attr("height", "11vw")
 
+var wclogoSVG_panel = d3.select('#wclogo-panel')
+    .append('svg')
+        .attr("width", "11vw")
+        .attr("height", "11vw")
+
 var buttonDivs = d3.select("#perfButtonDiv").selectAll("div")
     .data(perfAttributes)
     .enter()
@@ -477,6 +482,7 @@ function rerender(giNew, yearNew) {
 
         // remove old world cup year logo
         d3.select(".wclogoImage").remove()
+        d3.select(".wclogoImage-attr").remove()
 
         // disable/enable PI toggles appropriately, show wc logo
         if (worldCupYears.includes(+yearSelection)) {
@@ -489,8 +495,16 @@ function rerender(giNew, yearNew) {
                 .attr("xlink:href", "img/" + wcLogoFile)
                 .attr("width", "10vw")
                 .attr("height", "10vw")
+            
+            wclogoSVG_panel.append("svg:image")
+                .attr("class", "wclogoImage-attr")
+                .attr("xlink:href", "img/" + wcLogoFile)
+                .attr("width", "10vw")
+                .attr("height", "10vw")
+            $("#wclogo-panel").css("background-color", "rgba(255,255,255,0.7)");
         } else {
             disablePI()
+            $("#wclogo-panel").css("background-color", "rgba(255,255,255,0)");
         }
     }
 
