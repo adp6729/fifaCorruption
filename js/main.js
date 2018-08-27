@@ -502,11 +502,6 @@ function rerender(giNew, yearNew) {
     if (giNew != null) { // if gi change
         giSelection = giNew
 
-        // if the rerender function has been called before remove .soccer-ball
-        if (rerenderInd == 0) {
-            d3.selectAll(".country")
-                .style("opacity", 1)
-        }
     } else if (yearNew != null) { // if year change
 
         // set globals
@@ -560,6 +555,12 @@ function rerender(giNew, yearNew) {
             $("#wclogo-panel").css("background-color", "rgba(255,255,255,0)");
         }
     }
+    
+    // if the rerender function has been called before remove .soccer-ball
+    if (rerenderInd == 0) {
+        d3.selectAll(".country")
+            .style("opacity", 1)
+    }
 
     // set globals
     giCurrent = giSelection + "_" + yearSelection
@@ -598,6 +599,15 @@ function rerender(giNew, yearNew) {
                     }
                 }
                 return outColor
+            })
+            .style("stroke-width", d => {
+                strokWidth = "0.5";
+                if(d.properties.hasOwnProperty('stat')){
+                    if(isNaN(parseFloat(cPFormat(d.properties.stat[piCurrent]))) == false && cPFormat(d.properties.stat[piCurrent]) !== '0.0'){
+                        strokWidth = "2";
+                    }
+                }
+                return strokWidth;
             })
 
     function moveToolTip(d) {
@@ -647,7 +657,16 @@ function rerender(giNew, yearNew) {
         tooltip.style('opacity', 0)
         d3.selectAll("." + d.properties.ADM0_A3_US)
                 .style('stroke', 'white')
-                .style('stroke-width', '0.5')
+                .style("stroke-width", d => {
+                    strokWidth = "0.5";
+                    if(d.properties.hasOwnProperty('stat')){
+                        if(isNaN(parseFloat(cPFormat(d.properties.stat[piCurrent]))) == false && cPFormat(d.properties.stat[piCurrent]) !== '0.0'){
+                            strokWidth = "2";
+                        }
+                    }
+                    return strokWidth;
+                })
+        
     }
 
     //attribute panel text
@@ -671,11 +690,52 @@ function perfrender(inputs) {
     var oneCheckBool = document.getElementById("pi1-trigger").checked || document.getElementById("pi2-trigger").checked || document.getElementById("pi3-trigger").checked
 
     if (anyCheckBool && rerenderInd > 0 ) { // if user detoggles all PI and after the initial page render
+        // get format for pi
+        const cPFormat = d3.format(perfAttributeMap.get(piSelection).formatText)
+        
         d3.selectAll(".country")
             .style("opacity", 1)
-        hidePICard()
+            .on("mousemove", moveToolTip)
+            .on("mouseout", hideToolTip)
 
-        dirtyBits()
+        function moveToolTip(d) {
+            console.log('anyCB: ' + anyCheckBool)
+            if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] && oneCheckBool) {
+                console.log('success')
+                tooltip.html(`
+                    <p id="tooltip-country">${d.properties.ADMIN}</p><br>
+                    <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
+                    <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                `)} else {
+                tooltip.html(`
+                    <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+                    <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                    `)}
+
+                tooltip.style('opacity', 1)
+                let mouseX = d3.event.pageX
+                const tooltipWidth = parseInt(tooltip.style('width'))
+                if ((mouseX + tooltipWidth + 20) >= widthBody - 17) {
+                    mouseX = (widthBody - tooltipWidth - 20 - 17)
+                }
+                tooltip.style('left', (mouseX + 10) + 'px')
+                tooltip.style('top', d3.event.pageY + 20 + 'px')
+
+                d3.selectAll("." + d.properties.ADM0_A3_US)
+                    .style('stroke', '#fff')
+                    .style('stroke-width', '2.5')
+                    .raise()
+            }
+    
+        function hideToolTip(d) {
+            tooltip.style('opacity', 0)
+            d3.selectAll("." + d.properties.ADM0_A3_US)
+                    .style('stroke', 'white')
+                    .style('stroke-width', '0.5')
+        }
+
+        hidePICard()
+        
         return
     }
 
@@ -711,11 +771,6 @@ function perfrender(inputs) {
         // initialize global piCurrent
         piCurrent = piSelection + "_" + yearSelection
 
-        dirtyBits()
-    }
-
-    function dirtyBits() {
-
         // get format for pi
         const cPFormat = d3.format(perfAttributeMap.get(piSelection).formatText)
 
@@ -748,6 +803,7 @@ function perfrender(inputs) {
                     }
                 })
 
+
         function moveToolTip(d) {
             if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] && oneCheckBool) {
                 tooltip.html(`
@@ -779,9 +835,18 @@ function perfrender(inputs) {
             tooltip.style('opacity', 0)
             d3.selectAll("." + d.properties.ADM0_A3_US)
                     .style('stroke', 'white')
-                    .style('stroke-width', '0.5')
+                    .style("stroke-width", d => {
+                        strokWidth = "0.5";
+                        if(d.properties.hasOwnProperty('stat')){
+                            if(isNaN(parseFloat(cPFormat(d.properties.stat[piCurrent]))) == false && cPFormat(d.properties.stat[piCurrent]) !== '0.0'){
+                                strokWidth = "2";
+                            }
+                        }
+                        return strokWidth;
+                    })
         }
     }
+
 }
 
 
@@ -792,7 +857,7 @@ function disablePI() {
 
     $("#pi1-trigger").bootstrapToggle('off');
     $("#pi2-trigger").bootstrapToggle('off');
-    $("#pi2-trigger").bootstrapToggle('off');
+    $("#pi3-trigger").bootstrapToggle('off');
 
     buttonDivs.selectAll('div')
         .classed("disabled", true)
