@@ -678,6 +678,8 @@ function perfrender(inputs) {
 
         d3.selectAll(".country")
             .style("opacity", 1)
+            .style('stroke', 'white')
+            .style('stroke-width', '0.5')
             .on("mousemove", moveToolTip)
             .on("mouseout", hideToolTip)
 
@@ -774,17 +776,36 @@ function perfrender(inputs) {
               })
             .on("mousemove", moveToolTip)
             .on("mouseout", hideToolTip)
-                .style("opacity", d => {
-                    if (d.properties.hasOwnProperty('stat')) {
-                        if (d.properties.stat[piCurrent] !== ''){
-                            return colorScalePI(d.properties.stat[piCurrent])
-                        } else {
-                            return 0.15
-                        }
+            .style("opacity", d => {
+                if (d.properties.hasOwnProperty('stat')) {
+                    if (d.properties.stat[piCurrent] !== ''){
+                        return colorScalePI(d.properties.stat[piCurrent])
                     } else {
                         return 0.15
                     }
-                })
+                } else {
+                    return 0.15
+                }
+            })
+            .style('stroke', d => {
+                if (d.properties.hasOwnProperty('stat')) {
+                    if (d.properties.stat[piCurrent] !== ''){
+                        return '#808080'
+                    } else {
+                        return 'fff'
+                    }
+                }
+            })
+            .style('stroke-width', d => {
+                if (d.properties.hasOwnProperty('stat')) {
+                    if (d.properties.stat[piCurrent] !== ''){
+                        return '2'
+                    } else {
+                        return '0.5'
+                    }
+                }
+            })
+            .raise()
 
 
         function moveToolTip(d) {
@@ -817,8 +838,24 @@ function perfrender(inputs) {
         function hideToolTip(d) {
             tooltip.style('opacity', 0)
             d3.selectAll("." + d.properties.ADM0_A3_US)
-                    .style('stroke', 'white')
-                    .style('stroke-width', '0.5')
+                .style('stroke', d => {
+                    if (d.properties.hasOwnProperty('stat')) {
+                        if (d.properties.stat[piCurrent] !== ''){
+                            return '#808080'
+                        } else {
+                            return 'fff'
+                        }
+                    }
+                })
+                .style('stroke-width', d => {
+                    if (d.properties.hasOwnProperty('stat')) {
+                        if (d.properties.stat[piCurrent] !== ''){
+                            return '2'
+                        } else {
+                            return '0.5'
+                        }
+                    }
+                })
         }
     }
 
