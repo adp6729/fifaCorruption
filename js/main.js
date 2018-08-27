@@ -246,6 +246,7 @@ $("text.label").css('color', 'white');
 svg.select(".legendOrdinal")
   .call(legendOrdinal);
 
+
 // const colorScaleGIOut = d3.scaleLinear()
 //     .range(['#ff8000', '#2db300']) // this needs tweaking
 
@@ -734,12 +735,6 @@ function perfrender(inputs) {
                     <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
                     <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
                     `)}
-                  } else if (anyCheckBool){if (d.properties.stat[giCurrent]) {
-
-                      tooltip.html(`
-                          <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
-                          <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-                          `)}}
 
                 tooltip.style('opacity', 1)
                 let mouseX = d3.event.pageX
@@ -764,6 +759,7 @@ function perfrender(inputs) {
         }
     }
 }
+
 
 // function to disable PI button
 function disablePI() {
