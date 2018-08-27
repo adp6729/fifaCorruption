@@ -579,6 +579,15 @@ function rerender(giNew, yearNew) {
                 }
                 return outColor
             })
+            .style("stroke-width", d => {
+                strokWidth = "0.5";
+                if(d.properties.hasOwnProperty('stat')){
+                    if(isNaN(parseFloat(cPFormat(d.properties.stat[piCurrent]))) == false && cPFormat(d.properties.stat[piCurrent]) !== '0.0'){
+                        strokWidth = "2";
+                    }
+                }
+                return strokWidth;
+            })
 
             function moveToolTip(d) {
                 if (d.properties.hasOwnProperty('stat')) {
@@ -627,7 +636,16 @@ function rerender(giNew, yearNew) {
         tooltip.style('opacity', 0)
         d3.selectAll("." + d.properties.ADM0_A3_US)
                 .style('stroke', 'white')
-                .style('stroke-width', '0.5')
+                .style("stroke-width", d => {
+                    strokWidth = "0.5";
+                    if(d.properties.hasOwnProperty('stat')){
+                        if(isNaN(parseFloat(cPFormat(d.properties.stat[piCurrent]))) == false && cPFormat(d.properties.stat[piCurrent]) !== '0.0'){
+                            strokWidth = "2";
+                        }
+                    }
+                    return strokWidth;
+                })
+        
     }
 
     //attribute panel text
@@ -706,6 +724,7 @@ function perfrender(inputs) {
                     }
                 })
 
+
         function moveToolTip(d) {
             if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
                 tooltip.html(`
@@ -737,9 +756,18 @@ function perfrender(inputs) {
             tooltip.style('opacity', 0)
             d3.selectAll("." + d.properties.ADM0_A3_US)
                     .style('stroke', 'white')
-                    .style('stroke-width', '0.5')
+                    .style("stroke-width", d => {
+                        strokWidth = "0.5";
+                        if(d.properties.hasOwnProperty('stat')){
+                            if(isNaN(parseFloat(cPFormat(d.properties.stat[piCurrent]))) == false && cPFormat(d.properties.stat[piCurrent]) !== '0.0'){
+                                strokWidth = "2";
+                            }
+                        }
+                        return strokWidth;
+                    })
         }
     }
+
 }
 
 
