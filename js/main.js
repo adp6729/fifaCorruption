@@ -219,6 +219,34 @@ const transitionDuration = 1000
 
 // GI color scale for countries who didn't make it into the world cup
 const colorScaleGIOut = d3.scaleSequential(d3.interpolateRdYlGn)
+
+var ordinal = d3.scaleOrdinal()
+  .domain(["strong", "average", "weak"])
+  .range([ "rgb(63, 137, 81)", "rgb(238, 244, 173)", "rgb(153, 31, 33)"]);
+
+var legendSVG = d3.select("#legend");
+
+
+
+svg.append("g")
+  .attr("class", "legendOrdinal")
+  .attr("transform", "translate(20,110)");
+
+
+var legendOrdinal = d3.legendColor()
+  //d3 symbol creates a path-string, for example
+  .shape("path", d3.symbol().type(d3.symbolSquare).size(250)())
+  .shapePadding(5)
+  .title("Governance Indexes")
+  //use cellFilter to hide the "e" cell
+  .cellFilter(function(d){ return d.label !== "e" })
+  .scale(ordinal);
+
+$("text.label").css('color', 'white');
+
+svg.select(".legendOrdinal")
+  .call(legendOrdinal);
+
 // const colorScaleGIOut = d3.scaleLinear()
 //     .range(['#ff8000', '#2db300']) // this needs tweaking
 
@@ -707,6 +735,7 @@ function perfrender(inputs) {
                 })
 
         function moveToolTip(d) {
+          if (checkBool){
             if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
                 tooltip.html(`
                 <p id="tooltip-country">${d.properties.ADMIN}</p><br>
@@ -717,6 +746,12 @@ function perfrender(inputs) {
                     <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
                     <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
                     `)}
+                  } else if (anyCheckBool){if (d.properties.stat[giCurrent]) {
+
+                      tooltip.html(`
+                          <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+                          <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                          `)}}
 
                 tooltip.style('opacity', 1)
                 let mouseX = d3.event.pageX
@@ -741,7 +776,6 @@ function perfrender(inputs) {
         }
     }
 }
-
 
 // function to disable PI button
 function disablePI() {
