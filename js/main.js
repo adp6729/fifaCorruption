@@ -221,7 +221,7 @@ const colorScaleGIOut = d3.scaleSequential(d3.interpolateRdYlGn)
 
 var ordinal = d3.scaleOrdinal()
   .domain(["strong", "average", "weak"])
-  .range([ "rgb(63, 137, 81)", "rgb(238, 244, 173)", "rgb(153, 31, 33)"]);
+  .range([ "rgb(63, 137, 81)", "rgb(238, 244, 173)", "rgb(203, 72, 56)"]);
 
 var legendSVG = d3.select("#legend");
 
@@ -555,7 +555,7 @@ function rerender(giNew, yearNew) {
             $("#wclogo-panel").css("background-color", "rgba(255,255,255,0)");
         }
     }
-    
+
     // if the rerender function has been called before remove .soccer-ball
     if (rerenderInd == 0) {
         d3.selectAll(".country")
@@ -666,7 +666,7 @@ function rerender(giNew, yearNew) {
                     }
                     return strokWidth;
                 })
-        
+
     }
 
     //attribute panel text
@@ -692,7 +692,7 @@ function perfrender(inputs) {
     if (anyCheckBool && rerenderInd > 0 ) { // if user detoggles all PI and after the initial page render
         // get format for pi
         const cPFormat = d3.format(perfAttributeMap.get(piSelection).formatText)
-        
+
         d3.selectAll(".country")
             .style("opacity", 1)
             .on("mousemove", moveToolTip)
@@ -726,7 +726,7 @@ function perfrender(inputs) {
                     .style('stroke-width', '2.5')
                     .raise()
             }
-    
+
         function hideToolTip(d) {
             tooltip.style('opacity', 0)
             d3.selectAll("." + d.properties.ADM0_A3_US)
@@ -735,7 +735,7 @@ function perfrender(inputs) {
         }
 
         hidePICard()
-        
+
         return
     }
 
