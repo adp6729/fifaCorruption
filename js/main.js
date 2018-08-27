@@ -313,6 +313,18 @@ function createMap(countryArray) {
                     }
                 }
              })
+             .on("click", function(){
+               if ($(".sidebar_attribute").css('display') == 'none') {
+                 $(".sidebar_attribute").css('display', 'block');
+                 $(".sidebar_attribute").removeClass("hide_attribute");
+                 $(".toggle_attribute").removeClass("opacity_one");
+                 $(".sidebar_about").hide();
+                 $(".toggle_about").addClass("opacity_one");
+               } else {
+                   $(".sidebar_attribute").hide();
+                   $(".toggle_attribute").addClass("opacity_one");
+                 }
+               })
              .on("mousemove", moveToolTip)
              .on("mouseout", hideToolTip)
              createSlider();
@@ -710,6 +722,18 @@ function perfrender(inputs) {
         colorScalePI.domain(d3.extent(cData, d=>d[piCurrent]))
 
         d3.selectAll(".country")
+            .on("click", function(){
+              if ($(".sidebar_attribute").css('display') == 'none') {
+                $(".sidebar_attribute").css('display', 'block');
+                $(".sidebar_attribute").removeClass("hide_attribute");
+                $(".toggle_attribute").removeClass("opacity_one");
+                $(".sidebar_about").hide();
+                $(".toggle_about").addClass("opacity_one");
+              } else {
+                  $(".sidebar_attribute").hide();
+                  $(".toggle_attribute").addClass("opacity_one");
+                }
+              })
             .on("mousemove", moveToolTip)
             .on("mouseout", hideToolTip)
                 .style("opacity", d => {
