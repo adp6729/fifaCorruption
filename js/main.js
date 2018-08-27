@@ -218,6 +218,35 @@ const transitionDuration = 1000
 
 // GI color scale for countries who didn't make it into the world cup
 const colorScaleGIOut = d3.scaleSequential(d3.interpolateRdYlGn)
+
+var ordinal = d3.scaleOrdinal()
+  .domain(["strong", "average", "weak"])
+  .range([ "rgb(63, 137, 81)", "rgb(238, 244, 173)", "rgb(153, 31, 33)"]);
+
+var legendSVG = d3.select("#legend");
+
+
+
+svg.append("g")
+  .attr("class", "legendOrdinal")
+  .attr("transform", "translate(20,110)");
+
+
+var legendOrdinal = d3.legendColor()
+  //d3 symbol creates a path-string, for example
+  .shape("path", d3.symbol().type(d3.symbolSquare).size(250)())
+  .shapePadding(5)
+  .title("Governance Indexes")
+  //use cellFilter to hide the "e" cell
+  .cellFilter(function(d){ return d.label !== "e" })
+  .scale(ordinal);
+
+$("text.label").css('color', 'white');
+
+svg.select(".legendOrdinal")
+  .call(legendOrdinal);
+
+
 // const colorScaleGIOut = d3.scaleLinear()
 //     .range(['#ff8000', '#2db300']) // this needs tweaking
 
@@ -559,6 +588,15 @@ function rerender(giNew, yearNew) {
                 }
                 return outColor
             })
+            .style("stroke-width", d => {
+                strokWidth = "0.5";
+                if(d.properties.hasOwnProperty('stat')){
+                    if(isNaN(parseFloat(cPFormat(d.properties.stat[piCurrent]))) == false && cPFormat(d.properties.stat[piCurrent]) !== '0.0'){
+                        strokWidth = "2";
+                    }
+                }
+                return strokWidth;
+            })
 
     function moveToolTip(d) {
         if (d.properties.hasOwnProperty('stat')) {
@@ -607,7 +645,16 @@ function rerender(giNew, yearNew) {
         tooltip.style('opacity', 0)
         d3.selectAll("." + d.properties.ADM0_A3_US)
                 .style('stroke', 'white')
-                .style('stroke-width', '0.5')
+                .style("stroke-width", d => {
+                    strokWidth = "0.5";
+                    if(d.properties.hasOwnProperty('stat')){
+                        if(isNaN(parseFloat(cPFormat(d.properties.stat[piCurrent]))) == false && cPFormat(d.properties.stat[piCurrent]) !== '0.0'){
+                            strokWidth = "2";
+                        }
+                    }
+                    return strokWidth;
+                })
+        
     }
 
     //attribute panel text
@@ -731,7 +778,8 @@ function perfrender(inputs) {
                         return 0.15
                     }
                 })
-                
+
+
         function moveToolTip(d) {
             if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] && oneCheckBool) {
                 tooltip.html(`
@@ -763,9 +811,18 @@ function perfrender(inputs) {
             tooltip.style('opacity', 0)
             d3.selectAll("." + d.properties.ADM0_A3_US)
                     .style('stroke', 'white')
-                    .style('stroke-width', '0.5')
+                    .style("stroke-width", d => {
+                        strokWidth = "0.5";
+                        if(d.properties.hasOwnProperty('stat')){
+                            if(isNaN(parseFloat(cPFormat(d.properties.stat[piCurrent]))) == false && cPFormat(d.properties.stat[piCurrent]) !== '0.0'){
+                                strokWidth = "2";
+                            }
+                        }
+                        return strokWidth;
+                    })
         }
     }
+
 }
 
 
