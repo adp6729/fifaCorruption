@@ -236,7 +236,7 @@ var legendOrdinal = d3.legendColor()
   //d3 symbol creates a path-string, for example
   .shape("path", d3.symbol().type(d3.symbolSquare).size(250)())
   .shapePadding(5)
-  .title("Governance Indexes")
+  .title("Governance Metric")
   //use cellFilter to hide the "e" cell
   .cellFilter(function(d){ return d.label !== "e" })
   .scale(ordinal);

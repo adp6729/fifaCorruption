@@ -130,7 +130,7 @@ li {
   z-index: 100000;
 }
 @media only screen and (max-width: 25em) {
-  .toggle-about:{
+  .toggle-about {
     padding-right:0px;
     }
 }
