@@ -591,10 +591,10 @@ g .tick text{
 /* position wc logo */
 #wclogo{
   position: absolute;
-  top: 27.6vw;
+  top: 24vw;
   left: 4vw;
-  height: 11vw;
-  width: 11vw;
+  height: 14vw;
+  width: 14vw;
   /* pointer-events: none; */
 }
 #wclogo-panel{

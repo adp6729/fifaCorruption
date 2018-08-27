@@ -170,8 +170,8 @@ const perfAttributeMap = d3.map(perfAttributes, d => d.indicator)
 // create svg to hold the world cup logo above the pi section
 var wclogoSVG = d3.select('#wclogo')
     .append('svg')
-        .attr("width", window.innerWidth * 0.11 + 'px')
-        .attr("height", window.innerWidth * 0.11 + 'px')
+        .attr("width", window.innerWidth * 0.14 + 'px')
+        .attr("height", window.innerWidth * 0.14 + 'px')
         .call(responsivefy);
 
 var wclogoSVG_panel = d3.select('#wclogo-panel')
@@ -541,8 +541,8 @@ function rerender(giNew, yearNew) {
             wclogoSVG.append("svg:image")
                 .attr("class", "wclogoImage")
                 .attr("xlink:href", "img/" + wcLogoFile)
-                .attr("width", window.innerWidth * 0.10 + 'px')
-                .attr("height", window.innerWidth * 0.10 + 'px')
+                .attr("width", window.innerWidth * 0.13 + 'px')
+                .attr("height", window.innerWidth * 0.13 + 'px')
 
             wclogoSVG_panel.append("svg:image")
                 .attr("class", "wclogoImage-attr")
