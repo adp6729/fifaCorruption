@@ -355,7 +355,16 @@ li {
 /* .btn{
   background-color:#67a1d3;
 } */
-
+.legendTitle{
+  fill:white;
+  font-family: 'lato';
+  font-size: 0.8em;
+}
+.label{
+  fill:white;
+  font-family: 'lato';
+  font-size: 0.6em;
+}
 
 /*temporal slider*/
 .axis{
@@ -590,7 +599,7 @@ g .tick text{
 /* position performance buttons */
 #perfButtonDiv{
   position: absolute;
-  top: 35vw;
+  top: 37vw;
   left: 2vw;
 }
 

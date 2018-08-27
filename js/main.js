@@ -55,7 +55,6 @@ function responsivefy(svg) {
 
         // resize toggles after initial load
         if (responsivefyInd > 3) {
-            console.log($(window).width())
             if ($(window).width() < 970) {
                 $("[data-toggle='toggle']").bootstrapToggle('destroy')
                 $("[data-toggle='toggle']").bootstrapToggle({size: "mini"})
@@ -219,6 +218,35 @@ const transitionDuration = 1000
 
 // GI color scale for countries who didn't make it into the world cup
 const colorScaleGIOut = d3.scaleSequential(d3.interpolateRdYlGn)
+
+var ordinal = d3.scaleOrdinal()
+  .domain(["strong", "average", "weak"])
+  .range([ "rgb(63, 137, 81)", "rgb(238, 244, 173)", "rgb(153, 31, 33)"]);
+
+var legendSVG = d3.select("#legend");
+
+
+
+svg.append("g")
+  .attr("class", "legendOrdinal")
+  .attr("transform", "translate(20,110)");
+
+
+var legendOrdinal = d3.legendColor()
+  //d3 symbol creates a path-string, for example
+  .shape("path", d3.symbol().type(d3.symbolSquare).size(250)())
+  .shapePadding(5)
+  .title("Governance Indexes")
+  //use cellFilter to hide the "e" cell
+  .cellFilter(function(d){ return d.label !== "e" })
+  .scale(ordinal);
+
+$("text.label").css('color', 'white');
+
+svg.select(".legendOrdinal")
+  .call(legendOrdinal);
+
+
 // const colorScaleGIOut = d3.scaleLinear()
 //     .range(['#ff8000', '#2db300']) // this needs tweaking
 
@@ -324,34 +352,12 @@ function hideToolTip(d) {
         .style('stroke-width', '0.5')
 }
 
-
-
 //attribute panel text
 d3.select('.card-header')
     .text(govAttributeMap.get(giSelection).name)
     .style('font-weight', 700)
 d3.select('.card-text')
     .text(govAttributeMap.get(giSelection).infoCardText)
-
-
- /*d3.select('.infocard')
-    .style('left', 0 + 'px')
-    .style('height',100 + 'vh')
-    .style('top', height/300 + 'px')
-    .style('border-top-left-radius',0 + 'px')
-    .style('border-top-right-radius',0 + 'px')
-    .style('border-bottom-left-radius',0 + 'px')
-    //.style('width', width/4.5 + 'px')
-    .style('width', 293 + 'px')
- d3.select('.card .card-header')
-    .text(govAttributeMap.get(giSelection).name)
-    .style('font-weight', 700)
- d3.select('.card-text')
-    .text(govAttributeMap.get(giSelection).infoCardText)
- d3.select('.card .card-body a')
-    .attr("href", govAttributeMap.get(giSelection).infoCardLinkURL)
- d3.select('.sourceLink')
-    .text(govAttributeMap.get(giSelection).infoCardLinkTitle)*/
 
 //create slider
 function createSlider(giNew){
@@ -363,8 +369,7 @@ function createSlider(giNew){
         .tickFormat(d3.format('.0f'))
         .tickValues(dataSlider)
         .on('onchange', function(val){
-          d3.select("p#value").text((val));
-          //console.log(val)
+          d3.select("p#value").text((val))
           worldCupYearPanel(val)
           worldCupYearColor(val)
           rerender(giNew,val)
@@ -548,6 +553,9 @@ function rerender(giNew, yearNew) {
     giCurrent = giSelection + "_" + yearSelection
     rerenderInd += 1
 
+    // true if user toggles any PI
+    var oneCheckBool = document.getElementById("pi1-trigger").checked || document.getElementById("pi2-trigger").checked || document.getElementById("pi3-trigger").checked
+
     // get format for gi
     const cPFormat = d3.format(govAttributeMap.get(giSelection).formatText)
 
@@ -589,45 +597,45 @@ function rerender(giNew, yearNew) {
                 return strokWidth;
             })
 
-            function moveToolTip(d) {
-                if (d.properties.hasOwnProperty('stat')) {
-                    if(typeof d.properties.stat[giCurrent] === 'string'){
-                        if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
-                            tooltip.html(`
-                              <p id="tooltip-country">${d.properties.ADMIN}</p><br>
-                              <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
-                              <p class="performance-attribute"><span class="number">No Data</span></p>
-                        `)} else {
-                              tooltip.html(`
-                                <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
-                                <p class="performance-attribute"><span class="number">No Data</span></p>
-                        `)}
-                    }else{
+    function moveToolTip(d) {
+        if (d.properties.hasOwnProperty('stat')) {
+            if(typeof d.properties.stat[giCurrent] === 'string'){
+                if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
+                    tooltip.html(`
+                        <p id="tooltip-country">${d.properties.ADMIN}</p><br>
+                        <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
+                        <p class="performance-attribute"><span class="number">No Data</span></p>
+                `)} else {
+                        tooltip.html(`
+                        <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+                        <p class="performance-attribute"><span class="number">No Data</span></p>
+                `)}
+            }else{
 
-                        if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
-                            tooltip.html(`
-                              <p id="tooltip-country">${d.properties.ADMIN}</p><br>
-                              <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
-                              <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-                        `)} else {
-                              tooltip.html(`
-                                <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
-                                <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
-                        `)}
-                    }
-                tooltip.style('opacity', 1)
-                let mouseX = d3.event.pageX
-                const tooltipWidth = parseInt(tooltip.style('width'))
-                if ((mouseX + tooltipWidth + 20) >= widthBody - 17) {
-                    mouseX = (widthBody - tooltipWidth - 20 - 17)
-                }
-                tooltip.style('left', (mouseX + 10) + 'px')
-                tooltip.style('top', d3.event.pageY + 20 + 'px')
+                if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] && oneCheckBool) {
+                    tooltip.html(`
+                        <p id="tooltip-country">${d.properties.ADMIN}</p><br>
+                        <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
+                        <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                `)} else {
+                        tooltip.html(`
+                        <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
+                        <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                `)}
+            }
+        tooltip.style('opacity', 1)
+        let mouseX = d3.event.pageX
+        const tooltipWidth = parseInt(tooltip.style('width'))
+        if ((mouseX + tooltipWidth + 20) >= widthBody - 17) {
+            mouseX = (widthBody - tooltipWidth - 20 - 17)
+        }
+        tooltip.style('left', (mouseX + 10) + 'px')
+        tooltip.style('top', d3.event.pageY + 20 + 'px')
 
-                d3.selectAll("." + d.properties.ADM0_A3_US)
-                    .style('stroke', '#fff')
-                    .style('stroke-width', '2.5')
-                    .raise()
+        d3.selectAll("." + d.properties.ADM0_A3_US)
+            .style('stroke', '#fff')
+            .style('stroke-width', '2.5')
+            .raise()
 
         }
     }
@@ -665,10 +673,15 @@ function perfrender(inputs) {
     // true if user detoggles all PI
     var anyCheckBool = !document.getElementById("pi1-trigger").checked && !document.getElementById("pi2-trigger").checked && !document.getElementById("pi3-trigger").checked
 
+    // true if user toggles any PI
+    var oneCheckBool = document.getElementById("pi1-trigger").checked || document.getElementById("pi2-trigger").checked || document.getElementById("pi3-trigger").checked
+
     if (anyCheckBool && rerenderInd > 0 ) { // if user detoggles all PI and after the initial page render
         d3.selectAll(".country")
             .style("opacity", 1)
         hidePICard()
+
+        dirtyBits()
         return
     }
 
@@ -704,6 +717,11 @@ function perfrender(inputs) {
         // initialize global piCurrent
         piCurrent = piSelection + "_" + yearSelection
 
+        dirtyBits()
+    }
+
+    function dirtyBits() {
+
         // get format for pi
         const cPFormat = d3.format(perfAttributeMap.get(piSelection).formatText)
 
@@ -726,11 +744,11 @@ function perfrender(inputs) {
 
 
         function moveToolTip(d) {
-            if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] ) {
+            if (d.properties.stat[giCurrent] && d.properties.stat[piCurrent] && oneCheckBool) {
                 tooltip.html(`
-                <p id="tooltip-country">${d.properties.ADMIN}</p><br>
-                <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
-                <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
+                    <p id="tooltip-country">${d.properties.ADMIN}</p><br>
+                    <p class="performance-attribute">${perfAttributeMap.get(piSelection).name}<span class="number"> ${cPFormat(d.properties.stat[piCurrent])}</span></p><br>
+                    <p class="performance-attribute">${govAttributeMap.get(giSelection).name}<span class="number"> ${cPFormat(d.properties.stat[giCurrent])}</span></p>
                 `)} else {
                 tooltip.html(`
                     <p class="tooltip-country-gi">${d.properties.ADMIN}</p><br>
